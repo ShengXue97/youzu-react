@@ -88,7 +88,7 @@ export default class edit extends Component {
     return (
         <div>
         <Navbar bg="light">
-          <Navbar.Brand href="/">Yoozoo</Navbar.Brand>
+          <Navbar.Brand href="/youzu-react">Yoozoo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">

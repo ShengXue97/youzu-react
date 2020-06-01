@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Navbar, Nav, Form, FormControl} from 'react-bootstrap';
+import Carousel from 'react-bootstrap/Carousel'
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import CardGroup from 'react-bootstrap/CardGroup';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
 
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
@@ -19,7 +27,7 @@ export default class library extends Component {
     return (
         <div>
         <Navbar bg="light">
-          <Navbar.Brand href="/">Yoozoo</Navbar.Brand>
+          <Navbar.Brand href="/youzu-react">Yoozoo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">

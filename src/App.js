@@ -13,7 +13,7 @@ class App extends Component {
        <BrowserRouter>
         <div>
             <Switch>
-             <Route path="/" component={Home} exact/>
+             <Route path="/youzu-react" component={Home} exact/>
              <Route path="/edit" component={Edit}/>
              <Route path="/library" component={Library}/>
              <Route path="/settings" component={Settings}/>
