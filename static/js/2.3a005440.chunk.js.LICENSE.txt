@@ -21,10 +21,6 @@ object-assign
 */
 
 /*!
- * Programatically add the following
- */
-
-/*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <http://feross.org>
