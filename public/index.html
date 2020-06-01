@@ -30,7 +30,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
@@ -53,7 +53,7 @@
 
           if (spl[1] ==  ' "done": 1'){
             $("#data").text("Done");
-            axios.post("/getresult", {timeout : 1000 * 10})
+            axios.post("https://youzu-exam-flask.herokuapp.com//getresult", {timeout : 1000 * 10})
               .then(function (response) {
                 // handle success
                 console.log(response)

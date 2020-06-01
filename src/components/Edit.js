@@ -14,6 +14,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
 import { CSVReader } from 'react-papaparse'
+import { Link } from 'react-router-dom';
 
 import page1Img from './images/page1.jpg';
 import page2Img from './images/page2.jpg';
@@ -87,22 +88,13 @@ export default class edit extends Component {
     render() {
     return (
         <div>
-        <Navbar bg="light">
-          <Navbar.Brand href="/youzu-react">Yoozoo</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/edit">Edit</Nav.Link>
-              <Nav.Link href="/library">Library</Nav.Link>
-              <Nav.Link href="/settings">Settings</Nav.Link>
-              <Nav.Link href="/format">Format</Nav.Link>
-            </Nav>
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-          </Navbar.Collapse>
-        </Navbar>
+        <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'space-around'}}>
+          <Link to="/">Home  </Link>
+          <Link to="/edit">Edit  </Link>
+          <Link to="/library">Library  </Link>
+          <Link to="/settings">Settings  </Link>
+          <Link to="/format">Format  </Link>
+        </div>
         <h1>
              Edit
         </h1>

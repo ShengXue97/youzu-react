@@ -11,6 +11,7 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Alert from 'react-bootstrap/Alert'
+import { Link } from 'react-router-dom';
 
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
@@ -24,7 +25,7 @@ import { loadProgressBar } from 'axios-progress-bar'
 
 const pollServer = (formData) => {
   console.log("polling...")
-  axios.post("/uploadfile", formData, {timeout : 1000 * 10})
+  axios.post("https://youzu-exam-flask.herokuapp.com//uploadfile", formData, {timeout : 1000 * 10})
       .then(function (response) {
         // handle success
         console.log(response)
@@ -83,22 +84,13 @@ export default class home extends Component {
   render() {
     return (
         <div>
-        <Navbar bg="light">
-          <Navbar.Brand href="/youzu-react">Yoozoo</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="/edit">Edit</Nav.Link>
-              <Nav.Link href="/library">Library</Nav.Link>
-              <Nav.Link href="/settings">Settings</Nav.Link>
-              <Nav.Link href="/format">Format</Nav.Link>
-            </Nav>
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-success">Search</Button>
-            </Form>
-          </Navbar.Collapse>
-        </Navbar>
+        <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'space-around'}}>
+          <Link to="/">Home  </Link>
+          <Link to="/edit">Edit  </Link>
+          <Link to="/library">Library  </Link>
+          <Link to="/settings">Settings  </Link>
+          <Link to="/format">Format  </Link>
+        </div>
         <h1>
              Home
         </h1>
