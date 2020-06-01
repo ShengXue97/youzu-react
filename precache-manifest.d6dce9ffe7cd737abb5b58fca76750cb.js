@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "754754aa27358e99f1e0e530201383c3",
+    "revision": "4f6e951d835cfe96840b350f310fd40b",
     "url": "/youzu-react/index.html"
   },
   {
