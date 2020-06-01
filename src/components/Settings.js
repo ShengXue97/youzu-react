@@ -1,8 +1,24 @@
 import React, { Component } from 'react';
 
+import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as ReactBootstrap from 'react-bootstrap';
+import Carousel from 'react-bootstrap/Carousel'
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import CardGroup from 'react-bootstrap/CardGroup';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
 
+import codeImg from './images/code.png';
+import lightbulbImg from './images/lightbulb.png';
+import userImg from './images/user.png';
+import dragImg from './images/drag.png';
+import plusImg from './images/plus.png';
+ 
+ 
 export default class settings extends Component {
   constructor(props) {
      super(props);
@@ -11,22 +27,22 @@ export default class settings extends Component {
   render() {
     return (
         <div>
-        <ReactBootstrap.Navbar bg="light">
-          <ReactBootstrap.Navbar.Brand href="/">Yoozoo</ReactBootstrap.Navbar.Brand>
-          <ReactBootstrap.Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <ReactBootstrap.Navbar.Collapse id="basic-navbar-nav">
-            <ReactBootstrap.Nav className="mr-auto">
-              <ReactBootstrap.Nav.Link href="/edit">Edit</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/library">Library</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/settings">Settings</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/format">Format</ReactBootstrap.Nav.Link>
-            </ReactBootstrap.Nav>
-            <ReactBootstrap.Form inline>
-              <ReactBootstrap.FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <ReactBootstrap.Button variant="outline-success">Search</ReactBootstrap.Button>
-            </ReactBootstrap.Form>
-          </ReactBootstrap.Navbar.Collapse>
-        </ReactBootstrap.Navbar>
+        <Navbar bg="light">
+          <Navbar.Brand href="/">Yoozoo</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="/edit">Edit</Nav.Link>
+              <Nav.Link href="/library">Library</Nav.Link>
+              <Nav.Link href="/settings">Settings</Nav.Link>
+              <Nav.Link href="/format">Format</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
         <h1>
              Settings
         </h1>

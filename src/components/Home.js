@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
+import csv from 'csv';
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as ReactBootstrap from 'react-bootstrap';
-import Card from "react-bootstrap/Card";
+
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import CardGroup from 'react-bootstrap/CardGroup';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Alert from 'react-bootstrap/Alert'
 
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
 import userImg from './images/user.png';
+import dragImg from './images/drag.png';
 import plusImg from './images/plus.png';
 import axios from 'axios'; 
 
@@ -74,22 +83,22 @@ export default class home extends Component {
   render() {
     return (
         <div>
-        <ReactBootstrap.Navbar bg="light">
-          <ReactBootstrap.Navbar.Brand href="/">Yoozoo</ReactBootstrap.Navbar.Brand>
-          <ReactBootstrap.Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <ReactBootstrap.Navbar.Collapse id="basic-navbar-nav">
-            <ReactBootstrap.Nav className="mr-auto">
-              <ReactBootstrap.Nav.Link href="/edit">Edit</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/library">Library</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/settings">Settings</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/format">Format</ReactBootstrap.Nav.Link>
-            </ReactBootstrap.Nav>
-            <ReactBootstrap.Form inline>
-              <ReactBootstrap.FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <ReactBootstrap.Button variant="outline-success">Search</ReactBootstrap.Button>
-            </ReactBootstrap.Form>
-          </ReactBootstrap.Navbar.Collapse>
-        </ReactBootstrap.Navbar>
+        <Navbar bg="light">
+          <Navbar.Brand href="/">Yoozoo</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="/edit">Edit</Nav.Link>
+              <Nav.Link href="/library">Library</Nav.Link>
+              <Nav.Link href="/settings">Settings</Nav.Link>
+              <Nav.Link href="/format">Format</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
         <h1>
              Home
         </h1>
@@ -97,11 +106,11 @@ export default class home extends Component {
   
         </div>
         <div style={{display: 'flex', flexDirection : 'column', alignItems : 'center', justifyContent: 'space-between', height : "80px"}}>
-          <ReactBootstrap.Alert style={{"width" : "70%", "height" : "90%"}} variant={this.state.msgVariant}>
+          <Alert style={{"width" : "70%", "height" : "90%"}} variant={this.state.msgVariant}>
             <p>
               {this.state.msgText}
             </p>
-          </ReactBootstrap.Alert>
+          </Alert>
         </div>
 
         <div style={{display: 'flex', flexDirection : 'column', alignItems : 'center', justifyContent: 'space-between', height : "190px"}}>
@@ -110,10 +119,10 @@ export default class home extends Component {
               <div style = {{height : "30px"}}>
 
               </div>
-                  <ReactBootstrap.Button onClick={this.setMsg} style = {{height : "90%", width : "50%"}} variant="success">
+                  <Button onClick={this.setMsg} style = {{height : "90%", width : "50%"}} variant="success">
                   <Card.Img style = {{height : "50px", width : "50px"}} variant="left" src={plusImg} />
                   Choose PDF File (from local drive)
-                  </ReactBootstrap.Button>{' '}
+                  </Button>{' '}
               <div style = {{height : "20px"}}>
 
               </div>

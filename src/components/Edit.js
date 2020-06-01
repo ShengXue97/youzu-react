@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 
+import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import * as ReactBootstrap from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup'
+import Pagination from 'react-bootstrap/Pagination'
+import ListGroup from 'react-bootstrap/ListGroup'
+
 import Question from './Question';
 import { CSVReader } from 'react-papaparse'
 
@@ -60,9 +69,9 @@ export default class edit extends Component {
 
       for (let number = 1; number <= 19; number++) {
         newItems.push(
-          <ReactBootstrap.Pagination.Item onClick={() => this.handleChangePage(number)} key={number} active={number === this.state.active}>
+          <Pagination.Item onClick={() => this.handleChangePage(number)} key={number} active={number === this.state.active}>
             {number}
-          </ReactBootstrap.Pagination.Item>,
+          </Pagination.Item>,
         );
       }
 
@@ -78,22 +87,22 @@ export default class edit extends Component {
     render() {
     return (
         <div>
-        <ReactBootstrap.Navbar bg="light">
-          <ReactBootstrap.Navbar.Brand href="/">Yoozoo</ReactBootstrap.Navbar.Brand>
-          <ReactBootstrap.Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <ReactBootstrap.Navbar.Collapse id="basic-navbar-nav">
-            <ReactBootstrap.Nav className="mr-auto">
-              <ReactBootstrap.Nav.Link href="/edit">Edit</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/library">Library</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/settings">Settings</ReactBootstrap.Nav.Link>
-              <ReactBootstrap.Nav.Link href="/format">Format</ReactBootstrap.Nav.Link>
-            </ReactBootstrap.Nav>
-            <ReactBootstrap.Form inline>
-              <ReactBootstrap.FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <ReactBootstrap.Button variant="outline-success">Search</ReactBootstrap.Button>
-            </ReactBootstrap.Form>
-          </ReactBootstrap.Navbar.Collapse>
-        </ReactBootstrap.Navbar>
+        <Navbar bg="light">
+          <Navbar.Brand href="/">Yoozoo</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link href="/edit">Edit</Nav.Link>
+              <Nav.Link href="/library">Library</Nav.Link>
+              <Nav.Link href="/settings">Settings</Nav.Link>
+              <Nav.Link href="/format">Format</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
         <h1>
              Edit
         </h1>
@@ -162,18 +171,18 @@ export default class edit extends Component {
         </CSVReader>
 
         <div style = {{paddingLeft : "30px", paddingRight : "100px"}}>
-            <ReactBootstrap.InputGroup className="mb-3">
-               <ReactBootstrap.InputGroup.Prepend>
-                  <ReactBootstrap.InputGroup.Text id="basic-addon1">Filename</ReactBootstrap.InputGroup.Text>
-               </ReactBootstrap.InputGroup.Prepend>
-               <ReactBootstrap.FormControl
+            <InputGroup className="mb-3">
+               <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Filename</InputGroup.Text>
+               </InputGroup.Prepend>
+               <FormControl
                   placeholder="Filename"
                   aria-label="Filename"
                   aria-describedby="basic-addon1"
                />
-            </ReactBootstrap.InputGroup>
+            </InputGroup>
             
-            <ReactBootstrap.Pagination>{this.state.items}</ReactBootstrap.Pagination>
+            <Pagination>{this.state.items}</Pagination>
 
             <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'flex-start'}}>
                <div>
@@ -183,9 +192,9 @@ export default class edit extends Component {
                   <h5>
                      Questions
                   </h5>
-                  <ReactBootstrap.ListGroup>
+                  <ListGroup>
                      {this.state.text}
-                  </ReactBootstrap.ListGroup>
+                  </ListGroup>
                </div>
             </div> 
          </div>
