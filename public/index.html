@@ -35,37 +35,37 @@
 
     <script>
       if (!!window.EventSource) {
-        var source = new EventSource('/stream');
+        var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream');
         source.onmessage = function(e) {
           console.log(e.data);
           status = JSON.parse(JSON.stringify(e.data))
 
-          console.log(typeof(status))
           spl = status.split(",")
           
           var totalPages = "-"
-          console.log(spl[4].split(":")[1])
-          if (spl[4].split(":")[1] != " -1}}") {
+          if (spl != null && spl.length >= 5){
+            if (spl[4].split(":")[1] != " -1}}") {
             totalPages = spl[4].split(":")[1]
-          }
+            }
 
-          $("#data").text("Stage:" + spl[2].split(":")[1] + "/2" + ", Current Page:" + spl[3].split(":")[1] + "/" + totalPages);
+            $("#data").text("Stage:" + spl[2].split(":")[1] + "/2" + ", Current Page:" + spl[3].split(":")[1] + "/" + totalPages);
 
-          if (spl[1] ==  ' "done": 1'){
-            $("#data").text("Done");
-            axios.post("https://youzu-exam-flask.herokuapp.com//getresult", {timeout : 1000 * 10})
-              .then(function (response) {
-                // handle success
-                console.log(response)
-                var newWindow = window.open("edit");
-                newWindow.data = response
-              })
-              .catch(function (error) {
-                // handle error
-                console.log(error)
-                //window.open("edit", "_self");
-              })
-          }
+            if (spl[1] ==  ' "done": 1'){
+              $("#data").text("Done");
+              axios.post("https://youzu-exam-flask.herokuapp.com/getresult", {timeout : 1000 * 10})
+                .then(function (response) {
+                  // handle success
+                  console.log(response)
+                  var newWindow = window.open("edit");
+                  newWindow.data = response
+                })
+                .catch(function (error) {
+                  // handle error
+                  console.log(error)
+                  //window.open("edit", "_self");
+                })
+              }
+            }
         }
       }
     </script>
