@@ -3,4 +3,4 @@ A simple React website which allows you to upload Singapore primary/secondary sc
 the output of a CSV file containing the text of the questions.
 
 ## Website
-This project is available at [here](https://shengxue97.github.io/youzu-react/).
+This project website is available [here](https://shengxue97.github.io/youzu-react/).
