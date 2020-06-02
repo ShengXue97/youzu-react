@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/youzu-react/precache-manifest.9fe4f7c145109d47f3b284a19787686e.js"
+  "/youzu-react/precache-manifest.b040c7673d8a70ccec6cb1486f1ad61e.js"
 );
 
 self.addEventListener('message', (event) => {
