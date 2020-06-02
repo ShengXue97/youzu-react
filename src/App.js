@@ -14,6 +14,7 @@ class App extends Component {
       <HashRouter basename="/">
         <div>
           <Route exact path="/" component={Home} />
+          <Route exact path="/home" component={Home} />
           <Route path="/edit" component={Edit} />
           <Route path="/library" component={Library} />
           <Route path="/settings" component={Settings} />

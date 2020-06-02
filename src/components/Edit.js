@@ -9,34 +9,20 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup'
-import Pagination from 'react-bootstrap/Pagination'
+import { Pagination } from 'semantic-ui-react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
 import { CSVReader } from 'react-papaparse'
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
+import Drawer from './Drawer';
+
+import Card from 'react-bootstrap/Card';
+import CardGroup from 'react-bootstrap/CardGroup';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 import yoozooImg from './images/yoozoo.jpg';
-import page1Img from './images/page1.jpg';
-import page2Img from './images/page2.jpg';
-import page3Img from './images/page3.jpg';
-import page4Img from './images/page4.jpg';
-import page5Img from './images/page5.jpg';
-import page6Img from './images/page6.jpg';
-import page7Img from './images/page7.jpg';
-import page8Img from './images/page8.jpg';
-import page9Img from './images/page9.jpg';
-import page10Img from './images/page10.jpg';
-import page11Img from './images/page11.jpg';
-import page12Img from './images/page12.jpg';
-import page13Img from './images/page13.jpg';
-import page14Img from './images/page14.jpg';
-import page15Img from './images/page15.jpg';
-import page16Img from './images/page16.jpg';
-import page17Img from './images/page17.jpg';
-import page18Img from './images/page18.jpg';
-import page19Img from './images/page19.jpg';
 
 const buttonRef = React.createRef()
 
@@ -44,15 +30,16 @@ const buttonRef = React.createRef()
 export default class edit extends Component {
    constructor(props) {
       super(props);
-      var newItems = []
-      const pageImgs = [null, page1Img, page2Img, page3Img, page4Img, page5Img, page6Img, page7Img,
-        page8Img, page9Img, page10Img, page11Img, page12Img, page13Img, page14Img, page15Img, page16Img, page17Img
-        ,page18Img, page19Img]
+      pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-        const data = ((window.data.data));
+      const data = ((window.data.data));
+      var listItems = null;
+
+      if (data !== undefined && data != null){
         console.log(data)
+        console.log(typeof(data))
         var qnNum = 0;
-        const listItems = data.map((row) =>
+        listItems = data.map((row) =>
         {
           qnNum = qnNum + 1;
           return <Question 
@@ -66,157 +53,63 @@ export default class edit extends Component {
           </Question>
         }
         );
-
-      this.state = {pageImgs : pageImgs, text: listItems, active : 1, items : newItems,
-       currentImg : <img style={{height: "936px", width:"662px"}} src={page1Img} />};
-
-      for (let number = 1; number <= 19; number++) {
-        newItems.push(
-          <Pagination.Item onClick={() => this.handleChangePage(number)} key={number} active={number === this.state.active}>
-            {number}
-          </Pagination.Item>,
-        );
       }
+        
 
-      this.setState({items: newItems});
+      this.state = {'pageNumber' : 1, text: listItems, 'numPages' : 1, 
+                'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'file': window.fileData};
     }
 
-    handleChangePage = (page) => {
-      this.setState({currentImg: <img style={{height: "936px", width:"662px"}} src = {this.state.pageImgs[page]} />,
-                      active : page});
+    handlePaginationChange = (e, { activePage }) => {
+      this.setState({'pageNumber': activePage});
+    }
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+      this.setState({ numPages });
     }
 
 
     render() {
-    return (
-        <div>
-        <Menu size='large'>
-          <Menu.Item>
-            <img style = {{width: "154px", height: "49px"}} src= {yoozooImg} />
-          </Menu.Item>
-          <Menu.Item
-            name='home'
-          >
-            <Link to="/">Home</Link>
-          </Menu.Item>
+      const body = 
+      <div>
 
-          <Menu.Item
-            name='/library'
-          >
-            <Link to="/library">Library</Link>
-          </Menu.Item>
+        <CardGroup>
+          <Card>
+            <Card.Body>
+              <Pagination defaultActivePage={1} 
+                totalPages={this.state.numPages}
+                onPageChange={this.handlePaginationChange}
+              />
+              <Card>
+                <Document
+                    file={this.state.file}
+                    onLoadSuccess={this.onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={this.state.pageNumber} />
+                  </Document>
+                  <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
+              </Card>
+              <Card.Title>PDF file preview</Card.Title>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Questions</Card.Title>
+              <ListGroup>
+                {this.state.text}
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </CardGroup>
 
-          <Menu.Item
-            name='settings'
-          >
-            <Link to="/settings">Settings</Link>
-          </Menu.Item>
-
-          <Menu.Item
-            name='format'
-          >
-            <Link to="/format">Format</Link>
-          </Menu.Item>
-        </Menu>
-        <h1>
-             Edit
-        </h1>
-
-        <h5>Basic Upload</h5>
-        <CSVReader
-          ref={buttonRef}
-          onFileLoad={this.handleOnFileLoad}
-          onError={this.handleOnError}
-          noClick
-          noDrag
-          onRemoveFile={this.handleOnRemoveFile}
-        >
-          {({ file }) => (
-            <aside
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                marginBottom: 10
-              }}
-            >
-              <button
-                type='button'
-                onClick={this.handleOpenDialog}
-                style={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  width: '40%',
-                  paddingLeft: 0,
-                  paddingRight: 0
-                }}
-              >
-                Browse file
-              </button>
-              <div
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'solid',
-                  borderColor: '#ccc',
-                  height: 45,
-                  lineHeight: 2.5,
-                  marginTop: 5,
-                  marginBottom: 5,
-                  paddingLeft: 13,
-                  paddingTop: 3,
-                  width: '60%'
-                }}
-              >
-                {file && file.name}
-              </div>
-              <button
-                style={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  paddingLeft: 20,
-                  paddingRight: 20
-                }}
-                onClick={this.handleRemoveFile}
-              >
-                Remove
-              </button>
-            </aside>
-          )}
-        </CSVReader>
-
-        <div style = {{paddingLeft : "30px", paddingRight : "100px"}}>
-            <InputGroup className="mb-3">
-               <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Filename</InputGroup.Text>
-               </InputGroup.Prepend>
-               <FormControl
-                  placeholder="Filename"
-                  aria-label="Filename"
-                  aria-describedby="basic-addon1"
-               />
-            </InputGroup>
-            
-            <Pagination>{this.state.items}</Pagination>
-
-            <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'flex-start'}}>
-               <div>
-                  {this.state.currentImg}
-               </div>
-               <div style={{ height: '936px', width:"1100px", overflowY: 'scroll' }}>
-                  <h5>
-                     Questions
-                  </h5>
-                  <ListGroup>
-                     {this.state.text}
-                  </ListGroup>
-               </div>
-            </div> 
-         </div>
          
 
-      </div>
-    );
+        </div>
+      return (
+        <div>
+          <Drawer content = {body} name = "Edit"/>
+        </div>
+      );
     }
 }
  

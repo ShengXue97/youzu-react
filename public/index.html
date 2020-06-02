@@ -61,6 +61,7 @@
                   console.log(response)
                   var newWindow = window.open("#/edit");
                   newWindow.data = response
+                  newWindow.fileData = window.fileData
                 })
                 .catch(function (error) {
                   // handle error

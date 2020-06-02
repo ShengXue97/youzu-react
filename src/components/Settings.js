@@ -13,6 +13,8 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
+import Drawer from './Drawer';
+import Alert from 'react-bootstrap/Alert'
 
 import yoozooImg from './images/yoozoo.jpg';
 import codeImg from './images/code.png';
@@ -24,44 +26,23 @@ import plusImg from './images/plus.png';
  
 export default class settings extends Component {
   constructor(props) {
-     super(props);
-  }
+    super(props);
+ }
 
-  render() {
-    return (
-        <div>
-        <Menu size='large'>
-          <Menu.Item>
-            <img style = {{width: "154px", height: "49px"}} src= {yoozooImg} />
-          </Menu.Item>
-          <Menu.Item
-            name='home'
-          >
-            <Link to="/">Home</Link>
-          </Menu.Item>
+ render() {
+   const body = 
+   <div>
+     <Alert style={{"width" : "100%", "height" : "90%"}} variant= "success">
+       <h5>
+         You are now in the Settings Page.
+       </h5>
+     </Alert>
+   </div>
 
-          <Menu.Item
-            name='/library'
-          >
-            <Link to="/library">Library</Link>
-          </Menu.Item>
-
-          <Menu.Item
-            name='settings'
-          >
-            <Link to="/settings">Settings</Link>
-          </Menu.Item>
-
-          <Menu.Item
-            name='format'
-          >
-            <Link to="/format">Format</Link>
-          </Menu.Item>
-        </Menu>
-        <h1>
-             Settings
-        </h1>
-      </div>
-    );
-  }
+   return (
+     <div>
+       <Drawer content = {body} name = "Settings"/>
+     </div>
+   );
+ }
 }
