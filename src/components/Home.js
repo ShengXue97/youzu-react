@@ -72,11 +72,16 @@ class home extends Component {
   constructor(props) {
      super(props);
      loadProgressBar()
-     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!'}
+     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': ''}
+     window.homeComponent = this;
   }
   
   setMsg = () => {
-    this.setState({'msgVariant':'primary', 'msgText':'Upload a file to begin!'});
+    this.setState({'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': ''});
+  }
+
+  setExtraMsg = (extraMsg) => {
+    this.setState({'extraMsg': extraMsg});
   }
 
 
@@ -91,7 +96,7 @@ class home extends Component {
 
 
     const filename = firstFile.name;
-    this.setState({'msgVariant':'warning', 'msgText':'Received file, uploading... Check footer at bottom of page for information'});
+    this.setState({'msgVariant':'warning', 'msgText':'Received file, uploading...', 'extraMsg':"Status: Initialising process..."});
 
     // Create an object of formData 
       const formData = new FormData(); 
@@ -117,6 +122,10 @@ class home extends Component {
       <Alert style={{"width" : "100%", "height" : "90%"}} variant={this.state.msgVariant}>
         <p>
           {this.state.msgText}
+        </p>
+        <hr/>
+        <p>
+          {this.state.extraMsg}
         </p>
       </Alert>
       <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"} onClick={this.setMsg} onDrop={this.onDrop}>

@@ -56,8 +56,7 @@ export default class edit extends Component {
       }
         
 
-      this.state = {'pageNumber' : 1, text: listItems, 'numPages' : 1, 
-                'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'file': window.fileData};
+      this.state = {'pageNumber' : 1, text: listItems, 'numPages' : 1,'file': window.fileData};
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -76,6 +75,7 @@ export default class edit extends Component {
         <CardGroup>
           <Card>
             <Card.Body>
+              <Card.Title>PDF file preview</Card.Title>
               <Pagination defaultActivePage={1} 
                 totalPages={this.state.numPages}
                 onPageChange={this.handlePaginationChange}
@@ -89,14 +89,15 @@ export default class edit extends Component {
                   </Document>
                   <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
               </Card>
-              <Card.Title>PDF file preview</Card.Title>
             </Card.Body>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>Questions</Card.Title>
               <ListGroup>
-                {this.state.text}
+                <div style={{ height: '936px', width:"1100px", overflowY: 'scroll' }}>
+                  {this.state.text}
+                </div>
               </ListGroup>
             </Card.Body>
           </Card>

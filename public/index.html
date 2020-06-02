@@ -50,8 +50,12 @@
             if (spl[4].split(":")[1] != " -1}}") {
             totalPages = spl[4].split(":")[1]
             }
-
-            $("#data").text("Stage:" + spl[2].split(":")[1] + "/2" + ", Current Page:" + spl[3].split(":")[1] + "/" + totalPages);
+            
+            const statusString = "Stage:" + spl[2].split(":")[1] + "/2" + ", Current Page:" + spl[3].split(":")[1] + "/" + totalPages;
+            //$("#data").text(statusString);
+            if (window.homeComponent != undefined){
+              window.homeComponent.setExtraMsg("Status: " + statusString.slice(0, -2));
+            }
 
             if (spl[1] ==  ' "done": 1'){
               $("#data").text("Done");
@@ -75,7 +79,7 @@
         }
       }
     </script>
-    <div id="data">nothing received yet</div>
+    <div id="data"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
