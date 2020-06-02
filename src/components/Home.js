@@ -13,6 +13,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Alert from 'react-bootstrap/Alert'
 import { Link } from 'react-router-dom';
 
+import yoozooImg from './images/yoozoo.jpg';
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
 import userImg from './images/user.png';
@@ -22,10 +23,11 @@ import axios from 'axios';
 
 import 'axios-progress-bar/dist/nprogress.css'
 import { loadProgressBar } from 'axios-progress-bar'
+import { Menu } from 'semantic-ui-react'
 
 const pollServer = (formData) => {
   console.log("polling...")
-  axios.post("https://youzu-exam-flask.herokuapp.com//uploadfile", formData, {timeout : 1000 * 10})
+  axios.post("https://youzu-exam-flask.herokuapp.com/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
         console.log(response)
@@ -84,13 +86,34 @@ export default class home extends Component {
   render() {
     return (
         <div>
-        <div style = {{display : 'flex', flexDirection : 'row', justifyContent : 'space-around'}}>
-          <Link to="/">Home  </Link>
-          <Link to="/edit">Edit  </Link>
-          <Link to="/library">Library  </Link>
-          <Link to="/settings">Settings  </Link>
-          <Link to="/format">Format  </Link>
-        </div>
+        <Menu size='large'>
+          <Menu.Item>
+            <img style = {{width: "154px", height: "49px"}} src= {yoozooImg} />
+          </Menu.Item>
+          <Menu.Item
+            name='home'
+          >
+            <Link to="/">Home</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            name='/library'
+          >
+            <Link to="/library">Library</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            name='settings'
+          >
+            <Link to="/settings">Settings</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            name='format'
+          >
+            <Link to="/format">Format</Link>
+          </Menu.Item>
+        </Menu>
         <h1>
              Home
         </h1>
