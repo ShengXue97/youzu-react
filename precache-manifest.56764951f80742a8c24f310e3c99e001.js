@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ed2cf350d9e19d498612e679fe2db017",
+    "revision": "c88bece2537d3d2faa1ba17d5a77ea1d",
     "url": "/youzu-react/index.html"
   },
   {
-    "revision": "28d2f048fa67caf21fce",
+    "revision": "fc10c36b54e67708394b",
     "url": "/youzu-react/static/css/2.62c87023.chunk.css"
   },
   {
-    "revision": "ee5b0244cec64ee30069",
+    "revision": "e427db8245e51085932c",
     "url": "/youzu-react/static/css/main.5ecd60fb.chunk.css"
   },
   {
-    "revision": "28d2f048fa67caf21fce",
-    "url": "/youzu-react/static/js/2.6aa410c0.chunk.js"
+    "revision": "fc10c36b54e67708394b",
+    "url": "/youzu-react/static/js/2.a63ee2c1.chunk.js"
   },
   {
     "revision": "3715956809dcea362feb706fd3a2a5df",
-    "url": "/youzu-react/static/js/2.6aa410c0.chunk.js.LICENSE.txt"
+    "url": "/youzu-react/static/js/2.a63ee2c1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ee5b0244cec64ee30069",
-    "url": "/youzu-react/static/js/main.36296a98.chunk.js"
+    "revision": "e427db8245e51085932c",
+    "url": "/youzu-react/static/js/main.9cab8f11.chunk.js"
   },
   {
     "revision": "05fa28a72e8f19ad5332",
