@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/youzu-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/youzu-react/static/js/main.f82ab7d4.chunk.js",
-    "main.js.map": "/youzu-react/static/js/main.f82ab7d4.chunk.js.map",
+    "main.js": "/youzu-react/static/js/main.e7d03b35.chunk.js",
+    "main.js.map": "/youzu-react/static/js/main.e7d03b35.chunk.js.map",
     "runtime-main.js": "/youzu-react/static/js/runtime-main.758ead5f.js",
     "runtime-main.js.map": "/youzu-react/static/js/runtime-main.758ead5f.js.map",
     "static/css/2.62c87023.chunk.css": "/youzu-react/static/css/2.62c87023.chunk.css",
-    "static/js/2.fa21ace2.chunk.js": "/youzu-react/static/js/2.fa21ace2.chunk.js",
-    "static/js/2.fa21ace2.chunk.js.map": "/youzu-react/static/js/2.fa21ace2.chunk.js.map",
+    "static/js/2.41b88e05.chunk.js": "/youzu-react/static/js/2.41b88e05.chunk.js",
+    "static/js/2.41b88e05.chunk.js.map": "/youzu-react/static/js/2.41b88e05.chunk.js.map",
     "index.html": "/youzu-react/index.html",
-    "precache-manifest.2115734913a70516b15736434bb3c581.js": "/youzu-react/precache-manifest.2115734913a70516b15736434bb3c581.js",
+    "precache-manifest.af3c2678d3a82dc22eba17bc8afffe99.js": "/youzu-react/precache-manifest.af3c2678d3a82dc22eba17bc8afffe99.js",
     "service-worker.js": "/youzu-react/service-worker.js",
     "static/css/2.62c87023.chunk.css.map": "/youzu-react/static/css/2.62c87023.chunk.css.map",
     "static/css/main.5ecd60fb.chunk.css.map": "/youzu-react/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.fa21ace2.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.fa21ace2.chunk.js.LICENSE.txt",
+    "static/js/2.41b88e05.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.41b88e05.chunk.js.LICENSE.txt",
     "static/media/code.png": "/youzu-react/static/media/code.bc037138.png",
     "static/media/drag.png": "/youzu-react/static/media/drag.f94615bc.png",
     "static/media/lightbulb.png": "/youzu-react/static/media/lightbulb.66ad084a.png",
@@ -36,13 +36,14 @@
     "static/media/page7.jpg": "/youzu-react/static/media/page7.af5608d9.jpg",
     "static/media/page8.jpg": "/youzu-react/static/media/page8.904b4d29.jpg",
     "static/media/page9.jpg": "/youzu-react/static/media/page9.c2c0b780.jpg",
-    "static/media/user.png": "/youzu-react/static/media/user.f3b96ecf.png"
+    "static/media/user.png": "/youzu-react/static/media/user.f3b96ecf.png",
+    "static/media/yoozoo.jpg": "/youzu-react/static/media/yoozoo.5eb6e4a1.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.758ead5f.js",
     "static/css/2.62c87023.chunk.css",
-    "static/js/2.fa21ace2.chunk.js",
+    "static/js/2.41b88e05.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.f82ab7d4.chunk.js"
+    "static/js/main.e7d03b35.chunk.js"
   ]
 }
