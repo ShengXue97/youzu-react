@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/youzu-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/youzu-react/static/js/main.82d2bd8d.chunk.js",
-    "main.js.map": "/youzu-react/static/js/main.82d2bd8d.chunk.js.map",
+    "main.js": "/youzu-react/static/js/main.34389ce4.chunk.js",
+    "main.js.map": "/youzu-react/static/js/main.34389ce4.chunk.js.map",
     "runtime-main.js": "/youzu-react/static/js/runtime-main.758ead5f.js",
     "runtime-main.js.map": "/youzu-react/static/js/runtime-main.758ead5f.js.map",
     "static/css/2.9cc11357.chunk.css": "/youzu-react/static/css/2.9cc11357.chunk.css",
     "static/js/2.5d779840.chunk.js": "/youzu-react/static/js/2.5d779840.chunk.js",
     "static/js/2.5d779840.chunk.js.map": "/youzu-react/static/js/2.5d779840.chunk.js.map",
     "index.html": "/youzu-react/index.html",
-    "precache-manifest.3170c2e2b337e78b9756e062727ac514.js": "/youzu-react/precache-manifest.3170c2e2b337e78b9756e062727ac514.js",
+    "precache-manifest.8b91d85b43e22ad1654bd63a28417766.js": "/youzu-react/precache-manifest.8b91d85b43e22ad1654bd63a28417766.js",
     "service-worker.js": "/youzu-react/service-worker.js",
     "static/css/2.9cc11357.chunk.css.map": "/youzu-react/static/css/2.9cc11357.chunk.css.map",
     "static/css/main.5ecd60fb.chunk.css.map": "/youzu-react/static/css/main.5ecd60fb.chunk.css.map",
@@ -25,6 +25,6 @@
     "static/css/2.9cc11357.chunk.css",
     "static/js/2.5d779840.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.82d2bd8d.chunk.js"
+    "static/js/main.34389ce4.chunk.js"
   ]
 }
