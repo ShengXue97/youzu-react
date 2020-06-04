@@ -74,6 +74,7 @@ class home extends Component {
      loadProgressBar()
      this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': ''}
      window.homeComponent = this;
+     //is this visible
   }
   
   setMsg = () => {
