@@ -1,30 +1,31 @@
 {
   "files": {
     "main.css": "/youzu-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/youzu-react/static/js/main.7cbcecf0.chunk.js",
-    "main.js.map": "/youzu-react/static/js/main.7cbcecf0.chunk.js.map",
+    "main.js": "/youzu-react/static/js/main.572c5513.chunk.js",
+    "main.js.map": "/youzu-react/static/js/main.572c5513.chunk.js.map",
     "runtime-main.js": "/youzu-react/static/js/runtime-main.758ead5f.js",
     "runtime-main.js.map": "/youzu-react/static/js/runtime-main.758ead5f.js.map",
     "static/css/2.9cc11357.chunk.css": "/youzu-react/static/css/2.9cc11357.chunk.css",
-    "static/js/2.5d779840.chunk.js": "/youzu-react/static/js/2.5d779840.chunk.js",
-    "static/js/2.5d779840.chunk.js.map": "/youzu-react/static/js/2.5d779840.chunk.js.map",
+    "static/js/2.6e29318a.chunk.js": "/youzu-react/static/js/2.6e29318a.chunk.js",
+    "static/js/2.6e29318a.chunk.js.map": "/youzu-react/static/js/2.6e29318a.chunk.js.map",
     "index.html": "/youzu-react/index.html",
-    "precache-manifest.379a7a72e693a713c336e586806362de.js": "/youzu-react/precache-manifest.379a7a72e693a713c336e586806362de.js",
+    "precache-manifest.f02cf65970559d054f6fbfd2ab95a4f1.js": "/youzu-react/precache-manifest.f02cf65970559d054f6fbfd2ab95a4f1.js",
     "service-worker.js": "/youzu-react/service-worker.js",
     "static/css/2.9cc11357.chunk.css.map": "/youzu-react/static/css/2.9cc11357.chunk.css.map",
     "static/css/main.5ecd60fb.chunk.css.map": "/youzu-react/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.5d779840.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.5d779840.chunk.js.LICENSE.txt",
+    "static/js/2.6e29318a.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.6e29318a.chunk.js.LICENSE.txt",
     "static/media/code.png": "/youzu-react/static/media/code.bc037138.png",
     "static/media/drag.png": "/youzu-react/static/media/drag.f94615bc.png",
     "static/media/lightbulb.png": "/youzu-react/static/media/lightbulb.66ad084a.png",
+    "static/media/page1.jpg": "/youzu-react/static/media/page1.34715692.jpg",
     "static/media/user.png": "/youzu-react/static/media/user.f3b96ecf.png",
     "static/media/yoozoo.jpg": "/youzu-react/static/media/yoozoo.5eb6e4a1.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.758ead5f.js",
     "static/css/2.9cc11357.chunk.css",
-    "static/js/2.5d779840.chunk.js",
+    "static/js/2.6e29318a.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.7cbcecf0.chunk.js"
+    "static/js/main.572c5513.chunk.js"
   ]
 }
