@@ -14,7 +14,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import CheckBox from 'react-bootstrap';
-import update from 'immutability-helper';
 
 
 class question extends React.Component {
@@ -37,13 +36,14 @@ class question extends React.Component {
             aria-label="Checkbox for Question"
             onChange={(e) => {
                     if(window.date[this.props.checkBoxChecked] = false) {
-                        window.date[this.props.checkBoxChecked]=true;
+                        window.date[this.props.checkBoxChecked] = true;
                     } else {
-                        window.date[this.props.checkBoxChecked]=false;
+                        window.date[this.props.checkBoxChecked] = false;
                     }
                 }
+            }
         />
-        <InputGroup.Text id="basic-addon1"}>Select</InputGroup.Text>
+        <InputGroup.Text id="basic-addon1">Select</InputGroup.Text>
       </InputGroup.Append>
     </InputGroup>
 
