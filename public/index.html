@@ -40,6 +40,8 @@
         var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream');
         source.onmessage = function(e) {
           console.log(e.data);
+
+
           status = JSON.parse(JSON.stringify(e.data))
           if (status != undefined){
             spl = status.split(",")

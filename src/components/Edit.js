@@ -13,6 +13,7 @@ import { Pagination } from 'semantic-ui-react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
+//import CheckBox from './CheckBox';
 import { CSVReader } from 'react-papaparse'
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
@@ -44,11 +45,11 @@ export default class edit extends Component {
           qnNum = qnNum + 1;
           return <Question 
             questionNum = {qnNum}
-            title = {row[1]}
-            option1 = {row[3]}
-            option2 = {row[4]}
-            option3 = {row[5]}
-            option4 = {row[6]}
+            title = {row[2]}
+            option1 = {row[4]}
+            option2 = {row[5]}
+            option3 = {row[6]}
+            option4 = {row[7]}
           >
           </Question>
         }
@@ -56,7 +57,13 @@ export default class edit extends Component {
       }
         
 
-      this.state = {'pageNumber' : 1, text: listItems, 'numPages' : 1,'file': window.fileData};
+      this.state = {
+        'pageNumber' : 1,
+        text: listItems,
+        'numPages' : 1,
+        'file': window.fileData,
+        //'edits': ''
+       };
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -76,7 +83,7 @@ export default class edit extends Component {
           <Card>
             <Card.Body>
               <Card.Title>PDF file preview</Card.Title>
-              <Pagination defaultActivePage={1} 
+              <Pagination defaultActivePage={1}
                 totalPages={this.state.numPages}
                 onPageChange={this.handlePaginationChange}
               />
@@ -100,12 +107,23 @@ export default class edit extends Component {
                 </div>
               </ListGroup>
             </Card.Body>
+            <div class="ui stackable 2 column grid">
+                <button variant="primary" /*onClick: save selected qns in select qns state, uncheck boxes*/>Save Selected Question(s)</button>
+                <button variant="danger" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</button>
+            </div>
           </Card>
         </CardGroup>
+        <div class="ui stackable four column grid">
+            <button variant="contained" color="primary"/*onClick: save all qns in current edited state to data state*/>Save Workspace</button>
+            <button variant="contained" color="primary" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</button>
+            <button variant="contained" color="success" /*onClick: need to double confirm how this is different from save*/>Upload to Database</button>
+            <button variant="contained" color="danger" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</button>
+        </div>
+
 
          
 
-        </div>
+      </div>
       return (
         <div>
           <Drawer content = {body} name = "Edit"/>
