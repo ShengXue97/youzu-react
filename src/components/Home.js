@@ -45,12 +45,13 @@ const styles = theme => ({
   },
 });
 
+
 const pollServer = (formData) => {
   console.log("polling...")
   axios.post("https://youzu-exam-flask.herokuapp.com/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
-        console.log(response)
+        window.startStream(response.data["YourIP"], response.data["YourTime"])
         // var newWindow = window.open("edit");
         // newWindow.data = response
       })
@@ -62,13 +63,13 @@ const pollServer = (formData) => {
       .then(function () {
         // always executed
         // pollServer(formData)
-      }); 
+      });
 }
 
 
-      
+
 class home extends Component {
-  
+
   constructor(props) {
      super(props);
      loadProgressBar()
