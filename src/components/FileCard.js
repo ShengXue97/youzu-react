@@ -13,14 +13,14 @@ class fileCard extends React.Component {
   }
   render() {
     return (
-        <div class="column">
+        <div className="column">
             <Card className="text-center">
                 <Card.Body>
                   <Card.Title>
-                    <h1 style={{"font-size":"1.5vw"}}>{this.props.file}</h1>
+                    <h1 style={{"fontSize":"1.5vw"}}>{this.props.file}</h1>
                   </Card.Title>
                   <Card.Img variant="top" src={page1}/>
-                  <Card.Text style={{"font-size":"1vw"}}>
+                  <Card.Text style={{"fontSize":"1vw"}}>
                     Supporting text here
                   </Card.Text>
                   <Card.Text>

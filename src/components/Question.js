@@ -24,26 +24,24 @@ class question extends React.Component {
     return <div>
     <InputGroup FormclassName="mb-3">
       <InputGroup.Prepend>
-      <InputGroup.Text id="basic-addon1" onChange={(text)=>{window.data[this.props.questionNum] = text}}>{this.props.questionNum} </InputGroup.Text>
+          <InputGroup.Checkbox
+                aria-label="Checkbox for Question"
+                onChange={(e) => {
+                        if(window.date[this.props.checkBoxChecked] = false) {
+                            window.date[this.props.checkBoxChecked]=true;
+                        } else {
+                            window.date[this.props.checkBoxChecked]=false;
+                        }
+                    }
+                }
+           />
+          <InputGroup.Text id="basic-addon1" onChange={(text)=>{window.data[this.props.questionNum] = text}}>{this.props.questionNum} </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
         defaultValue={this.props.title}
         aria-describedby="basic-addon1"
         onChange={(text)=>{window.data[this.props.title] = text}}
       />
-      <InputGroup.Append>
-        <InputGroup.Checkbox
-            aria-label="Checkbox for Question"
-            onChange={(e) => {
-                    if(window.date[this.props.checkBoxChecked] = false) {
-                        window.date[this.props.checkBoxChecked]=true;
-                    } else {
-                        window.date[this.props.checkBoxChecked]=false;
-                    }
-                }
-        />
-        <InputGroup.Text id="basic-addon1"}>Select</InputGroup.Text>
-      </InputGroup.Append>
     </InputGroup>
 
     <div style = {{paddingLeft : "10px"}}>

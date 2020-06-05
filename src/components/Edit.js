@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
@@ -41,7 +41,6 @@ export default class edit extends Component {
         var qnNum = 0;
         listItems = data.map((row) =>
         {
-          key = {member.id}
           qnNum = qnNum + 1;
           return <Question
             questionNum = {qnNum}
@@ -107,16 +106,16 @@ export default class edit extends Component {
               </ListGroup>
             </Card.Body>
             <div class="ui stackable 2 column grid">
-                <button variant="primary" /*onClick: save selected qns in select qns state, uncheck boxes*/>Save Selected Question(s)</button>
-                <button variant="danger" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</button>
+                <button variant="blue" /*onClick: save selected qns in select qns state, uncheck boxes*/>Save Selected Question(s)</button>
+                <button variant="red" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</button>
             </div>
           </Card>
         </CardGroup>
         <div class="ui stackable four column grid">
-            <button variant="contained" color="primary"/*onClick: save all qns in current edited state to data state*/>Save Workspace</button>
-            <button variant="contained" color="primary" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</button>
-            <button variant="contained" color="success" /*onClick: need to double confirm how this is different from save*/>Upload to Database</button>
-            <button variant="contained" color="danger" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</button>
+            <button variant="contained" color="blue"/*onClick: save all qns in current edited state to data state*/>Save Workspace</button>
+            <button variant="contained" color="blue" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</button>
+            <button variant="contained" color="green" /*onClick: need to double confirm how this is different from save*/>Upload to Database</button>
+            <button variant="contained" color="red" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</button>
         </div>
 
 
