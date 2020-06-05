@@ -42,23 +42,29 @@
       function startStream(currentIP, currentTime){
         // Allows edit page to open one more time every time the user uploads a new file
         alreadyOpenedEditPage = false;
-
         if (!!window.EventSource) {
           var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
           source.onmessage = function(e) {
             const dictStatus = JSON.parse(e.data)
             if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
               console.log(dictStatus)
-              const statusString = "Stage:" + dictStatus["stage"] + "/2" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
+              var statusString = ""
+              if (dictStatus["stage"] == 3){
+                statusString = "Done!"
+              } else {
+                statusString = "Stage:" + dictStatus["stage"] + "/2" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
+              }
+
               //$("#data").text(statusString);
               if (window.homeComponent != undefined){
                 window.homeComponent.setExtraMsg("Status: " + statusString);
               }
-
-              var isDone = dictStatus["page"] == dictStatus["total"]
+              
+              var isDone = dictStatus["stage"] == 3
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
-                axios.post("https://youzu-exam-flask.herokuapp.com/getresult", {timeout : 1000 * 10})
+                axios.post("https://youzu-exam-flask.herokuapp.com/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
+
                   .then(function (response) {
                     // handle success
                     console.log(response)
