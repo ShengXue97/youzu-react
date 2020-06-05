@@ -13,7 +13,6 @@ import { Pagination } from 'semantic-ui-react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
-//import CheckBox from './CheckBox';
 import { CSVReader } from 'react-papaparse'
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
@@ -42,28 +41,28 @@ export default class edit extends Component {
         var qnNum = 0;
         listItems = data.map((row) =>
         {
+          key = {member.id}
           qnNum = qnNum + 1;
-          return <Question 
+          return <Question
             questionNum = {qnNum}
             title = {row[2]}
             option1 = {row[4]}
             option2 = {row[5]}
             option3 = {row[6]}
             option4 = {row[7]}
+            checkboxChecked = false
           >
           </Question>
         }
         );
       }
-        
 
-      this.state = {
-        'pageNumber' : 1,
+
+      this.state = {'pageNumber' : 1,
         text: listItems,
         'numPages' : 1,
         'file': window.fileData,
-        //'edits': ''
-       };
+      };
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -76,7 +75,7 @@ export default class edit extends Component {
 
 
     render() {
-      const body = 
+      const body =
       <div>
 
         <CardGroup>
@@ -121,9 +120,8 @@ export default class edit extends Component {
         </div>
 
 
-         
 
-      </div>
+        </div>
       return (
         <div>
           <Drawer content = {body} name = "Edit"/>
@@ -131,4 +129,3 @@ export default class edit extends Component {
       );
     }
 }
- 

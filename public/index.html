@@ -35,49 +35,47 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
-      
-      if (!!window.EventSource) {
-        var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream');
-        source.onmessage = function(e) {
-          console.log(e.data);
+      //Prevents multiple tabs from opening
+      var alreadyOpenedEditPage = false
 
 
-          status = JSON.parse(JSON.stringify(e.data))
-          if (status != undefined){
-            spl = status.split(",")
-          
-          var totalPages = "-"
-          
-          if (spl.length >= 5){
-            if (spl[4].split(":")[1] != " -1}}") {
-            totalPages = spl[4].split(":")[1]
-            }
-            
-            const statusString = "Stage:" + spl[2].split(":")[1] + "/2" + ", Current Page:" + spl[3].split(":")[1] + "/" + totalPages;
-            //$("#data").text(statusString);
-            if (window.homeComponent != undefined){
-              window.homeComponent.setExtraMsg("Status: " + statusString.slice(0, -2));
-            }
+      function startStream(currentIP, currentTime){
+        // Allows edit page to open one more time every time the user uploads a new file
+        alreadyOpenedEditPage = false;
 
-            if (spl[1] ==  ' "done": 1'){
-              $("#data").text("Done");
-              axios.post("https://youzu-exam-flask.herokuapp.com/getresult", {timeout : 1000 * 10})
-                .then(function (response) {
-                  // handle success
-                  console.log(response)
-                  var newWindow = window.open("#/edit");
-                  newWindow.data = response
-                  newWindow.fileData = window.fileData
-                })
-                .catch(function (error) {
-                  // handle error
-                  console.log(error)
-                  //window.open("edit", "_self");
-                })
+        if (!!window.EventSource) {
+          var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
+          source.onmessage = function(e) {
+            const dictStatus = JSON.parse(e.data)
+            if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
+              console.log(dictStatus)
+              const statusString = "Stage:" + dictStatus["stage"] + "/2" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
+              //$("#data").text(statusString);
+              if (window.homeComponent != undefined){
+                window.homeComponent.setExtraMsg("Status: " + statusString);
+              }
+
+              var isDone = dictStatus["page"] == dictStatus["total"]
+              if (isDone == true && alreadyOpenedEditPage == false){
+                alreadyOpenedEditPage = true;
+                axios.post("https://youzu-exam-flask.herokuapp.com/getresult", {timeout : 1000 * 10})
+                  .then(function (response) {
+                    // handle success
+                    console.log(response)
+                    var newWindow = window.open("#/edit");
+                    newWindow.data = response
+                    newWindow.fileData = window.fileData
+                    source.close();
+                  })
+                  .catch(function (error) {
+                    // handle error
+                    console.log(error)
+                    source.close();
+                    //window.open("edit", "_self");
+                  })
               }
             }
           }
-          
         }
       }
     </script>

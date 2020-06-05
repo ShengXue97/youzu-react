@@ -13,6 +13,9 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
+import CheckBox from 'react-bootstrap';
+import update from 'immutability-helper';
+
 
 class question extends React.Component {
   constructor(props) {
@@ -20,14 +23,28 @@ class question extends React.Component {
   }
   render() {
     return <div>
-    <InputGroup className="mb-3">
+    <InputGroup FormclassName="mb-3">
       <InputGroup.Prepend>
-      <InputGroup.Text id="basic-addon1">{this.props.questionNum} </InputGroup.Text>
+      <InputGroup.Text id="basic-addon1" onChange={(text)=>{window.data[this.props.questionNum] = text}}>{this.props.questionNum} </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
         defaultValue={this.props.title}
         aria-describedby="basic-addon1"
+        onChange={(text)=>{window.data[this.props.title] = text}}
       />
+      <InputGroup.Append>
+        <InputGroup.Checkbox
+            aria-label="Checkbox for Question"
+            onChange={(e) => {
+                    if(window.date[this.props.checkBoxChecked] = false) {
+                        window.date[this.props.checkBoxChecked]=true;
+                    } else {
+                        window.date[this.props.checkBoxChecked]=false;
+                    }
+                }
+        />
+        <InputGroup.Text id="basic-addon1"}>Select</InputGroup.Text>
+      </InputGroup.Append>
     </InputGroup>
 
     <div style = {{paddingLeft : "10px"}}>
@@ -39,6 +56,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option1}
             aria-describedby="basic-addon1"
+            onChange={(text)=>{window.data[this.props.option1] = text}}
           />
         </InputGroup>
 
@@ -49,6 +67,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option2}
             aria-describedby="basic-addon1"
+            onChange={(text)=>{window.data[this.props.option2] = text}}
           />
         </InputGroup>
 
@@ -59,6 +78,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option3}
             aria-describedby="basic-addon1"
+            onChange={(text)=>{window.data[this.props.option3] = text}}
           />
         </InputGroup>
 
@@ -69,6 +89,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option4}
             aria-describedby="basic-addon1"
+            onChange={(text)=>{window.data[this.props.option4] = text}}
           />
         </InputGroup>
       </ListGroup>
