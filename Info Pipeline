@@ -1,0 +1,16 @@
+1. Upload PDF file
+2. Sent Heroku Flask server as Base64 file, Flask save
+onto the local server
+3a Heroku Flask server will run MainV9(PyTesseract and MyOCR code),
+taking in PDF file from the Heroku server. This produces
+the CSV file.
+3b. (In parallel with 3a.) React client will poll the Flask serve
+every second for updates on the file processing. When the Flask server
+returns that the process has already completed(which completed CSV
+file is already generated), the React client will send RequestFile
+packet to Flask. (4)
+4. Flask parses the CSV file to JSON. The Flask will then send
+the JSON to React client. React client will
+process this and change to the #edit page. This CSV file is parsed
+as JSON, and converted to the React components, allowing preview.
+

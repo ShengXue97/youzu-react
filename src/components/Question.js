@@ -14,7 +14,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import CheckBox from 'react-bootstrap';
-import update from 'immutability-helper';
 
 
 class question extends React.Component {

@@ -20,7 +20,6 @@ import yoozooImg from './images/yoozoo.jpg';
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
 import userImg from './images/user.png';
-import dragImg from './images/drag.png';
 import plusImg from './images/plus.png';
  
  

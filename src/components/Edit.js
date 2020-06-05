@@ -50,7 +50,7 @@ export default class edit extends Component {
             option2 = {row[5]}
             option3 = {row[6]}
             option4 = {row[7]}
-            checkboxChecked = false
+            checkboxChecked = {false}
           >
           </Question>
         }
