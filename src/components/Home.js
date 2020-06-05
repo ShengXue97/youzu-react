@@ -44,19 +44,20 @@ const styles = theme => ({
     },
   },
 });
+ 
 
 const pollServer = (formData) => {
-  console.log("polling...")
+  console.log("Requesting data from server...")
   axios.post("https://youzu-exam-flask.herokuapp.com/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
-        console.log(response)
+        window.startStream(response.data["YourIP"], response.data["YourTime"])
         // var newWindow = window.open("edit");
         // newWindow.data = response
       })
       .catch(function (error) {
         // handle error
-        console.log(error)
+        // console.log(error)
         // window.open("edit", "_self");
       })
       .then(function () {
@@ -90,7 +91,7 @@ class home extends Component {
     var firstFile = files[0]
     const reader = new FileReader();
     reader.onload = (event) => {
-      console.log(event.target.result);
+      // console.log(event.target.result);
       window.fileData = event.target.result;
     };
     reader.readAsDataURL(firstFile);
