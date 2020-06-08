@@ -43,10 +43,14 @@
         // Allows edit page to open one more time every time the user uploads a new file
         alreadyOpenedEditPage = false;
         if (!!window.EventSource) {
-          var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
+          var source = new EventSource('http://localhost:3000/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
           source.onmessage = function(e) {
             const dictStatus = JSON.parse(e.data)
             console.log(dictStatus)
+
+            const originalProgress = window.homeComponent.getCurrentProgress();
+            window.homeComponent.setCurrentProgress(originalProgress + 1);
+
             if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
               
               var statusString = ""
@@ -58,13 +62,24 @@
 
               //$("#data").text(statusString);
               if (window.homeComponent != undefined){
+                var progress = 0
+                if (dictStatus["stage"] == 1){
+                  progress = (dictStatus["page"] / (dictStatus["total"] * 2)) * 100
+                } else {
+                  progress = ((dictStatus["page"] + dictStatus["total"]) / (dictStatus["total"] * 2)) * 100
+                }
+                const currentProgress = window.homeComponent.getCurrentProgress();
+                if (progress > currentProgress) {
+                  window.homeComponent.setCurrentProgress(progress);
+                }
+
                 window.homeComponent.setExtraMsg("Status: " + statusString);
               }
               
               var isDone = dictStatus["stage"] == 3
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
-                axios.post("https://youzu-exam-flask.herokuapp.com/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
+                axios.post("http://localhost:3000/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
 
                   .then(function (response) {
                     // handle success

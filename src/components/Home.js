@@ -30,6 +30,7 @@ import { Pagination } from 'semantic-ui-react'
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { withStyles } from "@material-ui/core/styles";
+import ProgressBar from 'react-bootstrap/ProgressBar'
 
 const options = {
   cMapUrl: 'cmaps/',
@@ -48,7 +49,7 @@ const styles = theme => ({
 
 const pollServer = (formData) => {
   console.log("Requesting data from server...")
-  axios.post("https://youzu-exam-flask.herokuapp.com/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
+  axios.post("http://localhost:3000/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
         window.startStream(response.data["YourIP"], response.data["YourTime"])
@@ -73,13 +74,21 @@ class home extends Component {
   constructor(props) {
      super(props);
      loadProgressBar()
-     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': ''}
+     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': '', 'currentProgress': 0 }
      window.homeComponent = this;
      //is this visible
   }
   
   setMsg = () => {
     this.setState({'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': ''});
+  }
+
+  getCurrentProgress = () => {
+    return this.state.currentProgress;
+  }
+
+  setCurrentProgress = (currentProgress) => {
+    this.setState({'currentProgress': currentProgress});
   }
 
   setExtraMsg = (extraMsg) => {
@@ -120,7 +129,7 @@ class home extends Component {
   render() {
     const body = 
     <div>
-  
+
       <Alert style={{"width" : "100%", "height" : "90%"}} variant={this.state.msgVariant}>
         <p>
           {this.state.msgText}
@@ -130,6 +139,8 @@ class home extends Component {
           {this.state.extraMsg}
         </p>
       </Alert>
+      <ProgressBar style={{"marginTop" :"10px", "marginBottom" :"10px"}} animated now={this.state.currentProgress} />
+
       <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"} onClick={this.setMsg} onDrop={this.onDrop}>
         <div style = {{flexGrow : "10", display: 'flex', flexDirection: 'column', alignItems:'center', outline: "5px dotted black"}}>
           <div style = {{height : "30px"}}>
