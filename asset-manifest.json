@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/youzu-react/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/youzu-react/static/js/main.66ca53a7.chunk.js",
-    "main.js.map": "/youzu-react/static/js/main.66ca53a7.chunk.js.map",
+    "main.js": "/youzu-react/static/js/main.68459647.chunk.js",
+    "main.js.map": "/youzu-react/static/js/main.68459647.chunk.js.map",
     "runtime-main.js": "/youzu-react/static/js/runtime-main.758ead5f.js",
     "runtime-main.js.map": "/youzu-react/static/js/runtime-main.758ead5f.js.map",
-    "static/css/2.426a8a33.chunk.css": "/youzu-react/static/css/2.426a8a33.chunk.css",
-    "static/js/2.3673a203.chunk.js": "/youzu-react/static/js/2.3673a203.chunk.js",
-    "static/js/2.3673a203.chunk.js.map": "/youzu-react/static/js/2.3673a203.chunk.js.map",
+    "static/css/2.9cc11357.chunk.css": "/youzu-react/static/css/2.9cc11357.chunk.css",
+    "static/js/2.9f5f1d68.chunk.js": "/youzu-react/static/js/2.9f5f1d68.chunk.js",
+    "static/js/2.9f5f1d68.chunk.js.map": "/youzu-react/static/js/2.9f5f1d68.chunk.js.map",
     "index.html": "/youzu-react/index.html",
-    "precache-manifest.bba4787e75a70679a05e97e04f950cac.js": "/youzu-react/precache-manifest.bba4787e75a70679a05e97e04f950cac.js",
+    "precache-manifest.1c82622c6804bcfb19897bc25f0776d4.js": "/youzu-react/precache-manifest.1c82622c6804bcfb19897bc25f0776d4.js",
     "service-worker.js": "/youzu-react/service-worker.js",
-    "static/css/2.426a8a33.chunk.css.map": "/youzu-react/static/css/2.426a8a33.chunk.css.map",
+    "static/css/2.9cc11357.chunk.css.map": "/youzu-react/static/css/2.9cc11357.chunk.css.map",
     "static/css/main.5ecd60fb.chunk.css.map": "/youzu-react/static/css/main.5ecd60fb.chunk.css.map",
-    "static/js/2.3673a203.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.3673a203.chunk.js.LICENSE.txt",
+    "static/js/2.9f5f1d68.chunk.js.LICENSE.txt": "/youzu-react/static/js/2.9f5f1d68.chunk.js.LICENSE.txt",
     "static/media/code.png": "/youzu-react/static/media/code.bc037138.png",
     "static/media/lightbulb.png": "/youzu-react/static/media/lightbulb.66ad084a.png",
     "static/media/page1.jpg": "/youzu-react/static/media/page1.e386ca6a.jpg",
@@ -22,9 +22,9 @@
   },
   "entrypoints": [
     "static/js/runtime-main.758ead5f.js",
-    "static/css/2.426a8a33.chunk.css",
-    "static/js/2.3673a203.chunk.js",
+    "static/css/2.9cc11357.chunk.css",
+    "static/js/2.9f5f1d68.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.66ca53a7.chunk.js"
+    "static/js/main.68459647.chunk.js"
   ]
 }
