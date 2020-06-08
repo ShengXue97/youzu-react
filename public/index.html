@@ -47,8 +47,9 @@
           var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
           source.onmessage = function(e) {
             const dictStatus = JSON.parse(e.data)
+            console.log(dictStatus)
             if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
-              console.log(dictStatus)
+              
               var statusString = ""
               if (dictStatus["stage"] == 3){
                 statusString = "Done!"

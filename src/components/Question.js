@@ -19,7 +19,7 @@ class question extends React.Component {
     super(props);
   }
   render() {
-    return <div>
+    return <div style = {{width : "80%"}}>
     <InputGroup className="mb-3">
       <InputGroup.Prepend>
       <InputGroup.Text id="basic-addon1">{this.props.questionNum} </InputGroup.Text>

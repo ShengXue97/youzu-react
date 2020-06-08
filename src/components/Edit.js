@@ -44,11 +44,11 @@ export default class edit extends Component {
           qnNum = qnNum + 1;
           return <Question 
             questionNum = {qnNum}
-            title = {row[1]}
-            option1 = {row[3]}
-            option2 = {row[4]}
-            option3 = {row[5]}
-            option4 = {row[6]}
+            title = {row[0]}
+            option1 = {row[1]}
+            option2 = {row[2]}
+            option3 = {row[3]}
+            option4 = {row[4]}
           >
           </Question>
         }
@@ -95,7 +95,7 @@ export default class edit extends Component {
             <Card.Body>
               <Card.Title>Questions</Card.Title>
               <ListGroup>
-                <div style={{ height: '936px', width:"1100px", overflowY: 'scroll' }}>
+                <div style={{ height: '936px', width:"900px", overflowY: 'scroll' }}>
                   {this.state.text}
                 </div>
               </ListGroup>
