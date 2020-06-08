@@ -19,7 +19,6 @@ import yoozooImg from './images/yoozoo.jpg';
 import codeImg from './images/code.png';
 import lightbulbImg from './images/lightbulb.png';
 import userImg from './images/user.png';
-import dragImg from './images/drag.png';
 import plusImg from './images/plus.png';
 import axios from 'axios'; 
 
@@ -46,6 +45,7 @@ const styles = theme => ({
 });
  
 
+
 const pollServer = (formData) => {
   console.log("Requesting data from server...")
   axios.post("https://youzu-exam-flask.herokuapp.com/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
@@ -63,13 +63,13 @@ const pollServer = (formData) => {
       .then(function () {
         // always executed
         // pollServer(formData)
-      }); 
+      });
 }
 
 
-      
+
 class home extends Component {
-  
+
   constructor(props) {
      super(props);
      loadProgressBar()

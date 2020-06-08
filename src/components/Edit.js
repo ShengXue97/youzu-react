@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
@@ -42,7 +42,7 @@ export default class edit extends Component {
         listItems = data.map((row) =>
         {
           qnNum = qnNum + 1;
-          return <Question 
+          return <Question
             questionNum = {qnNum}
             title = {row[0]}
             option1 = {row[1]}
@@ -54,9 +54,13 @@ export default class edit extends Component {
         }
         );
       }
-        
 
-      this.state = {'pageNumber' : 1, text: listItems, 'numPages' : 1,'file': window.fileData};
+
+      this.state = {'pageNumber' : 1,
+        text: listItems,
+        'numPages' : 1,
+        'file': window.fileData,
+      };
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -69,14 +73,14 @@ export default class edit extends Component {
 
 
     render() {
-      const body = 
+      const body =
       <div>
 
         <CardGroup>
           <Card>
             <Card.Body>
               <Card.Title>PDF file preview</Card.Title>
-              <Pagination defaultActivePage={1} 
+              <Pagination defaultActivePage={1}
                 totalPages={this.state.numPages}
                 onPageChange={this.handlePaginationChange}
               />
@@ -100,10 +104,20 @@ export default class edit extends Component {
                 </div>
               </ListGroup>
             </Card.Body>
+            <div class="ui stackable 2 column grid">
+                <button variant="blue" /*onClick: save selected qns in select qns state, uncheck boxes*/>Save Selected Question(s)</button>
+                <button variant="red" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</button>
+            </div>
           </Card>
         </CardGroup>
+        <div class="ui stackable four column grid">
+            <button variant="contained" color="blue"/*onClick: save all qns in current edited state to data state*/>Save Workspace</button>
+            <button variant="contained" color="blue" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</button>
+            <button variant="contained" color="green" /*onClick: need to double confirm how this is different from save*/>Upload to Database</button>
+            <button variant="contained" color="red" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</button>
+        </div>
 
-         
+
 
         </div>
       return (
@@ -113,4 +127,3 @@ export default class edit extends Component {
       );
     }
 }
- 

@@ -42,7 +42,6 @@
       function startStream(currentIP, currentTime){
         // Allows edit page to open one more time every time the user uploads a new file
         alreadyOpenedEditPage = false;
-
         if (!!window.EventSource) {
           var source = new EventSource('https://youzu-exam-flask.herokuapp.com/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
           source.onmessage = function(e) {
@@ -66,6 +65,7 @@
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
                 axios.post("https://youzu-exam-flask.herokuapp.com/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
+
                   .then(function (response) {
                     // handle success
                     console.log(response)
