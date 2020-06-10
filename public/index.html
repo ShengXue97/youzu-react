@@ -48,8 +48,8 @@
             const dictStatus = JSON.parse(e.data)
             console.log(dictStatus)
 
-            const originalProgress = window.homeComponent.getCurrentProgress();
-            window.homeComponent.setCurrentProgress(originalProgress + 1);
+            // const originalProgress = window.homeComponent.getCurrentProgress();
+            // window.homeComponent.setCurrentProgress(originalProgress + 1);
 
             if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
               
