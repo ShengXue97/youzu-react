@@ -20,30 +20,22 @@ class question extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     return <div style = {{width : "80%"}}>
     <InputGroup className="mb-3">
       <InputGroup.Prepend>
           <InputGroup.Checkbox
-                aria-label="Checkbox for Question"
-                onChange={(e) => {
-                        if(window.date[this.props.checkBoxChecked] = false) {
-                            window.date[this.props.checkBoxChecked]=true;
-                        } else {
-                            window.date[this.props.checkBoxChecked]=false;
-                        }
-                    }
-                }
-           />
-          <InputGroup.Text id="basic-addon1" onChange={(text)=>{window.data[this.props.questionNum] = text}}>{this.props.questionNum} </InputGroup.Text>
+            onChange={(e) => this.props.handleOnChangeCheckbox(this.props.questionNum, e.target.value)}
+          />
+          <InputGroup.Text id="basic-addon1">{this.props.questionNum} </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
         defaultValue={this.props.title}
         aria-describedby="basic-addon1"
-        onChange={(text)=>{window.data[this.props.title] = text}}
+        onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 0, e.target.value)}
       />
     </InputGroup>
-
     <div style = {{paddingLeft : "10px"}}>
       <ListGroup>
         <InputGroup className="mb-3">
@@ -53,7 +45,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option1}
             aria-describedby="basic-addon1"
-            onChange={(text)=>{window.data[this.props.option1] = text}}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 1, e.target.value)}
           />
         </InputGroup>
 
@@ -64,7 +56,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option2}
             aria-describedby="basic-addon1"
-            onChange={(text)=>{window.data[this.props.option2] = text}}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 2, e.target.value)}
           />
         </InputGroup>
 
@@ -75,7 +67,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option3}
             aria-describedby="basic-addon1"
-            onChange={(text)=>{window.data[this.props.option3] = text}}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 3, e.target.value)}
           />
         </InputGroup>
 
@@ -86,7 +78,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option4}
             aria-describedby="basic-addon1"
-            onChange={(text)=>{window.data[this.props.option4] = text}}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 4, e.target.value)}
           />
         </InputGroup>
       </ListGroup>

@@ -159,7 +159,7 @@ class home extends Component {
           </p>
         </div>
       </Dropzone>    
-      <div style = {{height : "20px"}}/>
+      <div style = {{ight : "20px"}}/>
       <CardGroup>
         <Card>
           <Card.Img variant="top" src={lightbulbImg} />
