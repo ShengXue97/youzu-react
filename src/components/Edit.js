@@ -103,6 +103,7 @@ export default class edit extends Component {
         "text": listItems,
         'numPages' : 1,
         'file': window.fileData,
+        'originalData' : data,
         'data' : data,
         'cols' : cols,
         'rows' : rows,
@@ -119,8 +120,67 @@ export default class edit extends Component {
     onDocumentLoadSuccess = ({ numPages }) => {
       this.setState({ numPages });
     }
+    
+    handleOnRevertToOriginal = () => {
+      //Revert back qnsToBeExcluded
+      var qnsToBeExcluded = []
+      this.state.originalData.map((row) =>
+        {
+          qnsToBeExcluded.push(false);
+        }
+      );
+      qnsToBeExcluded.push(false);
+
+      //Revert object representation for CSV generation
+      var newRows = []
+      
+      this.state.originalData.map((row) =>
+        {
+          const newRow = {
+            title: row[0],
+            option1: row[1],
+            option2: row[2],
+            option3: row[3],
+            option4: row[4]
+          }
+          newRows.push(newRow)
+        }
+      );
+
+      //Revert JSX(rendering) representation
+      var listItems = null;
+      var qnNum = 0;
+      listItems = this.state.originalData.map((row) =>
+      {
+        qnNum = qnNum + 1;
+        return <Question
+          internalQuestionNum = {qnNum}
+          externalQuestionNum = {qnNum}
+          title = {row[0]}
+          option1 = {row[1]}
+          option2 = {row[2]}
+          option3 = {row[3]}
+          option4 = {row[4]}
+          handleOnChangeQuestion = {this.handleOnChangeQuestion}
+          handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
+        >
+        </Question>
+      });
+
+      this.setState({
+        'rows': newRows,
+        'text' : listItems,
+        'data' : this.state.originalData,
+        'qnsToBeExcluded' : qnsToBeExcluded
+      });
+      
+    };
+
     handleOnChangeQuestion = (qnNum, section, value) => {
+      //Change the list representation for the specific question cell
       this.state.data[qnNum - 1][section] = value;
+
+      //Update the object representation for the CSV generation
       var newRows = []
       
       this.state.data.map((row) =>
@@ -236,7 +296,7 @@ export default class edit extends Component {
                         <Button variant="info" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</Button>
                       </CsvDownloader>
                       <Button variant="success" /*onClick: need to double confirm how this is different from save*/>Upload to Database</Button>
-                      <Button variant = "danger" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</Button>
+                      <Button onClick={this.handleOnRevertToOriginal} variant = "warning" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</Button>
                       <Button onClick={this.handleOnDeleteQuestions} variant="danger" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</Button>
                   </div>
               </Card>
