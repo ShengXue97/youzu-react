@@ -57,7 +57,7 @@ export default class library extends Component {
           You have {this.state['files'].length} saved workspaces.
         </h5>
       </Alert>
-      <div class="ui stackable four column grid">
+      <div className="ui stackable four column grid">
         <FileCard file={this.state.files[0]} timeUploaded={this.state.timeUploaded[0]}/>
         <FileCard file={this.state.files[1]} timeUploaded={this.state.timeUploaded[0]}/>
         <FileCard file={this.state.files[2]} timeUploaded={this.state.timeUploaded[0]}/>

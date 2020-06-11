@@ -26,14 +26,14 @@ class question extends React.Component {
     <InputGroup className="mb-3">
       <InputGroup.Prepend>
           <InputGroup.Checkbox
-            onChange={(e) => this.props.handleOnChangeCheckbox(this.props.questionNum, e.target.value)}
+            onChange={(e) => this.props.handleOnChangeCheckbox(this.props.internalQuestionNum, e.target.checked)}
           />
-          <InputGroup.Text id="basic-addon1">{this.props.questionNum} </InputGroup.Text>
+          <InputGroup.Text id="basic-addon1">{this.props.externalQuestionNum} </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
         defaultValue={this.props.title}
         aria-describedby="basic-addon1"
-        onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 0, e.target.value)}
+        onChange={(e) => this.props.handleOnChangeQuestion(this.props.internalQuestionNum, 0, e.target.value)}
       />
     </InputGroup>
     <div style = {{paddingLeft : "10px"}}>
@@ -45,7 +45,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option1}
             aria-describedby="basic-addon1"
-            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 1, e.target.value)}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.internalQuestionNum, 1, e.target.value)}
           />
         </InputGroup>
 
@@ -56,7 +56,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option2}
             aria-describedby="basic-addon1"
-            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 2, e.target.value)}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.internalQuestionNum, 2, e.target.value)}
           />
         </InputGroup>
 
@@ -67,7 +67,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option3}
             aria-describedby="basic-addon1"
-            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 3, e.target.value)}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.internalQuestionNum, 3, e.target.value)}
           />
         </InputGroup>
 
@@ -78,7 +78,7 @@ class question extends React.Component {
           <FormControl
             defaultValue={this.props.option4}
             aria-describedby="basic-addon1"
-            onChange={(e) => this.props.handleOnChangeQuestion(this.props.questionNum, 4, e.target.value)}
+            onChange={(e) => this.props.handleOnChangeQuestion(this.props.internalQuestionNum, 4, e.target.value)}
           />
         </InputGroup>
       </ListGroup>

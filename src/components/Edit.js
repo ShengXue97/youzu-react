@@ -50,20 +50,6 @@ export default class edit extends Component {
         displayName: "option4"
       }];
 
-      const rows = [{
-        title: "foo",
-        option1: "bar",
-        option2: "bar",
-        option3: "bar",
-        option4: "bar"
-      }, {
-        title: "foobar",
-        option1: "foobar",
-        option2: "foobar",
-        option3: "foobar",
-        option4: "foobar"
-      }];
-
       var listItems = null;
       if (data !== undefined && data != null){
         console.log(data)
@@ -73,7 +59,8 @@ export default class edit extends Component {
         {
           qnNum = qnNum + 1;
           return <Question
-            questionNum = {qnNum}
+            internalQuestionNum = {qnNum}
+            externalQuestionNum = {qnNum}
             title = {row[0]}
             option1 = {row[1]}
             option2 = {row[2]}
@@ -87,6 +74,29 @@ export default class edit extends Component {
         );
       }
 
+      var rows = []
+      
+      data.map((row) =>
+        {
+          const newRow = {
+            title: row[0],
+            option1: row[1],
+            option2: row[2],
+            option3: row[3],
+            option4: row[4]
+          }
+          rows.push(newRow)
+        }
+      );
+
+      var qnsToBeExcluded = []
+      data.map((row) =>
+        {
+          qnsToBeExcluded.push(false);
+        }
+      );
+      qnsToBeExcluded.push(false);
+      
       // data => [[],[],[]] => Imported from Flask
       // rows => [{},{},{}] => CSVDownloader needs this format to produce csv
       this.state = {'pageNumber' : 1,
@@ -96,9 +106,10 @@ export default class edit extends Component {
         'data' : data,
         'cols' : cols,
         'rows' : rows,
-        'qnsToBeExcluded' : [] 
+        'qnsToBeExcluded' : qnsToBeExcluded 
       };
     }
+  
     
 
     handlePaginationChange = (e, { activePage }) => {
@@ -126,80 +137,69 @@ export default class edit extends Component {
       );
 
       this.setState({'rows': newRows});
+      
     };
 
+    //[False,False,False,False,False]
     handleOnChangeCheckbox = (qnNum, isChecked) => {
-      if (isChecked){
-        this.state.qnsToBeExcluded.push(qnNum);
-      } else{
-        this.state.qnsToBeExcluded.pop(qnNum);
-      }
+      this.state.qnsToBeExcluded[qnNum] = isChecked
     };
+
     handleOnDeleteQuestions = () => {
-      console.log(this.state.qnsToBeExcluded)
-      var oldQnNum = 0;
-
-      //Updates list representation [[],[],[]]
-      var newData = []
-      this.state.data.map((row) =>
-        {
-          oldQnNum = oldQnNum + 1;
-          if (!this.state.qnsToBeExcluded.includes(oldQnNum)){
-            newData.push(row);
-          }
-        }
-      );
-
       //Updates object representation [{},{},{}]
       var newRows = []
-      newData.map((row) =>
+      var qnNum = 0
+      this.state.data.map((row) =>
         {
-          const newRow = {
-            title: row[0],
-            option1: row[1],
-            option2: row[2],
-            option3: row[3],
-            option4: row[4]
+          qnNum = qnNum + 1
+          if (!this.state.qnsToBeExcluded[qnNum]){
+            const newRow = {
+              title: row[0],
+              option1: row[1],
+              option2: row[2],
+              option3: row[3],
+              option4: row[4]
+            }
+            newRows.push(newRow)
           }
-          newRows.push(newRow)
         }
       );
       
-      console.log(newData)
+      //Original [1,2,3,4,5]
+      //qnsToBeExcluded [False,False,True,False,False]
+      //Internal question numbers [1,2,4,5]
+      //External question numbers [1,2,3,4]
+
       //Renders the questions using the new list representation (Creates the JSX)
-      
-      var qnNum = 0;
-      var modifiedQnNum = 0;
+      //this.state.data => without deleted questions
+      //newData => with deleted questions
+      var internalQuestionNum = 0;
+      var externalQuestionNum = 0;
       var listItems = this.state.data.map((row) =>
         {
-          qnNum = qnNum + 1;
-          if (!this.state.qnsToBeExcluded.includes(qnNum)){
-            modifiedQnNum = modifiedQnNum + 1;
+          internalQuestionNum = internalQuestionNum + 1;
+          if (!this.state.qnsToBeExcluded[internalQuestionNum]){
+            externalQuestionNum = externalQuestionNum + 1;
             return <Question
-            questionNum = {modifiedQnNum}
-            title = {row[0]}
-            option1 = {row[1]}
-            option2 = {row[2]}
-            option3 = {row[3]}
-            option4 = {row[4]}
-            handleOnChangeQuestion = {this.handleOnChangeQuestion}
-            handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
-          >
-          </Question>
+              internalQuestionNum = {internalQuestionNum}
+              externalQuestionNum = {externalQuestionNum}
+              title = {row[0]}
+              option1 = {row[1]}
+              option2 = {row[2]}
+              option3 = {row[3]}
+              option4 = {row[4]}
+              handleOnChangeQuestion = {this.handleOnChangeQuestion}
+              handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
+            >
+            </Question>
           }
         }
       );
 
       this.setState({
-        'qnsToBeExcluded' : [],
         "text" : listItems,
-        'rows': newRows,
-        'data': newData
+        'rows': newRows
       });
-
-      console.log(listItems)
-      console.log(newRows)
-      console.log(newData)
 
     }
 
