@@ -65,9 +65,11 @@
               if (window.homeComponent != undefined){
                 var progress = 0
                 if (dictStatus["stage"] == 1){
-                  progress = (dictStatus["page"] / (dictStatus["total"] * 2)) * 100
-                } else {
-                  progress = ((dictStatus["page"] + dictStatus["total"]) / (dictStatus["total"] * 2)) * 100
+                  progress = (dictStatus["page"] / ((dictStatus["total"] * 2) + 1)) * 100
+                } else if (dictStatus["stage"] == 2){
+                  progress = ((dictStatus["page"] + dictStatus["total"]) / ((dictStatus["total"] * 2) + 1)) * 100
+                } else if (dictStatus["stage"] == 3){
+                  progress = 100;
                 }
                 const currentProgress = window.homeComponent.getCurrentProgress();
                 if (progress > currentProgress) {
