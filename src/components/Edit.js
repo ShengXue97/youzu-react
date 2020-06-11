@@ -90,7 +90,7 @@ export default class edit extends Component {
       // data => [[],[],[]] => Imported from Flask
       // rows => [{},{},{}] => CSVDownloader needs this format to produce csv
       this.state = {'pageNumber' : 1,
-        text: listItems,
+        "text": listItems,
         'numPages' : 1,
         'file': window.fileData,
         'data' : data,
@@ -136,6 +136,7 @@ export default class edit extends Component {
       }
     };
     handleOnDeleteQuestions = () => {
+      console.log(this.state.qnsToBeExcluded)
       var oldQnNum = 0;
 
       //Updates list representation [[],[],[]]
@@ -148,11 +149,10 @@ export default class edit extends Component {
           }
         }
       );
-      this.setState({'data': newData});
-      
+
       //Updates object representation [{},{},{}]
       var newRows = []
-      this.state.data.map((row) =>
+      newData.map((row) =>
         {
           const newRow = {
             title: row[0],
@@ -164,16 +164,19 @@ export default class edit extends Component {
           newRows.push(newRow)
         }
       );
-      this.setState({'rows': newRows});
       
-      console.log(this.state.data)
+      console.log(newData)
       //Renders the questions using the new list representation (Creates the JSX)
-      var newQnNum = 0;
+      
+      var qnNum = 0;
+      var modifiedQnNum = 0;
       var listItems = this.state.data.map((row) =>
         {
-          newQnNum = newQnNum + 1;
-          return <Question
-            questionNum = {newQnNum}
+          qnNum = qnNum + 1;
+          if (!this.state.qnsToBeExcluded.includes(qnNum)){
+            modifiedQnNum = modifiedQnNum + 1;
+            return <Question
+            questionNum = {modifiedQnNum}
             title = {row[0]}
             option1 = {row[1]}
             option2 = {row[2]}
@@ -183,9 +186,20 @@ export default class edit extends Component {
             handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
           >
           </Question>
+          }
         }
       );
-      this.setState({'text': listItems});
+
+      this.setState({
+        'qnsToBeExcluded' : [],
+        "text" : listItems,
+        'rows': newRows,
+        'data': newData
+      });
+
+      console.log(listItems)
+      console.log(newRows)
+      console.log(newData)
 
     }
 
