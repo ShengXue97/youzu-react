@@ -49,7 +49,7 @@ const styles = theme => ({
 
 const pollServer = (formData) => {
   console.log("Requesting data from server...")
-  axios.post("http://localhost:5000/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
+  axios.post("http://ycampus.southeastasia.cloudapp.azure.com:3001/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
         window.startStream(response.data["YourIP"], response.data["YourTime"])
@@ -129,7 +129,11 @@ class home extends Component {
   render() {
     const body = 
     <div>
-
+      <Alert style={{"width" : "100%", "height" : "90%"}} variant={"success"}>
+        <p>
+          A simple React website which allows you to Digitise Singapore Primary/Secondary school exam papers from PDF, and receive the output as a CSV file containing the text of the questions.
+        </p>
+      </Alert>
       <Alert style={{"width" : "100%", "height" : "90%"}} variant={this.state.msgVariant}>
         <p>
           {this.state.msgText}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -13,6 +12,7 @@ import { Pagination } from 'semantic-ui-react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
+import QuestionPage from './QuestionPage';
 import { CSVReader } from 'react-papaparse'
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
@@ -23,6 +23,8 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import { Document, Page, pdfjs } from 'react-pdf';
 import CsvDownloader from 'react-csv-downloader';
 import yoozooImg from './images/yoozoo.jpg';
+import { MDBContainer, MDBScrollbar } from "mdbreact";
+import "./scrollbar.css";
 
 const buttonRef = React.createRef()
 
@@ -54,6 +56,7 @@ export default class edit extends Component {
       var listItems = null;
       var currentPageNumber = 1;
       if (data !== undefined && data != null){
+          console.log(data)
           listItems = data[currentPageNumber - 1].map((row, index) => {
             return <Question
                 pgNum={currentPageNumber}
@@ -258,8 +261,8 @@ export default class edit extends Component {
           );
         }
       );
-      // console.log(pgNum + ";" + qnNum + ";" + section + ";" + localQnNumber);
-      // console.log(tempData)
+      console.log(pgNum + ";" + qnNum + ";" + section + ";" + localQnNumber);
+      console.log(tempData)
       
       tempData[pgNum - 1][localQnNumber][section] = value;
       //Update the object representation for the CSV generation
@@ -301,7 +304,7 @@ export default class edit extends Component {
         {
           page.map((row, qnNum) =>
             {
-              if (!this.state.qnsToBeExcluded[qnNum + 1]){
+              if (!this.state.qnsToBeExcluded[qnNum]){
                 const newRow = {
                   title: row[1],
                   option1: row[2],
@@ -328,11 +331,11 @@ export default class edit extends Component {
       var internalQnList = [];
       var externalQnList = [];
       var currentPage = [];
-      var localQnsToBeExcluded = [];
-
+      var listItems = null;
+      
       this.state.data.map((page, pgNum) =>
         {
-          page.map((row, index) =>
+          page.map((row) =>
             {
               var internalQuestionNum = row[6]
               if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
@@ -347,27 +350,26 @@ export default class edit extends Component {
               }
             }
           );
+          if (pgNum + 1 == this.state.currentPageNumber) {
+              listItems = currentPage.map((row, index) => {
+                return <Question
+                    pgNum={pgNum + 1}
+                    internalQuestionNum={internalQnList[index]}
+                    externalQuestionNum={externalQnList[index]}
+                    title={row[1]}
+                    option1={row[2]}
+                    option2={row[3]}
+                    option3={row[4]}
+                    option4={row[5]}
+                    handleOnChangeQuestion={this.handleOnChangeQuestion}
+                    handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+                >
+                </Question>
+                }
+              );
+          }
         }
       );
-
-      var listItems = currentPage.map((row, index) => {
-        return <Question
-            pgNum={this.state.currentPageNumber}
-            internalQuestionNum={internalQnList[index]}
-            externalQuestionNum={externalQnList[index]}
-            title={row[1]}
-            option1={row[2]}
-            option2={row[3]}
-            option3={row[4]}
-            option4={row[5]}
-            handleOnChangeQuestion={this.handleOnChangeQuestion}
-            handleOnChangeCheckbox={this.handleOnChangeCheckbox}
-        >
-        </Question>
-        }
-      );
-      console.log(currentPage);
-      console.log(listItems);
 
       this.setState({
         "text" : listItems,
@@ -398,7 +400,7 @@ export default class edit extends Component {
                   </Document>
                   <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
                   <div class="ui stackable four column grid">
-                      <Button variant="primary"/*onClick: save all qns in current edited state to data state*/>Save Workspace</Button>
+                      {/*<Button variant="primary">Save Workspace</Button>*/}
                       <CsvDownloader
                       filename="myfile"
                       separator=","
@@ -408,9 +410,9 @@ export default class edit extends Component {
                       text="DOWNLOAD">
                         <Button variant="info" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</Button>
                       </CsvDownloader>
-                      <Button variant="success" /*onClick: need to double confirm how this is different from save*/>Upload to Database</Button>
-                      <Button onClick={this.handleOnRevertToOriginal} variant = "warning" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</Button>
-                      <Button onClick={this.handleOnDeleteQuestions} variant="danger" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</Button>
+                      {/*<Button variant="success">Upload to Database</Button>*/}
+                      {/*<Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>*/}
+                      {/*<Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button> -->*/}
                   </div>
               </Card>
             </Card.Body>
@@ -419,9 +421,11 @@ export default class edit extends Component {
             <Card.Body>
               <Card.Title>Questions</Card.Title>
               <ListGroup>
-                <div style={{ height: '936px', width:"900px", overflowY: 'scroll' }}>
-                  {this.state.text} 
-                </div>
+                  <MDBContainer>
+                    <div className="scrollbar my-5 mx-auto scrollbar-near-moon" style={{ height: '936px', width:"100%"}}>
+                      {this.state.text}
+                    </div>
+                  </MDBContainer>
               </ListGroup>
             </Card.Body>
           </Card>

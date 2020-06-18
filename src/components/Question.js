@@ -52,10 +52,10 @@ class question extends React.Component {
     return <div style = {{width : "80%"}}>
     <InputGroup className="mb-3">
       <InputGroup.Prepend>
-          <InputGroup.Checkbox
-            onChange={(e) =>
-                this.props.handleOnChangeCheckbox(this.state.pgNum, this.state.internalQuestionNum, e.target.checked)}
-          />
+          {/*<InputGroup.Checkbox*/}
+          {/*  onChange={(e) =>*/}
+          {/*      this.props.handleOnChangeCheckbox(this.state.pgNum, this.state.internalQuestionNum, e.target.checked)}*/}
+          {/*/>*/}
           <InputGroup.Text id="basic-addon1">{this.state.externalQuestionNum} </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
