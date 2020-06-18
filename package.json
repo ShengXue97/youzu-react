@@ -20,6 +20,7 @@
     "history": "^4.10.1",
     "jquery": "^3.5.1",
     "material-ui": "^0.20.2",
+    "mdbreact": "^4.27.0",
     "papaparse": "^5.2.0",
     "popper.js": "^1.16.1",
     "public-ip": "^4.0.1",

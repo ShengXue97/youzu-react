@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -13,6 +12,7 @@ import { Pagination } from 'semantic-ui-react'
 import ListGroup from 'react-bootstrap/ListGroup'
 
 import Question from './Question';
+import QuestionPage from './QuestionPage';
 import { CSVReader } from 'react-papaparse'
 import { Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
@@ -23,6 +23,8 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import { Document, Page, pdfjs } from 'react-pdf';
 import CsvDownloader from 'react-csv-downloader';
 import yoozooImg from './images/yoozoo.jpg';
+import { MDBContainer, MDBScrollbar } from "mdbreact";
+import "./scrollbar.css";
 
 const buttonRef = React.createRef()
 
@@ -32,7 +34,8 @@ export default class edit extends Component {
       super(props);
       pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-      const data = ((window.data.data));
+      var data = ((window.data.data));
+      console.log(data)
       const cols = [{
         id: 'title',
         displayName: "title"
@@ -51,48 +54,53 @@ export default class edit extends Component {
       }];
 
       var listItems = null;
+      var currentPageNumber = 1;
       if (data !== undefined && data != null){
-        console.log(data)
-        console.log(typeof(data))
-        var qnNum = 0;
-        listItems = data.map((row) =>
-        {
-          qnNum = qnNum + 1;
-          return <Question
-            internalQuestionNum = {qnNum}
-            externalQuestionNum = {qnNum}
-            title = {row[0]}
-            option1 = {row[1]}
-            option2 = {row[2]}
-            option3 = {row[3]}
-            option4 = {row[4]}
-            handleOnChangeQuestion = {this.handleOnChangeQuestion}
-            handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
-          >
-          </Question>
-        }
-        );
+          console.log(data)
+          listItems = data[currentPageNumber - 1].map((row, index) => {
+            return <Question
+                pgNum={currentPageNumber}
+                internalQuestionNum = {index + 1}
+                externalQuestionNum = {index + 1}
+                title={row[1]}
+                option1={row[2]}
+                option2={row[3]}
+                option3={row[4]}
+                option4={row[5]}
+                handleOnChangeQuestion={this.handleOnChangeQuestion}
+                handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+            >
+            </Question>
+            }
+          );
       }
 
       var rows = []
       
-      data.map((row) =>
+      data.map((page) =>
         {
-          const newRow = {
-            title: row[0],
-            option1: row[1],
-            option2: row[2],
-            option3: row[3],
-            option4: row[4]
-          }
-          rows.push(newRow)
+            page.map((row) => {
+                const newRow = {
+                title: row[0],
+                option1: row[1],
+                option2: row[2],
+                option3: row[3],
+                option4: row[4]
+                }
+                rows.push(newRow)
+            }
+            );
         }
       );
 
       var qnsToBeExcluded = []
-      data.map((row) =>
+      data.map((page) =>
         {
-          qnsToBeExcluded.push(false);
+          data.map((row) =>
+            {
+              qnsToBeExcluded.push(false);
+            }
+            );
         }
       );
       qnsToBeExcluded.push(false);
@@ -100,33 +108,93 @@ export default class edit extends Component {
       // data => [[],[],[]] => Imported from Flask
       // rows => [{},{},{}] => CSVDownloader needs this format to produce csv
       this.state = {'pageNumber' : 1,
-        "text": listItems,
+        'text': listItems,
         'numPages' : 1,
         'file': window.fileData,
         'originalData' : data,
         'data' : data,
         'cols' : cols,
         'rows' : rows,
-        'qnsToBeExcluded' : qnsToBeExcluded 
+        'qnsToBeExcluded' : qnsToBeExcluded,
+          'currentPageNumber': currentPageNumber
       };
     }
   
     
 
     handlePaginationChange = (e, { activePage }) => {
-      this.setState({'pageNumber': activePage});
+      var internalQuestionNum = 0;
+      var externalQuestionNum = 0;
+      var internalQnList = [];
+      var externalQnList = [];
+      var currentPage = [];
+      var listItems = null;
+      this.state.data.map((page, pgNum) =>
+        {
+          page.map((row) =>
+            {
+              var internalQuestionNum = row[6]
+              if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                externalQuestionNum = externalQuestionNum + 1;
+              }
+
+              if (pgNum + 1 == activePage) {
+                  internalQnList.push(internalQuestionNum);
+                  externalQnList.push(externalQuestionNum);
+                  if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                    currentPage.push(row);
+                  }
+              }
+            }
+          );
+          if (pgNum + 1 == activePage) {
+              listItems = currentPage.map((row, index) => {
+                return <Question
+                    pgNum={pgNum + 1}
+                    internalQuestionNum={internalQnList[index]}
+                    externalQuestionNum={externalQnList[index]}
+                    title={row[1]}
+                    option1={row[2]}
+                    option2={row[3]}
+                    option3={row[4]}
+                    option4={row[5]}
+                    handleOnChangeQuestion={this.handleOnChangeQuestion}
+                    handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+                >
+                </Question>
+                }
+              );
+              return listItems;
+          }
+        }
+      );
+
+      // listItems = <div
+      //         >
+      //           {this.state.data[activePage - 1]}
+      //         </div>
+
+      this.setState({
+        'pageNumber' : activePage,
+        'currentPageNumber': activePage,
+        'text' : listItems,
+      });
     }
 
     onDocumentLoadSuccess = ({ numPages }) => {
       this.setState({ numPages });
     }
-    
+
     handleOnRevertToOriginal = () => {
       //Revert back qnsToBeExcluded
       var qnsToBeExcluded = []
-      this.state.originalData.map((row) =>
+      this.state.originalData.map((page) =>
         {
-          qnsToBeExcluded.push(false);
+          page.map((row) =>
+            {
+              qnsToBeExcluded.push(false);
+            }
+          );
         }
       );
       qnsToBeExcluded.push(false);
@@ -134,39 +202,41 @@ export default class edit extends Component {
       //Revert object representation for CSV generation
       var newRows = []
       
-      this.state.originalData.map((row) =>
+      this.state.originalData.map((page) =>
         {
-          const newRow = {
-            title: row[0],
-            option1: row[1],
-            option2: row[2],
-            option3: row[3],
-            option4: row[4]
-          }
-          newRows.push(newRow)
+          page.map((row) =>
+            {
+              const newRow = {
+                title: row[1],
+                option1: row[2],
+                option2: row[3],
+                option3: row[4],
+                option4: row[5]
+              }
+              newRows.push(newRow)
+            }
+          );
         }
       );
 
       //Revert JSX(rendering) representation
       var listItems = null;
-      var qnNum = 0;
-      listItems = this.state.originalData.map((row) =>
-      {
-        qnNum = qnNum + 1;
+      listItems = this.state.originalData[this.state.currentPageNumber - 1].map((row, index) => {
         return <Question
-          internalQuestionNum = {qnNum}
-          externalQuestionNum = {qnNum}
-          title = {row[0]}
-          option1 = {row[1]}
-          option2 = {row[2]}
-          option3 = {row[3]}
-          option4 = {row[4]}
-          handleOnChangeQuestion = {this.handleOnChangeQuestion}
-          handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
+            pgNum={this.state.currentPageNumber}
+            internalQuestionNum= {index + 1}
+            externalQuestionNum= {index + 1}
+            title={row[1]}
+            option1={row[2]}
+            option2={row[3]}
+            option3={row[4]}
+            option4={row[5]}
+            handleOnChangeQuestion={this.handleOnChangeQuestion}
+            handleOnChangeCheckbox={this.handleOnChangeCheckbox}
         >
         </Question>
-      });
-
+        }
+      );
       this.setState({
         'rows': newRows,
         'text' : listItems,
@@ -176,52 +246,76 @@ export default class edit extends Component {
       
     };
 
-    handleOnChangeQuestion = (qnNum, section, value) => {
+    handleOnChangeQuestion = (pgNum, qnNum, section, value) => {
       //Change the list representation for the specific question cell
-      this.state.data[qnNum - 1][section] = value;
-
+      var tempData = Array.from(this.state.data);
+      var localQnNumber = -1;
+      tempData.map((page) =>
+        {
+          page.map((row, index) =>
+            {
+              if (row[6] == qnNum) {
+                localQnNumber = index;
+              }
+            }
+          );
+        }
+      );
+      console.log(pgNum + ";" + qnNum + ";" + section + ";" + localQnNumber);
+      console.log(tempData)
+      
+      tempData[pgNum - 1][localQnNumber][section] = value;
       //Update the object representation for the CSV generation
       var newRows = []
       
-      this.state.data.map((row) =>
+      tempData.map((page) =>
         {
-          const newRow = {
-            title: row[0],
-            option1: row[1],
-            option2: row[2],
-            option3: row[3],
-            option4: row[4]
-          }
-          newRows.push(newRow)
+          page.map((row) =>
+            {
+              const newRow = {
+                title: row[1],
+                option1: row[2],
+                option2: row[3],
+                option3: row[4],
+                option4: row[5]
+              }
+              newRows.push(newRow)
+            }
+          );
         }
       );
 
-      this.setState({'rows': newRows});
+      this.setState({
+        'rows': newRows,
+        'data': tempData
+      });
       
     };
 
     //[False,False,False,False,False]
-    handleOnChangeCheckbox = (qnNum, isChecked) => {
+    handleOnChangeCheckbox = (pgNum, qnNum, isChecked) => {
       this.state.qnsToBeExcluded[qnNum] = isChecked
     };
 
     handleOnDeleteQuestions = () => {
       //Updates object representation [{},{},{}]
       var newRows = []
-      var qnNum = 0
-      this.state.data.map((row) =>
+      this.state.data.map((page) =>
         {
-          qnNum = qnNum + 1
-          if (!this.state.qnsToBeExcluded[qnNum]){
-            const newRow = {
-              title: row[0],
-              option1: row[1],
-              option2: row[2],
-              option3: row[3],
-              option4: row[4]
+          page.map((row, qnNum) =>
+            {
+              if (!this.state.qnsToBeExcluded[qnNum]){
+                const newRow = {
+                  title: row[1],
+                  option1: row[2],
+                  option2: row[3],
+                  option3: row[4],
+                  option4: row[5]
+                }
+                newRows.push(newRow)
+              }
             }
-            newRows.push(newRow)
-          }
+          );
         }
       );
       
@@ -233,25 +327,46 @@ export default class edit extends Component {
       //Renders the questions using the new list representation (Creates the JSX)
       //this.state.data => without deleted questions
       //newData => with deleted questions
-      var internalQuestionNum = 0;
       var externalQuestionNum = 0;
-      var listItems = this.state.data.map((row) =>
+      var internalQnList = [];
+      var externalQnList = [];
+      var currentPage = [];
+      var listItems = null;
+      
+      this.state.data.map((page, pgNum) =>
         {
-          internalQuestionNum = internalQuestionNum + 1;
-          if (!this.state.qnsToBeExcluded[internalQuestionNum]){
-            externalQuestionNum = externalQuestionNum + 1;
-            return <Question
-              internalQuestionNum = {internalQuestionNum}
-              externalQuestionNum = {externalQuestionNum}
-              title = {row[0]}
-              option1 = {row[1]}
-              option2 = {row[2]}
-              option3 = {row[3]}
-              option4 = {row[4]}
-              handleOnChangeQuestion = {this.handleOnChangeQuestion}
-              handleOnChangeCheckbox = {this.handleOnChangeCheckbox}
-            >
-            </Question>
+          page.map((row) =>
+            {
+              var internalQuestionNum = row[6]
+              if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                  externalQuestionNum = externalQuestionNum + 1;
+              }
+              if (pgNum + 1 == this.state.currentPageNumber) {
+                  internalQnList.push(internalQuestionNum);
+                  externalQnList.push(externalQuestionNum);
+                  if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                    currentPage.push(row);
+                  }
+              }
+            }
+          );
+          if (pgNum + 1 == this.state.currentPageNumber) {
+              listItems = currentPage.map((row, index) => {
+                return <Question
+                    pgNum={pgNum + 1}
+                    internalQuestionNum={internalQnList[index]}
+                    externalQuestionNum={externalQnList[index]}
+                    title={row[1]}
+                    option1={row[2]}
+                    option2={row[3]}
+                    option3={row[4]}
+                    option4={row[5]}
+                    handleOnChangeQuestion={this.handleOnChangeQuestion}
+                    handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+                >
+                </Question>
+                }
+              );
           }
         }
       );
@@ -285,7 +400,7 @@ export default class edit extends Component {
                   </Document>
                   <p>Page {this.state.pageNumber} of {this.state.numPages}</p>
                   <div class="ui stackable four column grid">
-                      <Button variant="primary"/*onClick: save all qns in current edited state to data state*/>Save Workspace</Button>
+                      {/*<Button variant="primary">Save Workspace</Button>*/}
                       <CsvDownloader
                       filename="myfile"
                       separator=","
@@ -295,9 +410,9 @@ export default class edit extends Component {
                       text="DOWNLOAD">
                         <Button variant="info" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</Button>
                       </CsvDownloader>
-                      <Button variant="success" /*onClick: need to double confirm how this is different from save*/>Upload to Database</Button>
-                      <Button onClick={this.handleOnRevertToOriginal} variant = "warning" /*onClick: wipe the edit state, database state will be reflected on edit again*/>Revert to Original</Button>
-                      <Button onClick={this.handleOnDeleteQuestions} variant="danger" /*onClick: delete selected qns in data qns state, uncheck boxes*/>Delete Selected Question(s)</Button>
+                      {/*<Button variant="success">Upload to Database</Button>*/}
+                      {/*<Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>*/}
+                      {/*<Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button> -->*/}
                   </div>
               </Card>
             </Card.Body>
@@ -306,9 +421,11 @@ export default class edit extends Component {
             <Card.Body>
               <Card.Title>Questions</Card.Title>
               <ListGroup>
-                <div style={{ height: '936px', width:"900px", overflowY: 'scroll' }}>
-                  {this.state.text} 
-                </div>
+                  <MDBContainer>
+                    <div className="scrollbar my-5 mx-auto scrollbar-near-moon" style={{ height: '936px', width:"100%"}}>
+                      {this.state.text}
+                    </div>
+                  </MDBContainer>
               </ListGroup>
             </Card.Body>
           </Card>

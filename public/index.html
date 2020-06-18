@@ -44,7 +44,7 @@
         // Allows edit page to open one more time every time the user uploads a new file
         alreadyOpenedEditPage = false;
         if (!!window.EventSource) {
-          var source = new EventSource('http://localhost:3000/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
+          var source = new EventSource('http://ycampus.southeastasia.cloudapp.azure.com:3001/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
           source.onmessage = function(e) {
             const dictStatus = JSON.parse(e.data)
             console.log(dictStatus)
@@ -57,8 +57,10 @@
               var statusString = ""
               if (dictStatus["stage"] == 3){
                 statusString = "Done!"
-              } else {
-                statusString = "Stage:" + dictStatus["stage"] + "/2" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
+              } else if (dictStatus["stage"] == 2) {
+                statusString = "Stage:" + dictStatus["stage"] + "/2" + "(Output Generation)" + ", Current Question:" + dictStatus["page"] + "/" + dictStatus["total"];
+              } else if (dictStatus["stage"] == 1) {
+                statusString = "Stage:" + dictStatus["stage"] + "/2" + "(Digitisation)" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
               }
 
               //$("#data").text(statusString);
@@ -82,7 +84,7 @@
               var isDone = dictStatus["stage"] == 3
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
-                axios.post("http://localhost:3000/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
+                axios.post("http://ycampus.southeastasia.cloudapp.azure.com:3001/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
 
                   .then(function (response) {
                     // handle success
