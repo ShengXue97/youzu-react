@@ -129,7 +129,11 @@ class home extends Component {
   render() {
     const body = 
     <div>
-
+      <Alert style={{"width" : "100%", "height" : "90%"}} variant={"success"}>
+        <p>
+          A simple React website which allows you to Digitise Singapore Primary/Secondary school exam papers from PDF, and receive the output as a CSV file containing the text of the questions.
+        </p>
+      </Alert>
       <Alert style={{"width" : "100%", "height" : "90%"}} variant={this.state.msgVariant}>
         <p>
           {this.state.msgText}

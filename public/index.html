@@ -57,8 +57,10 @@
               var statusString = ""
               if (dictStatus["stage"] == 3){
                 statusString = "Done!"
-              } else {
-                statusString = "Stage:" + dictStatus["stage"] + "/2" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
+              } else if (dictStatus["stage"] == 2) {
+                statusString = "Stage:" + dictStatus["stage"] + "/2" + "(Output Generation)" + ", Current Question:" + dictStatus["page"] + "/" + dictStatus["total"];
+              } else if (dictStatus["stage"] == 1) {
+                statusString = "Stage:" + dictStatus["stage"] + "/2" + "(Digitisation)" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
               }
 
               //$("#data").text(statusString);
