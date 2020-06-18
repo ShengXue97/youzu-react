@@ -49,7 +49,7 @@ const styles = theme => ({
 
 const pollServer = (formData) => {
   console.log("Requesting data from server...")
-  axios.post("http://localhost:3000/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
+  axios.post("http://localhost:5000/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
         window.startStream(response.data["YourIP"], response.data["YourTime"])
