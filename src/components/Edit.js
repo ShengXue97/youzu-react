@@ -57,27 +57,22 @@ export default class edit extends Component {
       var currentPageNumber = 1;
       if (data !== undefined && data != null){
           console.log(data)
-	        console.log(data[0])
-          if (data[currentPageNumber - 1] !== []) { 
-            listItems = data[currentPageNumber - 1].map((row, index) => {
-              if (data[currentPageNumber - 1][row] !== []) {
-                return <Question
-                    pgNum={currentPageNumber}
-                    internalQuestionNum = {index + 1}
-                    externalQuestionNum = {index + 1}
-                    title={row[1]}
-                    option1={row[2]}
-                    option2={row[3]}
-                    option3={row[4]}
-                    option4={row[5]}
-                    handleOnChangeQuestion={this.handleOnChangeQuestion}
-                    handleOnChangeCheckbox={this.handleOnChangeCheckbox}
-                >
-                </Question>
-              }
+          listItems = data[currentPageNumber - 1].map((row, index) => {
+            return <Question
+                pgNum={currentPageNumber}
+                internalQuestionNum = {index + 1}
+                externalQuestionNum = {index + 1}
+                title={row[1]}
+                option1={row[2]}
+                option2={row[3]}
+                option3={row[4]}
+                option4={row[5]}
+                handleOnChangeQuestion={this.handleOnChangeQuestion}
+                handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+            >
+            </Question>
             }
-            );
-          }
+          );
       }
 
       var rows = []
