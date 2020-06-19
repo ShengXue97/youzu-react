@@ -14,7 +14,9 @@ import FormControl from 'react-bootstrap/FormControl';
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
 import CheckBox from 'react-bootstrap';
-
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class question extends React.Component {
   constructor(props) {
@@ -33,7 +35,6 @@ class question extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(this.props.pgNum + ";" + prevProps.pgNum)
     if(this.props != prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       this.setState({
@@ -69,6 +70,18 @@ class question extends React.Component {
             this.setState({'title' : e.target.value});
             this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 1, e.target.value)}}
       />
+      <IconButton color="primary" aria-label="add">
+        <AddCircleOutlineIcon />
+      </IconButton>
+      <IconButton 
+        color="secondary" 
+        aria-label="delete" 
+        onClick = {(e) => {
+          this.props.handleOnDeleteSingleQuestion(this.state.pgNum, this.state.localQuestionNum)}}
+      >
+        <DeleteIcon />
+      </IconButton>
+      
     </InputGroup>
     <div style = {{paddingLeft : "10px"}}>
       <ListGroup>

@@ -75,6 +75,7 @@ export default class edit extends Component {
                 option3={row[4]}
                 option4={row[5]}
                 isChecked={false}
+                handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                 handleOnChangeQuestion={this.handleOnChangeQuestion}
                 handleOnChangeCheckbox={this.handleOnChangeCheckbox}
             >
@@ -125,6 +126,7 @@ export default class edit extends Component {
         'cols' : cols,
         'rows' : rows,
         'qnsToBeExcluded' : qnsToBeExcluded,
+        'tempQnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded)),
           'currentPageNumber': currentPageNumber
       };
     }
@@ -166,6 +168,7 @@ export default class edit extends Component {
                     option3={row[4]}
                     option4={row[5]}
                     isChecked={this.state.qnsToBeExcluded[pgNum][localQnList[index] - 1]}
+                    handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -241,6 +244,7 @@ export default class edit extends Component {
             option3={row[4]}
             option4={row[5]}
             isChecked={false}
+            handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
             handleOnChangeQuestion={this.handleOnChangeQuestion}
             handleOnChangeCheckbox={this.handleOnChangeCheckbox}
         >
@@ -251,7 +255,8 @@ export default class edit extends Component {
         'rows': newRows,
         'text' : listItems,
         'data' : this.state.originalData,
-        'qnsToBeExcluded' : qnsToBeExcluded
+        'qnsToBeExcluded' : qnsToBeExcluded,
+        'tempQnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded))
       });
       
     };
@@ -290,17 +295,34 @@ export default class edit extends Component {
 
     //[False,False,False,False,False]
     handleOnChangeCheckbox = (pgNum, localQnNum, isChecked) => {
-      this.state.qnsToBeExcluded[pgNum - 1][localQnNum - 1] = isChecked
+      //When you change the checkbox, it does not update qnsToBeExcluded. It is only updated
+      //when you click the delete button. The reason for this is to support deleting individual questions.
+      this.state.tempQnsToBeExcluded[pgNum - 1][localQnNum - 1] = isChecked
     };
 
-    handleOnDeleteQuestions = () => {
+    handleOnDeleteSingleQuestion = (pgNum, localQnNum) => {
+      this.state.tempQnsToBeExcluded[pgNum - 1][localQnNum - 1] = true;
+      this.state.qnsToBeExcluded[pgNum - 1][localQnNum - 1] = true;
+      this.handleOnDeleteQuestions(true);
+    };
+
+    handleOnDeleteQuestions = (isDeleteOne) => {
+      //If deleting one question only, ignore the tempQnsToBeExcluded, which is only for deletion of multiple questions
+      var curQnsToBeExcluded = null
+      if (isDeleteOne){
+        curQnsToBeExcluded = this.state.qnsToBeExcluded;
+      } else {
+        curQnsToBeExcluded = this.state.tempQnsToBeExcluded;
+      }
+      console.log(curQnsToBeExcluded)
+
       //Updates object representation [{},{},{}]
       var newRows = []
       this.state.data.map((page, index) =>
         {
           page.map((row, qnNum) =>
             {
-              if (!this.state.qnsToBeExcluded[index][qnNum]){
+              if (!curQnsToBeExcluded[index][qnNum]){
                 const newRow = {
                   title: row[1],
                   option1: row[2],
@@ -332,11 +354,11 @@ export default class edit extends Component {
         {
           page.map((row, index) =>
             {
-              if (!this.state.qnsToBeExcluded[pgNum][index]) {
+              if (!curQnsToBeExcluded[pgNum][index]) {
                   externalQuestionNum = externalQuestionNum + 1;
               }
               if (pgNum + 1 == this.state.currentPageNumber) {
-                  if (!this.state.qnsToBeExcluded[pgNum][index]) {
+                  if (!curQnsToBeExcluded[pgNum][index]) {
                     localQnList.push(index + 1);
                     externalQnList.push(externalQuestionNum);
                     currentPage.push(row);
@@ -355,7 +377,8 @@ export default class edit extends Component {
                     option2={row[3]}
                     option3={row[4]}
                     option4={row[5]}
-                    isChecked={false}
+                    isChecked={this.state.tempQnsToBeExcluded[pgNum][localQnList[index] - 1]}
+                    handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -369,7 +392,8 @@ export default class edit extends Component {
 
       this.setState({
         "text" : listItems,
-        'rows': newRows
+        'rows': newRows,
+        'qnsToBeExcluded' : curQnsToBeExcluded,
       });
 
     }
@@ -473,6 +497,7 @@ export default class edit extends Component {
                     option3={row[4]}
                     option4={row[5]}
                     isChecked={false}
+                    handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -527,7 +552,13 @@ export default class edit extends Component {
                       </CsvDownloader>
                       <Button onClick={this.handleOnAddQuestion} variant="success">Add Question Below</Button>
                       <Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>
-                      <Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button>
+                      <Button
+                        variant="danger"
+                        onClick={() => {
+                            this.handleOnDeleteQuestions(false)}}
+                      >
+                        Delete Selected Question(s)
+                      </Button>
                   </div>
               </Card>
             </Card.Body>
