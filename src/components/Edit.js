@@ -125,7 +125,7 @@ export default class edit extends Component {
         'data' : data,
         'cols' : cols,
         'rows' : rows,
-        'qnsToBeExcluded' : qnsToBeExcluded,
+        'qnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded)),
         'tempQnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded)),
           'currentPageNumber': currentPageNumber
       };
@@ -167,7 +167,7 @@ export default class edit extends Component {
                     option2={row[3]}
                     option3={row[4]}
                     option4={row[5]}
-                    isChecked={this.state.qnsToBeExcluded[pgNum][localQnList[index] - 1]}
+                    isChecked={this.state.tempQnsToBeExcluded[pgNum][localQnList[index] - 1]}
                     handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
@@ -255,7 +255,7 @@ export default class edit extends Component {
         'rows': newRows,
         'text' : listItems,
         'data' : this.state.originalData,
-        'qnsToBeExcluded' : qnsToBeExcluded,
+        'qnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded)),
         'tempQnsToBeExcluded' : JSON.parse(JSON.stringify(qnsToBeExcluded))
       });
       
@@ -393,7 +393,7 @@ export default class edit extends Component {
       this.setState({
         "text" : listItems,
         'rows': newRows,
-        'qnsToBeExcluded' : curQnsToBeExcluded,
+        'qnsToBeExcluded' : JSON.parse(JSON.stringify(curQnsToBeExcluded)),
       });
 
     }
@@ -513,7 +513,7 @@ export default class edit extends Component {
         "text" : listItems,
         'rows': newRows,
         'data': tempData,
-        'qnsToBeExcluded': tempQnsToBeExcluded
+        'qnsToBeExcluded': JSON.parse(JSON.stringify(tempQnsToBeExcluded))
       });
 
     }
