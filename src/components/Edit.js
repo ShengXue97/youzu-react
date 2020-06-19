@@ -61,6 +61,7 @@ export default class edit extends Component {
           listItems = data[currentPageNumber - 1].map((row, index) => {
             return <Question
                 pgNum={currentPageNumber}
+                localQuestionNum = {index + 1}
                 internalQuestionNum = {index + 1}
                 externalQuestionNum = {index + 1}
                 title={row[1]}
@@ -68,6 +69,7 @@ export default class edit extends Component {
                 option2={row[3]}
                 option3={row[4]}
                 option4={row[5]}
+                isChecked={false}
                 handleOnChangeQuestion={this.handleOnChangeQuestion}
                 handleOnChangeCheckbox={this.handleOnChangeCheckbox}
             >
@@ -97,14 +99,15 @@ export default class edit extends Component {
       var qnsToBeExcluded = []
       data.map((page) =>
         {
-          data.map((row) =>
+          var pageList = []
+          page.map((row) =>
             {
-              qnsToBeExcluded.push(false);
+              pageList.push(false);
             }
             );
+          qnsToBeExcluded.push(pageList)
         }
       );
-      qnsToBeExcluded.push(false);
       
       // data => [[],[],[]] => Imported from Flask
       // rows => [{},{},{}] => CSVDownloader needs this format to produce csv
@@ -126,23 +129,25 @@ export default class edit extends Component {
     handlePaginationChange = (e, { activePage }) => {
       var internalQuestionNum = 0;
       var externalQuestionNum = 0;
+      var localQnList = [];
       var internalQnList = [];
       var externalQnList = [];
       var currentPage = [];
       var listItems = null;
       this.state.data.map((page, pgNum) =>
         {
-          page.map((row) =>
+          page.map((row, index) =>
             {
               var internalQuestionNum = row[6]
-              if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+              if (!this.state.qnsToBeExcluded[pgNum][index]) {
                 externalQuestionNum = externalQuestionNum + 1;
               }
 
               if (pgNum + 1 == activePage) {
                   internalQnList.push(internalQuestionNum);
-                  externalQnList.push(externalQuestionNum);
-                  if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                  if (!this.state.qnsToBeExcluded[pgNum][index]) {
+                    externalQnList.push(externalQuestionNum);
+                    localQnList.push(index + 1);
                     currentPage.push(row);
                   }
               }
@@ -152,6 +157,7 @@ export default class edit extends Component {
               listItems = currentPage.map((row, index) => {
                 return <Question
                     pgNum={pgNum + 1}
+                    localQuestionNum = {localQnList[index]}
                     internalQuestionNum={internalQnList[index]}
                     externalQuestionNum={externalQnList[index]}
                     title={row[1]}
@@ -159,6 +165,7 @@ export default class edit extends Component {
                     option2={row[3]}
                     option3={row[4]}
                     option4={row[5]}
+                    isChecked={this.state.qnsToBeExcluded[pgNum][localQnList[index] - 1]}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -191,14 +198,15 @@ export default class edit extends Component {
       var qnsToBeExcluded = []
       this.state.originalData.map((page) =>
         {
+          var pageList = []
           page.map((row) =>
             {
-              qnsToBeExcluded.push(false);
+              pageList.push(false);
             }
-          );
+            );
+          qnsToBeExcluded.push(pageList)
         }
       );
-      qnsToBeExcluded.push(false);
 
       //Revert object representation for CSV generation
       var newRows = []
@@ -225,6 +233,7 @@ export default class edit extends Component {
       listItems = this.state.originalData[this.state.currentPageNumber - 1].map((row, index) => {
         return <Question
             pgNum={this.state.currentPageNumber}
+            localQuestionNum = {index + 1}
             internalQuestionNum= {index + 1}
             externalQuestionNum= {index + 1}
             title={row[1]}
@@ -232,6 +241,7 @@ export default class edit extends Component {
             option2={row[3]}
             option3={row[4]}
             option4={row[5]}
+            isChecked={false}
             handleOnChangeQuestion={this.handleOnChangeQuestion}
             handleOnChangeCheckbox={this.handleOnChangeCheckbox}
         >
@@ -247,40 +257,26 @@ export default class edit extends Component {
       
     };
 
-    handleOnChangeQuestion = (pgNum, qnNum, section, value) => {
+    handleOnChangeQuestion = (pgNum, localQnNum, section, value) => {
       //Change the list representation for the specific question cell
       var tempData = Array.from(this.state.data);
-      var localQnNumber = -1;
-      tempData.map((page) =>
-        {
-          page.map((row, index) =>
-            {
-              if (row[6] == qnNum) {
-                localQnNumber = index;
-              }
-            }
-          );
-        }
-      );
-      console.log(pgNum + ";" + qnNum + ";" + section + ";" + localQnNumber);
-      console.log(tempData)
-      
-      tempData[pgNum - 1][localQnNumber][section] = value;
+      tempData[pgNum - 1][localQnNum - 1][section] = value;
       //Update the object representation for the CSV generation
       var newRows = []
-      
-      tempData.map((page) =>
+      tempData.map((page, index) =>
         {
-          page.map((row) =>
+          page.map((row, qnNum) =>
             {
-              const newRow = {
-                title: row[1],
-                option1: row[2],
-                option2: row[3],
-                option3: row[4],
-                option4: row[5]
+              if (!this.state.qnsToBeExcluded[index][qnNum]){
+                const newRow = {
+                  title: row[1],
+                  option1: row[2],
+                  option2: row[3],
+                  option3: row[4],
+                  option4: row[5]
+                }
+                newRows.push(newRow)
               }
-              newRows.push(newRow)
             }
           );
         }
@@ -294,18 +290,18 @@ export default class edit extends Component {
     };
 
     //[False,False,False,False,False]
-    handleOnChangeCheckbox = (pgNum, qnNum, isChecked) => {
-      this.state.qnsToBeExcluded[qnNum] = isChecked
+    handleOnChangeCheckbox = (pgNum, localQnNum, isChecked) => {
+      this.state.qnsToBeExcluded[pgNum - 1][localQnNum - 1] = isChecked
     };
 
     handleOnDeleteQuestions = () => {
       //Updates object representation [{},{},{}]
       var newRows = []
-      this.state.data.map((page) =>
+      this.state.data.map((page, index) =>
         {
           page.map((row, qnNum) =>
             {
-              if (!this.state.qnsToBeExcluded[qnNum]){
+              if (!this.state.qnsToBeExcluded[index][qnNum]){
                 const newRow = {
                   title: row[1],
                   option1: row[2],
@@ -329,6 +325,7 @@ export default class edit extends Component {
       //this.state.data => without deleted questions
       //newData => with deleted questions
       var externalQuestionNum = 0;
+      var localQnList = [];
       var internalQnList = [];
       var externalQnList = [];
       var currentPage = [];
@@ -336,16 +333,17 @@ export default class edit extends Component {
       
       this.state.data.map((page, pgNum) =>
         {
-          page.map((row) =>
+          page.map((row, index) =>
             {
               var internalQuestionNum = row[6]
-              if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+              if (!this.state.qnsToBeExcluded[pgNum][index]) {
                   externalQuestionNum = externalQuestionNum + 1;
               }
               if (pgNum + 1 == this.state.currentPageNumber) {
                   internalQnList.push(internalQuestionNum);
-                  externalQnList.push(externalQuestionNum);
-                  if (!this.state.qnsToBeExcluded[internalQuestionNum]) {
+                  if (!this.state.qnsToBeExcluded[pgNum][index]) {
+                    localQnList.push(index + 1);
+                    externalQnList.push(externalQuestionNum);
                     currentPage.push(row);
                   }
               }
@@ -355,6 +353,7 @@ export default class edit extends Component {
               listItems = currentPage.map((row, index) => {
                 return <Question
                     pgNum={pgNum + 1}
+                    localQuestionNum = {localQnList[index]}
                     internalQuestionNum={internalQnList[index]}
                     externalQuestionNum={externalQnList[index]}
                     title={row[1]}
@@ -362,6 +361,7 @@ export default class edit extends Component {
                     option2={row[3]}
                     option3={row[4]}
                     option4={row[5]}
+                    isChecked={false}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -371,6 +371,7 @@ export default class edit extends Component {
           }
         }
       );
+      console.log(listItems)
 
       this.setState({
         "text" : listItems,
@@ -413,7 +414,7 @@ export default class edit extends Component {
                       </CsvDownloader>
                       {/*<Button variant="success">Upload to Database</Button>*/}
                       {/*<Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>*/}
-                      {/*<Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button> -->*/}
+                      <Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button>
                   </div>
               </Card>
             </Card.Body>

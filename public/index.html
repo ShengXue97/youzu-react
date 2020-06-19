@@ -44,11 +44,7 @@
         // Allows edit page to open one more time every time the user uploads a new file
         alreadyOpenedEditPage = false;
         if (!!window.EventSource) {
-<<<<<<< HEAD
-          var source = new EventSource('http://localhost:5000/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
-=======
           var source = new EventSource('http://ycampus.southeastasia.cloudapp.azure.com:3001/stream?currentIP=' + currentIP + "&currentTime=" + currentTime);
->>>>>>> 25ff50d3267393a14c035dfc175569c88dda737e
           source.onmessage = function(e) {
             const dictStatus = JSON.parse(e.data)
             console.log(dictStatus)
@@ -88,11 +84,7 @@
               var isDone = dictStatus["stage"] == 3
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
-<<<<<<< HEAD
-                axios.post("http://localhost:5000/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
-=======
                 axios.post("http://ycampus.southeastasia.cloudapp.azure.com:3001/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
->>>>>>> 25ff50d3267393a14c035dfc175569c88dda737e
 
                   .then(function (response) {
                     // handle success
