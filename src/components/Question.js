@@ -22,7 +22,6 @@ class question extends React.Component {
     this.state = {
         'pgNum': this.props.pgNum,
         'localQuestionNum': this.props.localQuestionNum,
-        'internalQuestionNum': this.props.internalQuestionNum,
         'externalQuestionNum': this.props.externalQuestionNum,
         'title': this.props.title,
         'option1': this.props.option1,
@@ -40,7 +39,6 @@ class question extends React.Component {
       this.setState({
         'pgNum': this.props.pgNum,
         'localQuestionNum': this.props.localQuestionNum,
-        'internalQuestionNum': this.props.internalQuestionNum,
         'externalQuestionNum': this.props.externalQuestionNum,
         'title': this.props.title,
         'option1': this.props.option1,

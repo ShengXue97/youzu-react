@@ -34,9 +34,15 @@ export default class edit extends Component {
    constructor(props) {
       super(props);
       pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-      var data = ((window.data.data));
-      console.log(data)
+      var data = null;
+      if (window.data.data == undefined){
+        data = [[[1,"1 John in addition to the two monitors, _________ the books from the staff roorn io theclassroom every morning.","(1) carry","(2) carries","(3) carrying","(4) have carried",1],[1,"2 When, the results of the competition were announced, neither the winner nor his parents\nAALRINY\n_________ atthe hall.a","(1) is","(2) are","(8) was","(4) were",2],[1,"3 [ne nandicratt did not iurn out well as the girl did not put in ____________ effort to glue theparts together.","(1) many","(2) much","(3) little","(A) few",3],[1,"4 My grandmother managed to prepare a nutritions meal for us ___________having only a fewin the refrigeraior.","(1) despite","(2) besides","(3) because of","(4) resulting from",4],[1,"o With trepidation, Sarah watched the running boy ___________ the pail, spilling water all overthe floor.","(1) knock\n\n","(2) knocks\n\n","(3) Knocked\n\n","(A) was knocking",5]],[[2,"6 \"Youve put the carton of milk in ihe refrigerator, __________?* Mrs Lim asked her daughter.","(1) isn't it","(2) didn'twe","(3) hadn't you","(4) haven't you",6],[2,"7 \"| have never __________ such an interesting flower before,” exclaimed the old lady as she\nfooked closely at it.","(1) see","(2) saw","(3) seen","(4) been seeing",7],[2,"8 If She __________ tore waier throughout the day, she would not have been dehydrated.","(1) drunk","(2) drinks","(3) has drunk","(4) had drunk",8],[2,"9 All of the luagage __________io the collection point except the one that belonged to the elderly\nbespectacled man.","(1) is delivering","(2) was delivered","(3) has been delivering\n","(4) nave been delivered",9],[2,"72 in order to be heaithier, Mrs Chandra eliminated salty food and sugary drinks _________. he\ndiet.","(1) off\n","(2) out\n","(3) from\n","{4) away",10]],[[3,"V1 The teacher praised |om for being a ___________ pupil as he always checks his work carefully. ‘bet . ae oa\nand submits his assignments on time.","(i) conscious","(2) respeciful","(3) productive","(4) conscientious",11],[3,"12 Jne gangsters ___________ihe homeless man by raining repeated blows on his head","(1} assailed","(2) criticised","(3) surrounded","(4) approached",12],[3,"43 The teacher encouraged her pupils to read_________ by snaring with them books on a widevariety of topics.","(1) extensively","(2) bountifully,","(3) studiously","(4) _ plentifully",13],[3,"14 the shop assistants were releved wnen the anary customer _________ ater theyapologised for their mistake.","(1) backed up","(2) backed into","(3) backed away","(4) backed down",14],[3,"45 Although ihe doctors were of the opinion that the patient had a good chance of recovery, his\ncondition ___________rapidly after the operation.","(1) decomposed\n","(2) deteriorated\n","(3) destructed\n","(4) degraded",15]],[[4,"16 (2)(3)(4)","(4) curiously","(2) randomly","(3) recklessly","(4) relentlessly",16],[4,"tf OFA) an undeniable","(2) an itremovable","(3) an unbelievable","(4) an unforgettable","-",17]]]
+      } else {
+        data = window.data.data;
+      }
+      
+      console.log(JSON.stringify(data))
+      console.log(typeof(data));
       const cols = [{
         id: 'title',
         displayName: "title"
@@ -62,7 +68,6 @@ export default class edit extends Component {
             return <Question
                 pgNum={currentPageNumber}
                 localQuestionNum = {index + 1}
-                internalQuestionNum = {index + 1}
                 externalQuestionNum = {index + 1}
                 title={row[1]}
                 option1={row[2]}
@@ -84,11 +89,11 @@ export default class edit extends Component {
         {
             page.map((row) => {
                 const newRow = {
-                title: row[0],
-                option1: row[1],
-                option2: row[2],
-                option3: row[3],
-                option4: row[4]
+                title: row[1],
+                option1: row[2],
+                option2: row[3],
+                option3: row[4],
+                option4: row[5]
                 }
                 rows.push(newRow)
             }
@@ -113,7 +118,7 @@ export default class edit extends Component {
       // rows => [{},{},{}] => CSVDownloader needs this format to produce csv
       this.state = {'pageNumber' : 1,
         'text': listItems,
-        'numPages' : 1,
+        'numPages' : data.length,
         'file': window.fileData,
         'originalData' : data,
         'data' : data,
@@ -127,10 +132,8 @@ export default class edit extends Component {
     
 
     handlePaginationChange = (e, { activePage }) => {
-      var internalQuestionNum = 0;
       var externalQuestionNum = 0;
       var localQnList = [];
-      var internalQnList = [];
       var externalQnList = [];
       var currentPage = [];
       var listItems = null;
@@ -138,13 +141,11 @@ export default class edit extends Component {
         {
           page.map((row, index) =>
             {
-              var internalQuestionNum = row[6]
               if (!this.state.qnsToBeExcluded[pgNum][index]) {
                 externalQuestionNum = externalQuestionNum + 1;
               }
 
               if (pgNum + 1 == activePage) {
-                  internalQnList.push(internalQuestionNum);
                   if (!this.state.qnsToBeExcluded[pgNum][index]) {
                     externalQnList.push(externalQuestionNum);
                     localQnList.push(index + 1);
@@ -158,7 +159,6 @@ export default class edit extends Component {
                 return <Question
                     pgNum={pgNum + 1}
                     localQuestionNum = {localQnList[index]}
-                    internalQuestionNum={internalQnList[index]}
                     externalQuestionNum={externalQnList[index]}
                     title={row[1]}
                     option1={row[2]}
@@ -234,7 +234,6 @@ export default class edit extends Component {
         return <Question
             pgNum={this.state.currentPageNumber}
             localQuestionNum = {index + 1}
-            internalQuestionNum= {index + 1}
             externalQuestionNum= {index + 1}
             title={row[1]}
             option1={row[2]}
@@ -318,7 +317,6 @@ export default class edit extends Component {
       
       //Original [1,2,3,4,5]
       //qnsToBeExcluded [False,False,True,False,False]
-      //Internal question numbers [1,2,4,5]
       //External question numbers [1,2,3,4]
 
       //Renders the questions using the new list representation (Creates the JSX)
@@ -326,7 +324,6 @@ export default class edit extends Component {
       //newData => with deleted questions
       var externalQuestionNum = 0;
       var localQnList = [];
-      var internalQnList = [];
       var externalQnList = [];
       var currentPage = [];
       var listItems = null;
@@ -335,12 +332,10 @@ export default class edit extends Component {
         {
           page.map((row, index) =>
             {
-              var internalQuestionNum = row[6]
               if (!this.state.qnsToBeExcluded[pgNum][index]) {
                   externalQuestionNum = externalQuestionNum + 1;
               }
               if (pgNum + 1 == this.state.currentPageNumber) {
-                  internalQnList.push(internalQuestionNum);
                   if (!this.state.qnsToBeExcluded[pgNum][index]) {
                     localQnList.push(index + 1);
                     externalQnList.push(externalQuestionNum);
@@ -354,7 +349,6 @@ export default class edit extends Component {
                 return <Question
                     pgNum={pgNum + 1}
                     localQuestionNum = {localQnList[index]}
-                    internalQuestionNum={internalQnList[index]}
                     externalQuestionNum={externalQnList[index]}
                     title={row[1]}
                     option1={row[2]}
@@ -376,6 +370,125 @@ export default class edit extends Component {
       this.setState({
         "text" : listItems,
         'rows': newRows
+      });
+
+    }
+
+    handleOnAddQuestion = () => {
+      var tempData = []
+      var tempRow = []
+      //Add new question to the data
+      this.state.data.map((page, pgNum) =>
+        {
+          tempRow = []
+          page.map((row, index) =>
+            {
+              tempRow.push(row);
+              if (pgNum + 1 == this.state.currentPageNumber &&  index == page.length - 1) {
+                  tempRow.push([this.state.currentPageNumber,"-","-","-","-","-","-"]);
+              }
+            }
+          );
+          tempData.push(tempRow);
+        }
+      );
+      
+      //Update qnsToBeExcluded
+      var tempQnsToBeExcluded = []
+      tempData.map((page, pgNum) =>
+        {
+          var pageList = []
+          page.map((row, index) =>
+            {
+              if (pgNum + 1 == this.state.currentPageNumber &&  index == page.length - 1) {
+                pageList.push(false);
+              } else {
+                pageList.push(this.state.qnsToBeExcluded[pgNum][index]);
+              }
+            }
+            );
+            tempQnsToBeExcluded.push(pageList)
+        }
+      );
+
+      //Updates object representation [{},{},{}]
+      var newRows = []
+      tempData.map((page, index) =>
+        {
+          page.map((row, qnNum) =>
+            {
+              if (!tempQnsToBeExcluded[index][qnNum]){
+                const newRow = {
+                  title: row[1],
+                  option1: row[2],
+                  option2: row[3],
+                  option3: row[4],
+                  option4: row[5]
+                }
+                newRows.push(newRow)
+              }
+            }
+          );
+        }
+      );
+      
+      //Original [1,2,3,4,5]
+      //qnsToBeExcluded [False,False,True,False,False]
+      //External question numbers [1,2,3,4]
+
+      //Renders the questions using the new list representation (Creates the JSX)
+      //this.state.data => without deleted questions
+      //newData => with deleted questions
+      var externalQuestionNum = 0;
+      var localQnList = [];
+      var externalQnList = [];
+      var currentPage = [];
+      var listItems = null;
+      
+      tempData.map((page, pgNum) =>
+        {
+          page.map((row, index) =>
+            {
+              if (!tempQnsToBeExcluded[pgNum][index]) {
+                  externalQuestionNum = externalQuestionNum + 1;
+              }
+              if (pgNum + 1 == this.state.currentPageNumber) {
+                  if (!tempQnsToBeExcluded[pgNum][index]) {
+                    localQnList.push(index + 1);
+                    externalQnList.push(externalQuestionNum);
+                    currentPage.push(row);
+                  }
+              }
+            }
+          );
+          if (pgNum + 1 == this.state.currentPageNumber) {
+              listItems = currentPage.map((row, index) => {
+                return <Question
+                    pgNum={pgNum + 1}
+                    localQuestionNum = {localQnList[index]}
+                    externalQuestionNum={externalQnList[index]}
+                    title={row[1]}
+                    option1={row[2]}
+                    option2={row[3]}
+                    option3={row[4]}
+                    option4={row[5]}
+                    isChecked={false}
+                    handleOnChangeQuestion={this.handleOnChangeQuestion}
+                    handleOnChangeCheckbox={this.handleOnChangeCheckbox}
+                >
+                </Question>
+                }
+              );
+          }
+        }
+      );
+      console.log(listItems)
+
+      this.setState({
+        "text" : listItems,
+        'rows': newRows,
+        'data': tempData,
+        'qnsToBeExcluded': tempQnsToBeExcluded
       });
 
     }
@@ -404,16 +517,16 @@ export default class edit extends Component {
                   <div class="ui stackable four column grid">
                       {/*<Button variant="primary">Save Workspace</Button>*/}
                       <CsvDownloader
-                      filename="myfile"
-                      separator=","
-                      wrapColumnChar='"'
-                      columns={this.state.cols}
-                      datas={this.state.rows}
-                      text="DOWNLOAD">
-                        <Button variant="info" /*onClick: Save workspace, then download data as .csv*/>Download as .csv</Button>
+                        filename="myfile"
+                        separator=","
+                        wrapColumnChar='"'
+                        columns={this.state.cols}
+                        datas={this.state.rows}
+                        text="DOWNLOAD">
+                        <Button variant="info">Download as .csv</Button>
                       </CsvDownloader>
-                      {/*<Button variant="success">Upload to Database</Button>*/}
-                      {/*<Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>*/}
+                      <Button onClick={this.handleOnAddQuestion} variant="success">Add Question Below</Button>
+                      <Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>
                       <Button onClick={this.handleOnDeleteQuestions} variant="danger">Delete Selected Question(s)</Button>
                   </div>
               </Card>
