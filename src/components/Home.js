@@ -32,6 +32,14 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { withStyles } from "@material-ui/core/styles";
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
+//Use this for access through azure
+const ip = "http://ycampus.southeastasia.cloudapp.azure.com"
+const port = "3001"
+
+//Use this for access through localhost
+// const ip = "http://localhost"
+// const port = "3001"
+
 const options = {
   cMapUrl: 'cmaps/',
   cMapPacked: true,
@@ -49,7 +57,7 @@ const styles = theme => ({
 
 const pollServer = (formData) => {
   console.log("Requesting data from server...")
-  axios.post("http://ycampus.southeastasia.cloudapp.azure.com:3001/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
+  axios.post(ip + ":" + port + "/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
         window.startStream(response.data["YourIP"], response.data["YourTime"])
@@ -77,6 +85,14 @@ class home extends Component {
      this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': '', 'currentProgress': 0 }
      window.homeComponent = this;
      //is this visible
+  }
+
+  getIp = () => {
+    return ip;  
+  }
+
+  getPort = () => {
+    return port;  
   }
   
   setMsg = () => {
