@@ -70,7 +70,12 @@ class question extends React.Component {
             this.setState({'title' : e.target.value});
             this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 1, e.target.value)}}
       />
-      <IconButton color="primary" aria-label="add">
+      <IconButton 
+        color="primary" 
+        aria-label="add" 
+        onClick = {(e) => {
+          this.props.handleOnAddQuestion(this.state.pgNum, this.state.localQuestionNum)}}
+      >
         <AddCircleOutlineIcon />
       </IconButton>
       <IconButton 

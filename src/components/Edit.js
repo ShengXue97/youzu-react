@@ -76,6 +76,7 @@ export default class edit extends Component {
                 option4={row[5]}
                 isChecked={false}
                 handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
+                handleOnAddQuestion={this.handleOnAddQuestion}
                 handleOnChangeQuestion={this.handleOnChangeQuestion}
                 handleOnChangeCheckbox={this.handleOnChangeCheckbox}
             >
@@ -169,6 +170,7 @@ export default class edit extends Component {
                     option4={row[5]}
                     isChecked={this.state.tempQnsToBeExcluded[pgNum][localQnList[index] - 1]}
                     handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
+                    handleOnAddQuestion={this.handleOnAddQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -245,6 +247,7 @@ export default class edit extends Component {
             option4={row[5]}
             isChecked={false}
             handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
+            handleOnAddQuestion={this.handleOnAddQuestion}
             handleOnChangeQuestion={this.handleOnChangeQuestion}
             handleOnChangeCheckbox={this.handleOnChangeCheckbox}
         >
@@ -379,6 +382,7 @@ export default class edit extends Component {
                     option4={row[5]}
                     isChecked={this.state.tempQnsToBeExcluded[pgNum][localQnList[index] - 1]}
                     handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
+                    handleOnAddQuestion={this.handleOnAddQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -398,7 +402,7 @@ export default class edit extends Component {
 
     }
 
-    handleOnAddQuestion = () => {
+    handleOnAddQuestion = (addPgNum, addLocalQnNum) => {
       var tempData = []
       var tempRow = []
       //Add new question to the data
@@ -408,7 +412,7 @@ export default class edit extends Component {
           page.map((row, index) =>
             {
               tempRow.push(row);
-              if (pgNum + 1 == this.state.currentPageNumber &&  index == page.length - 1) {
+              if (pgNum + 1 == addPgNum &&  index + 1 == addLocalQnNum) {
                   tempRow.push([this.state.currentPageNumber,"-","-","-","-","-","-"]);
               }
             }
@@ -424,7 +428,7 @@ export default class edit extends Component {
           var pageList = []
           page.map((row, index) =>
             {
-              if (pgNum + 1 == this.state.currentPageNumber &&  index == page.length - 1) {
+              if (pgNum + 1 == addPgNum &&  index + 1 == addLocalQnNum) {
                 pageList.push(false);
               } else {
                 pageList.push(this.state.qnsToBeExcluded[pgNum][index]);
@@ -498,6 +502,7 @@ export default class edit extends Component {
                     option4={row[5]}
                     isChecked={false}
                     handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
+                    handleOnAddQuestion={this.handleOnAddQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
                     handleOnChangeCheckbox={this.handleOnChangeCheckbox}
                 >
@@ -550,7 +555,7 @@ export default class edit extends Component {
                         text="DOWNLOAD">
                         <Button variant="info">Download as .csv</Button>
                       </CsvDownloader>
-                      <Button onClick={this.handleOnAddQuestion} variant="success">Add Question Below</Button>
+                      {/* <Button onClick={this.handleOnAddQuestion} variant="success">Add Question Below</Button> */}
                       <Button onClick={this.handleOnRevertToOriginal} variant = "warning">Revert to Original</Button>
                       <Button
                         variant="danger"
