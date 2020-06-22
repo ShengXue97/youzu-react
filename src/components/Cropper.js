@@ -93,7 +93,7 @@ class Cropper extends PureComponent {
         var reader = new FileReader();
         reader.readAsDataURL(blob); 
         reader.onloadend = function() {
-            base64data = reader.result;
+            base64data = reader.result;  // data:image/png[jpg];base64, {base64 text}
             blob.name = fileName;
             window.URL.revokeObjectURL(this.fileUrl);
             this.fileUrl = window.URL.createObjectURL(blob);

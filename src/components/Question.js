@@ -39,7 +39,7 @@ const Diagram = (image) => {
     var encodedImg = null;
     var imgsJSX = imageList.map((img) => {
         if (img !== "" && img !== "-") {
-            return <img src={"data:image/png[jpg];base64," + img}
+            return <img src={"data:image/png[jpg];base64," + img}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
                         className="img-thumbnail"
                         style={{"width": "50%"}}
                         alt="Diagram"/>
