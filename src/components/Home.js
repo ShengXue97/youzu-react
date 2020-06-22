@@ -31,14 +31,15 @@ import { Pagination } from 'semantic-ui-react'
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { withStyles } from "@material-ui/core/styles";
 import ProgressBar from 'react-bootstrap/ProgressBar'
+import Cropper from './Cropper';
 
 //Use this for access through azure
-const ip = "http://ycampus.southeastasia.cloudapp.azure.com"
-const port = "3001"
+// const ip = "http://ycampus.southeastasia.cloudapp.azure.com"
+// const port = "3001"
 
 //Use this for access through localhost
-// const ip = "http://localhost"
-// const port = "3001"
+const ip = "http://localhost"
+const port = "3001"
 
 const options = {
   cMapUrl: 'cmaps/',
