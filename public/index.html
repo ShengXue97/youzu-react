@@ -92,7 +92,6 @@
               if (isDone == true && alreadyOpenedEditPage == false){
                 alreadyOpenedEditPage = true;
                 axios.post(ip + ":" + port + "/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime, {timeout : 1000 * 10})
-
                   .then(function (response) {
                     // handle success
                     console.log(response)

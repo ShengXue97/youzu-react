@@ -12,6 +12,16 @@ class Cropper extends PureComponent {
       width: 30,
     }
   };
+  
+  componentDidUpdate(prevProps) {
+    if(this.props != prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    {
+      this.setState({
+        'src': this.props.src,
+      });
+    }
+  }
+
 
   onSelectFile = e => {
     if (e.target.files && e.target.files.length > 0) {
