@@ -35,7 +35,6 @@ var Buffer = require('buffer/').Buffer;
 
 
 const Diagram = (image) => {
-    console.log(image);
     var imageList = image.split(" ");
     var encodedImg = null;
     var imgsJSX = imageList.map((img) => {
@@ -51,11 +50,9 @@ const Diagram = (image) => {
         // } else {
         //     encodedImg = new Buffer.from(img, 'base64');
         // }
-        // console.log("data:image/png[jpg];base64," + encodedImg);
 
         // }
     })
-    // console.log(imgsJSX);
     return imgsJSX;
 }
 

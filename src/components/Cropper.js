@@ -50,11 +50,14 @@ class Cropper extends PureComponent {
 
   async makeClientCrop(crop) {
     if (this.imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await this.getCroppedImg(
+      const result = await this.getCroppedImg(
         this.imageRef,
         crop,
         "newFile.jpeg"
       );
+      var croppedImageUrl = result[0]
+      var croppedImageBase64 = result[1]
+      this.props.updateCroppedImage(croppedImageBase64);
       this.setState({ croppedImageUrl });
     }
   }
@@ -86,10 +89,16 @@ class Cropper extends PureComponent {
           console.error("Canvas is empty");
           return;
         }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(this.fileUrl);
-        this.fileUrl = window.URL.createObjectURL(blob);
-        resolve(this.fileUrl);
+        var base64data = null;
+        var reader = new FileReader();
+        reader.readAsDataURL(blob); 
+        reader.onloadend = function() {
+            base64data = reader.result;
+            blob.name = fileName;
+            window.URL.revokeObjectURL(this.fileUrl);
+            this.fileUrl = window.URL.createObjectURL(blob);
+            resolve([this.fileUrl, base64data]);
+        }
       }, "image/jpeg");
     });
   }
