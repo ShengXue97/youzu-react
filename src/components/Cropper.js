@@ -108,9 +108,6 @@ class Cropper extends PureComponent {
 
     return (
       <div className="App">
-        <div>
-          <input type="file" accept="image/*" onChange={this.onSelectFile} />
-        </div>
         {src && (
           <ReactCrop
             src={this.state.src}
