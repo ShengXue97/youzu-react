@@ -41,9 +41,7 @@ export default class edit extends Component {
       } else {
         data = window.data.data;
       }
-      
-      console.log(JSON.stringify(data))
-      console.log(typeof(data));
+    
       const cols = [{
         id: 'title',
         displayName: "title"
@@ -321,7 +319,6 @@ export default class edit extends Component {
       } else {
         curQnsToBeExcluded = this.state.tempQnsToBeExcluded;
       }
-      console.log(curQnsToBeExcluded)
 
       //Updates object representation [{},{},{}]
       var newRows = []
@@ -397,7 +394,6 @@ export default class edit extends Component {
           }
         }
       );
-      console.log(listItems)
 
       this.setState({
         "text" : listItems,
@@ -427,22 +423,32 @@ export default class edit extends Component {
       );
       
       //Update qnsToBeExcluded
-      var tempQnsToBeExcluded = []
+      var newTempQnsToBeExcluded = []
+      var newQnsToBeExcluded = []
       tempData.map((page, pgNum) =>
         {
-          var pageList = []
+          var pageList1 = []
+          var pageList2 = []
           page.map((row, index) =>
             {
-              if (pgNum + 1 == addPgNum &&  index + 1 == addLocalQnNum) {
-                pageList.push(false);
-              } else {
-                pageList.push(this.state.qnsToBeExcluded[pgNum][index]);
+              if (pgNum + 1 == addPgNum &&  index + 1 <= addLocalQnNum) {
+                pageList1.push(this.state.tempQnsToBeExcluded[pgNum][index]);
+                pageList2.push(this.state.qnsToBeExcluded[pgNum][index]);
+              } else if (pgNum + 1 == addPgNum &&  index + 1 == addLocalQnNum + 1) {
+                pageList1.push(false);
+                pageList2.push(false);
+              } else if (pgNum + 1 == addPgNum &&  index + 1 > addLocalQnNum + 1) {
+                pageList1.push(this.state.tempQnsToBeExcluded[pgNum][index - 1]);
+                pageList2.push(this.state.qnsToBeExcluded[pgNum][index - 1]);
               }
             }
             );
-            tempQnsToBeExcluded.push(pageList)
+            newTempQnsToBeExcluded.push(pageList1)
+            newQnsToBeExcluded.push(pageList2)
         }
       );
+      console.log(newTempQnsToBeExcluded);
+      console.log(newQnsToBeExcluded);
 
       //Updates object representation [{},{},{}]
       var newRows = []
@@ -450,7 +456,7 @@ export default class edit extends Component {
         {
           page.map((row, qnNum) =>
             {
-              if (!tempQnsToBeExcluded[index][qnNum]){
+              if (!newQnsToBeExcluded[index][qnNum]){
                 const newRow = {
                   title: row[1],
                   option1: row[2],
@@ -482,11 +488,11 @@ export default class edit extends Component {
         {
           page.map((row, index) =>
             {
-              if (!tempQnsToBeExcluded[pgNum][index]) {
+              if (!newQnsToBeExcluded[pgNum][index]) {
                   externalQuestionNum = externalQuestionNum + 1;
               }
               if (pgNum + 1 == this.state.currentPageNumber) {
-                  if (!tempQnsToBeExcluded[pgNum][index]) {
+                  if (!newQnsToBeExcluded[pgNum][index]) {
                     localQnList.push(index + 1);
                     externalQnList.push(externalQuestionNum);
                     currentPage.push(row);
@@ -506,7 +512,7 @@ export default class edit extends Component {
                     option3={row[4]}
                     option4={row[5]}
                     images={row[7]}
-                    isChecked={false}
+                    isChecked={newTempQnsToBeExcluded[pgNum][localQnList[index] - 1]}
                     handleOnDeleteSingleQuestion={this.handleOnDeleteSingleQuestion}
                     handleOnAddQuestion={this.handleOnAddQuestion}
                     handleOnChangeQuestion={this.handleOnChangeQuestion}
@@ -518,13 +524,13 @@ export default class edit extends Component {
           }
         }
       );
-      console.log(listItems)
 
       this.setState({
         "text" : listItems,
         'rows': newRows,
         'data': tempData,
-        'qnsToBeExcluded': JSON.parse(JSON.stringify(tempQnsToBeExcluded))
+        'qnsToBeExcluded': JSON.parse(JSON.stringify(newQnsToBeExcluded)),
+        'tempQnsToBeExcluded': JSON.parse(JSON.stringify(newTempQnsToBeExcluded))
       });
 
     }
