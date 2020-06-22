@@ -21,7 +21,8 @@ import CheckBox from 'react-bootstrap';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import ImageIcon from '@material-ui/icons/Image';
+import { green } from '@material-ui/core/colors';
 
 /* checker to see if given question's image_file column contains authentic base64 text */
 // function isDataURL(s) {
@@ -134,12 +135,12 @@ class question extends React.Component {
               </IconButton>
 
               <IconButton
-                color="secondary"
+                style={{ color: green[500] }}
                 aria-label="delete"
                 onClick = {(e) => {
                   this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum)}}
               >
-                <DeleteIcon />
+                <ImageIcon />
               </IconButton>
 
             </InputGroup>
