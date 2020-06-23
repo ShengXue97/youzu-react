@@ -32,14 +32,13 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { withStyles } from "@material-ui/core/styles";
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import Cropper from './Cropper';
+import serverInfo from './serverInfo.js'; // Relative path to your File
 
-//Use this for access through azure
-// const ip = "http://ycampus.southeastasia.cloudapp.azure.com"
-// const port = "3001"
+//http://ycampus.southeastasia.cloudapp.azure.com
+//http://localhost
 
-//Use this for access through localhost
-const ip = "http://localhost"
-const port = "3001"
+const ip = serverInfo.split(",")[0]
+const port = serverInfo.split(",")[1]
 
 const options = {
   cMapUrl: 'cmaps/',
@@ -61,6 +60,8 @@ const pollServer = (formData) => {
   axios.post(ip + ":" + port + "/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
       .then(function (response) {
         // handle success
+        console.log(response.data)
+        
         window.startStream(response.data["YourIP"], response.data["YourTime"])
         // var newWindow = window.open("edit");
         // newWindow.data = response
@@ -83,7 +84,7 @@ class home extends Component {
   constructor(props) {
      super(props);
      loadProgressBar()
-     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': '', 'currentProgress': 0 }
+     this.state = {'msgVariant':'primary', 'msgText':'Upload a file to begin!', 'extraMsg': '', 'currentProgress': 0, 'filename' : '' }
      window.homeComponent = this;
      //is this visible
   }
