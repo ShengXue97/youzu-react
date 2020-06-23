@@ -23,7 +23,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { green } from '@material-ui/core/colors';
-import ModalImage from "react-modal-image";
+import Popup from "reactjs-popup";
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 
 
@@ -44,14 +44,18 @@ const Diagram = (image) => {
     var imgsJSX = imageList.map((img) => {
         if (img !== "" && img !== "-") {
             var fullImgURL = "data:image/png[jpg];base64," + img;
-            return <ModalImage
-                        small={fullImgURL}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
-                        medium={fullImgURL}
-                        large={fullImgURL}
-                        hideDownload={true}
-                        hideZoom={true}
-                        style={{"width": "20%%"}}
-                        alt="Diagram"/>
+            // return <ModalImage
+            //             small={fullImgURL}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
+            //             medium={fullImgURL}
+            //             large={fullImgURL}
+            //             hideDownload={true}
+            //             hideZoom={true}
+            //             style={{"width": "20%"}}
+            //             alt="Diagram"/>
+            return <Popup modal trigger={<img className="img-thumbnail"
+                                              style={{"width": "40%", "cursor": "pointer"}} src={fullImgURL} />}>
+                <img src={fullImgURL} alt="diagram"/>
+            </Popup>
         }
         // if (isDataURL(eachImg)) {
         // if (typeof(Buffer.from === "function")) {
