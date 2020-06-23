@@ -54,7 +54,7 @@ const Diagram = (image) => {
             //             alt="Diagram"/>
             return <Popup modal trigger={<img className="img-thumbnail"
                                               style={{"width": "40%", "cursor": "pointer"}} src={fullImgURL} />}>
-                <img src={fullImgURL} alt="diagram"/>
+                <img src={fullImgURL} style={{"maxWidth": "70vh"}} alt="diagram"/>
             </Popup>
         }
         // if (isDataURL(eachImg)) {
