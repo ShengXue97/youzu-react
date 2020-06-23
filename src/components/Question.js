@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { green } from '@material-ui/core/colors';
 import ModalImage from "react-modal-image";
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 
 
 /* checker to see if given question's image_file column contains authentic base64 text */
@@ -124,6 +125,44 @@ class question extends React.Component {
   //   }
 
 
+  async getBase(file) {
+    return new Promise((resolve, reject) => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        var fileBase64 = reader.result;
+        resolve(fileBase64)
+      };
+      reader.onerror = function (error) {
+        reject(error);
+      };
+    });
+ }
+
+  async onDrop(files) {
+    var firstFile = files[0]
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      // console.log(event.target.result);
+      window.fileData = event.target.result;
+    };
+    reader.readAsDataURL(firstFile);
+
+    var fileBase64 = new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(firstFile);
+        reader.onload = function () {
+          var fileBase64 = reader.result;
+          resolve(fileBase64)
+        };
+        reader.onerror = function (error) {
+          reject(error);
+        };
+    }).then((fileBase64)=> {
+      this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, fileBase64.split(",")[1])
+    })
+  }
+
   render() {
     return <div className="border-bottom border-primary" style={{"display": "block", "textAlign": "center",
         "width": "97%", "marginBottom": "2em", "paddingLeft": "3em"}}>
@@ -168,10 +207,23 @@ class question extends React.Component {
                 style={{ color: green[500] }}
                 aria-label="delete"
                 onClick = {(e) => {
-                  this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum)}}
-              >
+                  this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, "")}}
+              >  
                 <ImageIcon />
               </IconButton>
+
+              <div>
+                <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"} onDrop={(files) => this.onDrop(files)}>
+                  <IconButton
+                    style={{ color: green[500] }}
+                    aria-label="delete"
+                  >  
+                    <ImageSearchIcon />
+                  </IconButton>
+                </Dropzone>   
+              </div>
+
+              
 
             </InputGroup>
             <div style = {{paddingLeft : "3em", "maxWidth": "inherit"}}>
