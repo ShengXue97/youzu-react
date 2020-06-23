@@ -23,7 +23,9 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { green } from '@material-ui/core/colors';
+import ModalImage from "react-modal-image";
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+
 
 /* checker to see if given question's image_file column contains authentic base64 text */
 // function isDataURL(s) {
@@ -41,9 +43,14 @@ const Diagram = (image) => {
     var encodedImg = null;
     var imgsJSX = imageList.map((img) => {
         if (img !== "" && img !== "-") {
-            return <img src={"data:image/png[jpg];base64," + img}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
-                        className="img-thumbnail"
-                        style={{"width": "50%"}}
+            var fullImgURL = "data:image/png[jpg];base64," + img;
+            return <ModalImage
+                        small={fullImgURL}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
+                        medium={fullImgURL}
+                        large={fullImgURL}
+                        hideDownload={true}
+                        hideZoom={true}
+                        style={{"width": "20%%"}}
                         alt="Diagram"/>
         }
         // if (isDataURL(eachImg)) {
@@ -93,6 +100,29 @@ class question extends React.Component {
       });
     }
   }
+
+  // handleImgClick = (clickedImg) => {
+  //       return (
+  //       <Modal
+  //         {...clickedImg}
+  //         size="lg"
+  //         aria-labelledby="contained-modal-title-vcenter"
+  //         centered
+  //       >
+  //         <Modal.Header closeButton>
+  //           <Modal.Title id="contained-modal-title-vcenter">
+  //             Image
+  //           </Modal.Title>
+  //         </Modal.Header>
+  //         <Modal.Body>
+  //           <img src={clickedImg} alt='Image'/>
+  //         </Modal.Body>
+  //         <Modal.Footer>
+  //           <Button onClick={props.onHide}>Close</Button>
+  //         </Modal.Footer>
+  //       </Modal>
+  //     );
+  //   }
 
 
   async getBase(file) {
