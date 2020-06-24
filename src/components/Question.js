@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { green, blue } from '@material-ui/core/colors';
 import Popup from "reactjs-popup";
+import './diagram.css';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Picture } from 'react-responsive-picture';
@@ -54,9 +55,27 @@ const Diagram = (image) => {
             //             hideZoom={true}
             //             style={{"width": "20%"}}
             //             alt="Diagram"/>
-            return <Popup modal trigger={<img className="img-thumbnail"
-                                              style={{"width": "40%", "cursor": "pointer"}} src={fullImgURL} />}
-                                style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
+            return <Popup modal
+                          trigger={
+                              <div className={"diagram-wrap"}>
+                                <span className={"delete-btn"} title={"Delete image"}>
+                                    &times;
+                                </span>
+                                <img className="img-thumbnail" style={{"width": "40%", "cursor": "pointer"}}
+                                        title="Expand image" src={fullImgURL} />
+                                {/*<IconButton*/}
+                                {/*    className={"diagramBtn"}*/}
+                                {/*    color="primary"*/}
+                                {/*    aria-label="add"*/}
+                                {/*    title={"Delete this image"}*/}
+                                {/*    // onClick = {(e) => {*/}
+                                {/*    //   this.props.handleOnAddQuestion(this.state.pgNum,*/}
+                                {/*    //       this.state.localQuestionNum)}}*/}
+                                {/*  >*/}
+                                {/*    <DeleteIcon />*/}
+                                {/*</IconButton>*/}
+                              </div>}
+                          style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
                 <img style={{"width": "inherit"}} src={fullImgURL} />
             </Popup>
         }
@@ -87,6 +106,7 @@ class question extends React.Component {
         'option4': this.props.option4,
         'images': this.props.images,
         'isChecked': this.props.isChecked,
+        'answer': this.props.answer
       };
   }
 
@@ -103,7 +123,8 @@ class question extends React.Component {
         'option3': this.props.option3,
         'option4': this.props.option4,
         'images': this.props.images,
-        'isChecked': this.props.isChecked
+        'isChecked': this.props.isChecked,
+        'answer': this.props.answer
       });
     }
   }
@@ -215,7 +236,7 @@ class question extends React.Component {
               <IconButton
                 style={{ color: green[500] }}
                 aria-label="delete"
-                title={"Crop a region on the preview and add it to this question"}
+                title={"Add cropped area on preview to this question"}
                 onClick = {(e) => {
                   this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, "")}}
               >  
@@ -288,6 +309,20 @@ class question extends React.Component {
                     onChange={(e) => {
                       this.setState({'option4' : e.target.value});
                       this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 5, e.target.value)}}
+                  />
+                </InputGroup>
+
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">Answer </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    // value={this.state.answer}
+                    placeholder={"e.g. if the answer is option 1, simply key in '1'"}
+                    aria-describedby="basic-addon1"
+                    onChange={(e) => {
+                      this.setState({'answer' : e.target.value});
+                      this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 8, e.target.value)}}
                   />
                 </InputGroup>
               </ListGroup>
