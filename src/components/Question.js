@@ -22,9 +22,11 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
-import { green } from '@material-ui/core/colors';
+import { green, blue } from '@material-ui/core/colors';
 import Popup from "reactjs-popup";
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import PublishIcon from '@material-ui/icons/Publish';
+import { Picture } from 'react-responsive-picture';
 
 
 /* checker to see if given question's image_file column contains authentic base64 text */
@@ -53,8 +55,9 @@ const Diagram = (image) => {
             //             style={{"width": "20%"}}
             //             alt="Diagram"/>
             return <Popup modal trigger={<img className="img-thumbnail"
-                                              style={{"width": "40%", "cursor": "pointer"}} src={fullImgURL} />}>
-                <img src={fullImgURL} style={{"maxWidth": "70vw"}} alt="diagram"/>
+                                              style={{"width": "40%", "cursor": "pointer"}} src={fullImgURL} />}
+                                style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
+                <img style={{"width": "inherit"}} src={fullImgURL} />
             </Popup>
         }
         // if (isDataURL(eachImg)) {
@@ -193,6 +196,7 @@ class question extends React.Component {
               <IconButton
                 color="primary"
                 aria-label="add"
+                title={"Add a new question below"}
                 onClick = {(e) => {
                   this.props.handleOnAddQuestion(this.state.pgNum, this.state.localQuestionNum)}}
               >
@@ -201,6 +205,7 @@ class question extends React.Component {
               <IconButton
                 color="secondary"
                 aria-label="delete"
+                title={"Delete this question"}
                 onClick = {(e) => {
                   this.props.handleOnDeleteSingleQuestion(this.state.pgNum, this.state.localQuestionNum)}}
               >
@@ -210,6 +215,7 @@ class question extends React.Component {
               <IconButton
                 style={{ color: green[500] }}
                 aria-label="delete"
+                title={"Crop a region on the preview and add it to this question"}
                 onClick = {(e) => {
                   this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, "")}}
               >  
@@ -219,10 +225,11 @@ class question extends React.Component {
               <div>
                 <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"} onDrop={(files) => this.onDrop(files)}>
                   <IconButton
-                    style={{ color: green[500] }}
+                    style={{ color: blue[500] }}
                     aria-label="delete"
+                    title={"Upload your own diagram!"}
                   >  
-                    <ImageSearchIcon />
+                    <PublishIcon />
                   </IconButton>
                 </Dropzone>   
               </div>
