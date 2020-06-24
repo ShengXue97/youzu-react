@@ -65,6 +65,11 @@
 
             if (dictStatus != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
               filename = dictStatus["filename"]
+              level = dictStatus["level"]
+              subject = dictStatus["subject"]
+              year = dictStatus["year"]
+              school = dictStatus["school"]
+              exam = dictStatus["exam"]
               var statusString = ""
               if (dictStatus["stage"] == 3){
                 statusString = "Done!"
