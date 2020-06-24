@@ -125,7 +125,7 @@ export default class library extends Component {
           actions={[
             {
               icon: 'launch',
-              tooltip: 'Save User',
+              tooltip: 'Open Workspace',
               onClick: (event, rowData) => this.openWorkspace(rowData.name)
             },
             {
