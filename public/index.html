@@ -121,7 +121,8 @@
                     // handle success
                     console.log(response)
                     console.log(filename)
-                    var newWindow = window.open('#/edit', '_self');
+                    // var newWindow = window.open('#/edit', '_self');
+                    var newWindow = window.open('#/edit');
                     $.ajax({
                         type: 'POST',
                         url: '/echo/json/',
