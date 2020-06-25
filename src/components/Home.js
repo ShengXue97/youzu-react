@@ -108,8 +108,6 @@ class home extends Component {
           this.setState({'sessionID': response.data['YourSessionID'], 'msgVariant':'warning', 'msgText':"Selected file: '" + filename + ", processing...", 'extraMsg':"Status: Server responded, processing..."});
   
           window.startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'], curRequestNo)
-          // var newWindow = window.open("edit");
-          // newWindow.data = response
         })
   }
 

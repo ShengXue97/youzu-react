@@ -43,7 +43,7 @@
       //Prevents multiple tabs from opening
       var alreadyOpenedEditPage = false
       var filename = ""
-
+      
       function startStream(currentIP, currentTime, sessionID, curRequestNo){
         // Allows edit page to open one more time every time the user uploads a new file
         var ip = "http://ycampus.southeastasia.cloudapp.azure.com"
@@ -121,7 +121,16 @@
                     // handle success
                     console.log(response)
                     console.log(filename)
-                    var newWindow = window.open("#/edit");
+                    var newWindow = window.open('#/edit', '_self');
+                    // var newWindow = window.open('#/edit');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/echo/json/',
+                        success: function (data) {
+                            redirectWindow.location;
+                        }
+                    });
+
                     newWindow.myname = filename
                     newWindow.csvdata = response.data
                     newWindow.fileData = window.fileData
@@ -136,7 +145,6 @@
                     // handle error
                     console.log(error)
                     source.close();
-                    //window.open("edit", "_self");
                   })
               }
             }
