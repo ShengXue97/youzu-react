@@ -24,7 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
 import { green, blue } from '@material-ui/core/colors';
 import Popup from "reactjs-popup";
-import './diagram.css';
+import '../diagram.css';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import PublishIcon from '@material-ui/icons/Publish';
 import { Picture } from 'react-responsive-picture';
@@ -194,71 +194,33 @@ class question extends React.Component {
   render() {
     return <div className="border-bottom border-primary" style={{"display": "block", "textAlign": "center",
         "width": "97%", "marginBottom": "2em", "paddingLeft": "3em"}}>
-    <Row bsPrefix={"row"} style={{"width": "inherit"}}>
-        <Container fluid>
+    <Row bsPrefix={"row"} style={{"width": "100%"}}>
+        <Col xs={10} sm={10} md={10} lg={10} xl={10} style={{"padding": 0}}>
             <InputGroup className="mb-3" style={{"width": "inherit"}}>
               <InputGroup.Prepend>
                   <InputGroup.Checkbox
+                    title={"Select Question"}
                     checked = {this.state.isChecked}
                     onChange={(e) => {
                         this.setState({'isChecked' : e.target.checked});
-                        this.props.handleOnChangeCheckbox(this.state.pgNum, this.state.localQuestionNum, e.target.checked)}}
+                        this.props.handleOnChangeCheckbox(this.state.pgNum,
+                            this.state.localQuestionNum, e.target.checked)}}
                   />
                   <InputGroup.Text id="basic-addon1">{this.state.externalQuestionNum} </InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl
-                style={{"height": "inherit"}}
+              <textarea
+                className={"form-control"}
+                rows={"3"}
                 value={this.state.title}
                 aria-describedby="basic-addon1"
                 onChange = {(e) => {
                     this.setState({'title' : e.target.value});
-                    this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 1, e.target.value)}}
+                    this.props.handleOnChangeQuestion(this.state.pgNum,
+                        this.state.localQuestionNum, 1, e.target.value)}}
               />
-              <IconButton
-                color="primary"
-                aria-label="add"
-                title={"Add a new question below"}
-                onClick = {(e) => {
-                  this.props.handleOnAddQuestion(this.state.pgNum, this.state.localQuestionNum)}}
-              >
-                <AddCircleOutlineIcon />
-              </IconButton>
-              <IconButton
-                color="secondary"
-                aria-label="delete"
-                title={"Delete this question"}
-                onClick = {(e) => {
-                  this.props.handleOnDeleteSingleQuestion(this.state.pgNum, this.state.localQuestionNum)}}
-              >
-                <DeleteIcon />
-              </IconButton>
-
-              <IconButton
-                style={{ color: green[500] }}
-                aria-label="delete"
-                title={"Add cropped area on preview to this question"}
-                onClick = {(e) => {
-                  this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, "")}}
-              >  
-                <ImageIcon />
-              </IconButton>
-
-              <div>
-                <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"} onDrop={(files) => this.onDrop(files)}>
-                  <IconButton
-                    style={{ color: blue[500] }}
-                    aria-label="delete"
-                    title={"Upload your own diagram!"}
-                  >  
-                    <PublishIcon />
-                  </IconButton>
-                </Dropzone>   
-              </div>
-
-              
 
             </InputGroup>
-            <div style = {{paddingLeft : "3em", "maxWidth": "inherit"}}>
+            <div style = {{paddingLeft : "3em", "maxWidth": "100%", "marginRight": 0, "paddingRight": 0}}>
               <ListGroup>
                 <InputGroup className="mb-3">
                   <InputGroup.Prepend>
@@ -269,7 +231,8 @@ class question extends React.Component {
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                         this.setState({'option1' : e.target.value});
-                        this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 2, e.target.value)}}
+                        this.props.handleOnChangeQuestion(this.state.pgNum,
+                            this.state.localQuestionNum, 2, e.target.value)}}
                   />
                 </InputGroup>
 
@@ -282,7 +245,8 @@ class question extends React.Component {
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                         this.setState({'option2' : e.target.value});
-                        this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 3, e.target.value)}}
+                        this.props.handleOnChangeQuestion(this.state.pgNum,
+                            this.state.localQuestionNum, 3, e.target.value)}}
                   />
                 </InputGroup>
 
@@ -295,7 +259,8 @@ class question extends React.Component {
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                         this.setState({'option3' : e.target.value});
-                        this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 4, e.target.value)}}
+                        this.props.handleOnChangeQuestion(this.state.pgNum,
+                            this.state.localQuestionNum, 4, e.target.value)}}
                   />
                 </InputGroup>
 
@@ -308,7 +273,8 @@ class question extends React.Component {
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                       this.setState({'option4' : e.target.value});
-                      this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 5, e.target.value)}}
+                      this.props.handleOnChangeQuestion(this.state.pgNum,
+                          this.state.localQuestionNum, 5, e.target.value)}}
                   />
                 </InputGroup>
 
@@ -317,17 +283,61 @@ class question extends React.Component {
                   <InputGroup.Text id="basic-addon1">Answer </InputGroup.Text>
                   </InputGroup.Prepend>
                   <FormControl
-                    // value={this.state.answer}
+                    value={this.state.answer}
                     placeholder={"e.g. if the answer is option 1, simply key in '1'"}
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                       this.setState({'answer' : e.target.value});
-                      this.props.handleOnChangeQuestion(this.state.pgNum, this.state.localQuestionNum, 8, e.target.value)}}
+                      this.props.handleOnChangeQuestion(this.state.pgNum,
+                          this.state.localQuestionNum, 8, e.target.value)}}
                   />
                 </InputGroup>
               </ListGroup>
             </div>
-        </Container>
+        </Col>
+        <Col xs={2} sm={2} md={2} lg={2} xl={2}>
+            <IconButton
+                color="primary"
+                aria-label="add"
+                title={"Add a new question below"}
+                onClick = {(e) => {
+                  this.props.handleOnAddQuestion(this.state.pgNum, this.state.localQuestionNum)}}
+            >
+                <AddCircleOutlineIcon />
+            </IconButton>
+            <IconButton
+                color="secondary"
+                aria-label="delete"
+                title={"Delete this question"}
+                onClick = {(e) => {
+                  this.props.handleOnDeleteSingleQuestion(this.state.pgNum, this.state.localQuestionNum)}}
+            >
+                <DeleteIcon />
+            </IconButton>
+
+            <IconButton
+                style={{ color: green[500] }}
+                aria-label="delete"
+                title={"Add cropped area on preview to this question"}
+                onClick = {(e) => {
+                  this.props.handleOnAddImage(this.state.pgNum, this.state.localQuestionNum, "")}}
+            >
+                <ImageIcon />
+            </IconButton>
+
+            <div>
+                <Dropzone style={{"width" : "100%", "height" : "50%"}} name={"hey"}
+                          onDrop={(files) => this.onDrop(files)}>
+                  <IconButton
+                    style={{ color: blue[500] }}
+                    aria-label="delete"
+                    title={"Upload your own diagram!"}
+                  >
+                    <PublishIcon />
+                  </IconButton>
+                </Dropzone>
+            </div>
+        </Col>
     </Row>
     <Row bsPrefix={"row"} style={{"paddingLeft": "4em", "textAlign": "center", "maxHeight": "15em", "marginBottom": "2em", "width": "95%"}}>
         <Container className="border border-light"
