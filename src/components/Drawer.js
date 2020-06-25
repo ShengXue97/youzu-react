@@ -80,7 +80,7 @@ function ResponsiveDrawer(props) {
       </List>
       <Divider />
       <List>
-          {['Home', 'Library', 'Format'].map((text, index) => (
+          {['Home', 'Library', 'Changelog'].map((text, index) => (
             <ListItem component={Link} to={text}  button key={text}>
               <ListItemIcon>{index === 0 ? <HomeIcon /> : index === 1 ? <LibraryBooksIcon /> : <FormatShapesIcon />}</ListItemIcon>
               <ListItemText primary={text} />

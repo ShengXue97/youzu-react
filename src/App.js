@@ -6,7 +6,7 @@ import Home from './components/Home';
 import Edit from './components/Edit';
 import Library from './components/Library';
 import Settings from './components/Settings';
-import Format from './components/Format';
+import Changelog from './components/Changelog';
 
 class App extends Component {
   render() {
@@ -18,7 +18,7 @@ class App extends Component {
           <Route path="/edit" component={Edit} />
           <Route path="/library" component={Library} />
           <Route path="/settings" component={Settings} />
-          <Route path="/format" component={Format} />
+          <Route path="/changelog" component={Changelog} />
         </div>
       </HashRouter>
     );
