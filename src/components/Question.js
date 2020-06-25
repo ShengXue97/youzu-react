@@ -41,55 +41,7 @@ import { Picture } from 'react-responsive-picture';
 var Buffer = require('buffer/').Buffer;
 
 
-const Diagram = (image) => {
-    var imageList = image.split(" ");
-    var encodedImg = null;
-    var imgsJSX = imageList.map((img) => {
-        if (img !== "" && img !== "-") {
-            var fullImgURL = "data:image/png[jpg];base64," + img;
-            // return <ModalImage
-            //             small={fullImgURL}  // data:image/png[jpg];base64,data:image/png[jpg];base64, base64
-            //             medium={fullImgURL}
-            //             large={fullImgURL}
-            //             hideDownload={true}
-            //             hideZoom={true}
-            //             style={{"width": "20%"}}
-            //             alt="Diagram"/>
-            return <Popup modal
-                          trigger={
-                              <div className={"diagram-wrap"}>
-                                <span className={"delete-btn"} title={"Delete image"}>
-                                    &times;
-                                </span>
-                                <img className="img-thumbnail" style={{"width": "40%", "cursor": "pointer"}}
-                                        title="Expand image" src={fullImgURL} />
-                                {/*<IconButton*/}
-                                {/*    className={"diagramBtn"}*/}
-                                {/*    color="primary"*/}
-                                {/*    aria-label="add"*/}
-                                {/*    title={"Delete this image"}*/}
-                                {/*    // onClick = {(e) => {*/}
-                                {/*    //   this.props.handleOnAddQuestion(this.state.pgNum,*/}
-                                {/*    //       this.state.localQuestionNum)}}*/}
-                                {/*  >*/}
-                                {/*    <DeleteIcon />*/}
-                                {/*</IconButton>*/}
-                              </div>}
-                          style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
-                <img style={{"width": "inherit"}} src={fullImgURL} />
-            </Popup>
-        }
-        // if (isDataURL(eachImg)) {
-        // if (typeof(Buffer.from === "function")) {
-        //     encodedImg = Buffer.from(img, 'base64');
-        // } else {
-        //     encodedImg = new Buffer.from(img, 'base64');
-        // }
 
-        // }
-    })
-    return imgsJSX;
-}
 
 
 class question extends React.Component {
@@ -192,6 +144,37 @@ class question extends React.Component {
   }
 
   render() {
+    const Diagram = (image) => {
+        var imageList = image.split(" ");
+        var encodedImg = null;
+        var imgsJSX = imageList.map((img, imgidx) => {
+            if (img !== "" && img !== "-") {
+                var fullImgURL = "data:image/png[jpg];base64," + img;
+                return <div className={"diagram-wrap"}>
+                    <Popup modal
+                           trigger={<img className="img-thumbnail" style={{"width": "40%", "cursor": "pointer"}}
+                                         title="Expand image" src={fullImgURL} />}
+                           style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
+                    <img style={{"width": "inherit"}} src={fullImgURL} />
+                    </Popup>
+                    <span className={"delete-btn"} title={"Delete image"}
+                          onClick = {(e) => {this.props.handleOnDeleteImage(this.state.pgNum,
+                              this.state.localQuestionNum, imgidx)}}>
+                        &times;
+                    </span>
+                </div>
+            }
+            // if (isDataURL(eachImg)) {
+            // if (typeof(Buffer.from === "function")) {
+            //     encodedImg = Buffer.from(img, 'base64');
+            // } else {
+            //     encodedImg = new Buffer.from(img, 'base64');
+            // }
+
+            // }
+        })
+        return imgsJSX;
+    }
     return <div className="border-bottom border-primary" style={{"display": "block", "textAlign": "center",
         "width": "97%", "marginBottom": "2em", "paddingLeft": "3em"}}>
     <Row bsPrefix={"row"} style={{"width": "100%"}}>
@@ -211,6 +194,7 @@ class question extends React.Component {
               <textarea
                 className={"form-control"}
                 rows={"3"}
+                style={{"minHeight": "3em"}}
                 value={this.state.title}
                 aria-describedby="basic-addon1"
                 onChange = {(e) => {
