@@ -65,10 +65,19 @@ export default class library extends Component {
       // handle success
       const data =  JSON.parse(response.data['data']);
       const fileData = response.data['fileData'];
+      const attributeData = response.data['attributeData'];
+      
       var newWindow = window.open("#/edit");
       newWindow.myname = oldName
       newWindow.csvdata = data
       newWindow.fileData = fileData
+
+      newWindow.myname = attributeData['filename']
+      newWindow.school = attributeData['school']
+      newWindow.subject = attributeData['subject']
+      newWindow.level = attributeData['level']
+      newWindow.year = attributeData['year']
+      newWindow.exam = attributeData['exam']
     })  
     
   }

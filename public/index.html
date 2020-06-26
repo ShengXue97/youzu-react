@@ -131,14 +131,15 @@
                         }
                     });
 
-                    newWindow.myname = filename
                     newWindow.csvdata = response.data
                     newWindow.fileData = window.fileData
-                    newWindow.level = window.level
-                    newWindow.subject = window.subject
-                    newWindow.year = window.year
-                    newWindow.school = window.school
-                    newWindow.exam = window.exam
+
+                    newWindow.myname = filename
+                    newWindow.level = level
+                    newWindow.subject = subject
+                    newWindow.year = year
+                    newWindow.school = school
+                    newWindow.exam = exam
                     source.close();
                   })
                   .catch(function (error) {
