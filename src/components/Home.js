@@ -65,104 +65,7 @@ const styles = theme => ({
 });
  
 
-//Prevents multiple tabs from opening
-var alreadyOpenedEditPage = false
-var filename = ""
-var curRequestNo = ""
-var fileData = ""
 
-function startStream(currentIP, currentTime, sessionID){
-  alreadyOpenedEditPage = false;
-  if (!!window.EventSource) {
-    var source = new EventSource(ip + ":" + port + '/stream?currentIP=' + currentIP
-                                 + "&currentTime=" + currentTime + "&sessionID=" + sessionID
-                                  + "&curRequestNo=" + curRequestNo);
-    source.onmessage = function(e) {
-      const dictStatus = JSON.parse(e.data)
-
-      // const originalProgress = window.homeComponent.getCurrentProgress();
-      // window.homeComponent.setCurrentProgress(originalProgress + 1);
-      if (dictStatus == undefined){
-        return;
-      }
-      if (dictStatus["curRequestNo"] != curRequestNo){
-        //IF this stream request belongs to an old request cancelled by the user
-        source.close();
-        return;
-      }
-
-      if (window.homeComponent != undefined && dictStatus["ipExists"] == "yes" && dictStatus["timeStampExists"] == "yes") {
-        const filename = dictStatus["filename"]
-        const level = dictStatus["level"]
-        const subject = dictStatus["subject"]
-        const year = dictStatus["year"]
-        const school = dictStatus["school"]
-        const exam = dictStatus["exam"]
-        var statusString = ""
-        if (dictStatus["stage"] == 4){
-          statusString = "Done!"
-        } else if (dictStatus["stage"] == 3) {
-          statusString = "Stage:" + dictStatus["stage"] + "/3" + "(Output Generation)" + ", Current Question:" + dictStatus["page"] + "/" + dictStatus["total"];
-        } else if (dictStatus["stage"] == 2) {
-          statusString = "Stage:" + dictStatus["stage"] + "/3" + "(Digitisation)" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
-        } else if (dictStatus["stage"] == 1) {
-          statusString = "Stage:" + dictStatus["stage"] + "/3" + "(Image Conversion)" + ", Current Page:" + dictStatus["page"] + "/" + dictStatus["total"];
-        }
-
-        //$("#data").text(statusString);
-        var progress = 0
-        if (dictStatus["stage"] == 1){
-          progress = (((dictStatus["page"] / dictStatus["total"])) * 100/3)
-        } else if (dictStatus["stage"] == 2){
-          progress = (((dictStatus["page"] / dictStatus["total"])) * 100/3) + 100/3
-        } else if (dictStatus["stage"] == 3){
-          progress = (((dictStatus["page"] / dictStatus["total"])) * 100/3) + 200/3
-        } else if (dictStatus["stage"] == 4){
-          progress = 100;
-        }
-        if (progress > window.homeComponent.getCurrentProgress()) {
-          window.homeComponent.setCurrentProgress(progress);
-        }
-
-        window.homeComponent.setExtraMsg("Status: " + statusString);
-    
-        var isDone = dictStatus["stage"] == 4
-        if (isDone == true && alreadyOpenedEditPage == false){
-          alreadyOpenedEditPage = true;
-          axios.post(ip + ":" + port + "/getresult?currentIP=" + currentIP + "&currentTime=" + currentTime
-                    + "&sessionID=" + sessionID, {timeout : 1000 * 10})
-            .then(function (response) {
-              // handle success
-              var newWindow = window.open('#/edit', '_self');
-              // // var newWindow = window.open('#/edit');
-              // $.ajax({
-              //     type: 'POST',
-              //     url: '/echo/json/',
-              //     success: function (data) {
-              //         redirectWindow.location;
-              //     }
-              // });
-
-              newWindow.csvdata = response.data
-              newWindow.fileData = fileData
-
-              newWindow.myname = filename
-              newWindow.level = level
-              newWindow.subject = subject
-              newWindow.year = year
-              newWindow.school = school
-              newWindow.exam = exam
-              source.close();
-            })
-            .catch(function (error) {
-              // handle error
-              source.close();
-            })
-        }
-      }
-    }
-  }
-}
 
 
 class home extends Component {
@@ -192,18 +95,19 @@ class home extends Component {
                   'lastClick' : null,
                   'canSendRequest' : true,
     }
-     //is this visible
      window.homeComponent = this;
+     //is this visible
   }
 
-  pollServer = (formData, filename) => {
+  pollServer = (formData, filename, curRequestNo) => {
     axios.post(ip + ":" + port + "/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
         .then(response => {
           // handle success
+          console.log(response.data)
           
           this.setState({'sessionID': response.data['YourSessionID'], 'msgVariant':'warning', 'msgText':"Selected file: '" + filename + ", processing...", 'extraMsg':"Status: Server responded, processing..."});
   
-          startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'])
+          window.startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'], curRequestNo)
         })
   }
 
@@ -218,6 +122,7 @@ class home extends Component {
       .then(response => {
         // handle success
         const pdfsData = response.data['Pdfs'];
+        console.log(response.data['Pdfs'])
         this.setState({'data' : pdfsData});
       })  
   }
@@ -231,24 +136,29 @@ class home extends Component {
       }
     }
     
-    curRequestNo = this.state.requestNo;
+    const curRequestNo = this.state.requestNo;
+    window.curRequestNo = curRequestNo;
     this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1, 'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Waiting for server response..."});
     
     axios.post(ip + ":" + port + "/killsession?sessionID=" + this.state.sessionID, {timeout : 1000 * 100000000000000000000000000})
     .then(response => {
+      console.log(response.data)
       this.setState({'canSendRequest' : true});
       axios.post(ip + ":" + port + "/openpdf?name=" + name, {timeout : 1000 * 100000000000000000000000000})
       .then(response => {
         // handle success
         this.setState({'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Server responded, processing..."});
 
-        fileData = response.data['fileData'];
+        const fileData = response.data['fileData'];
+        console.log(response.data)
+        window.fileData = fileData;
         this.state.file = fileData;
         axios.post(ip + ":" + port + "/pushfile?name=" + name, {timeout : 1000 * 100000000000000000000000000})
         .then(response => {
           // handle success
+          console.log(response.data)
           this.setState({'sessionID': response.data['YourSessionID']})
-          startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'])
+          window.startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'], curRequestNo)
         })
       }) 
     });
@@ -259,6 +169,7 @@ class home extends Component {
     .then(response => {
       // handle success
       const fileData = response.data['fileData'];
+      console.log(response.data)
 
       const linkSource = fileData;
       const downloadLink = document.createElement("a");
@@ -310,13 +221,14 @@ class home extends Component {
 
     this.setState({'currentProgress': 0});
     reader.onload = (event) => {
-      fileData = event.target.result;
+      window.fileData = event.target.result;
     };
     reader.readAsDataURL(firstFile);
 
 
     const filename = firstFile.name;
-    curRequestNo = this.state.requestNo;
+    const curRequestNo = this.state.requestNo;
+    window.curRequestNo = curRequestNo;
     this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1, 'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Received file: '" + filename + "', processing...", 'extraMsg':"Status: Waiting for server response..."});
 
     // Create an object of formData 
@@ -332,8 +244,9 @@ class home extends Component {
       // Send formData object 
       axios.post(ip + ":" + port + "/killsession?sessionID=" + this.state.sessionID, {timeout : 1000 * 100000000000000000000000000})
         .then(response => {
+          console.log(response.data)
           this.setState({'canSendRequest' : true});
-          this.pollServer(formData, filename);
+          this.pollServer(formData, filename, curRequestNo);
       });
 
     }
@@ -423,7 +336,7 @@ class home extends Component {
                 onClick={(event) => props.action.onClick(event, props.data)}
                   style={{ color: blue[500], textTransform: 'none' }}
                   aria-label="delete"
-                  title={"Process PDF"}
+                  title={"Download PDF"}
                 >  
                   <OpenInNewIcon />
                 </IconButton>
@@ -431,7 +344,7 @@ class home extends Component {
                 onClick={(event) => this.downloadPDF(props.data.name)}
                   style={{ color: blue[500], textTransform: 'none' }}
                   aria-label="delete"
-                  title={"Process PDF"}
+                  title={"Download PDF"}
                 >  
                   <GetAppIcon />
                 </IconButton>
