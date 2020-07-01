@@ -5,6 +5,7 @@ import { HashRouter, BrowserRouter, Route, Switch, Link } from 'react-router-dom
 import Home from './components/Home';
 import Edit from './components/Edit';
 import Library from './components/Library';
+import Database from './components/Database';
 import Settings from './components/Settings';
 import Changelog from './components/Changelog';
 
@@ -17,6 +18,7 @@ class App extends Component {
           <Route exact path="/home" component={Home} />
           <Route path="/edit" component={Edit} />
           <Route path="/library" component={Library} />
+          <Route path="/database" component={Database} />
           <Route path="/settings" component={Settings} />
           <Route path="/changelog" component={Changelog} />
         </div>
