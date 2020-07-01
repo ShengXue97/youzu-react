@@ -42,6 +42,12 @@ import IconButton from '@material-ui/core/IconButton';
 import { green, blue, } from '@material-ui/core/colors';
 import {PDFtoIMG} from 'react-pdf-to-image';
 import GetAppIcon from '@material-ui/icons/GetApp';
+
+import Slider from '@material-ui/core/Slider';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Input from '@material-ui/core/Input';
+import Modal from 'react-bootstrap/Modal'
 //http://ycampus.southeastasia.cloudapp.azure.com
 //http://localhost
 
@@ -142,7 +148,6 @@ function startStream(currentIP, currentTime, sessionID){
               //         redirectWindow.location;
               //     }
               // });
-
               newWindow.csvdata = response.data
               newWindow.fileData = fileData
 
@@ -191,22 +196,53 @@ class home extends Component {
                   'requestNo' : 1,
                   'lastClick' : null,
                   'canSendRequest' : true,
+                  'minPage' : 0,
+                  'maxPage' : 100,
+                  'currentStartPage' : 0,
+                  'currentEndPage' : 0,
+                  'useCustomPageRange' : false,
+                  'showPopup' : false,
+                  'yourIP' : "",
+                  'yourTime' : "",
+                  'isOwnFile' : false,
+                  'formData' : "",
+
     }
      //is this visible
      window.homeComponent = this;
   }
 
   pollServer = (formData, filename) => {
-    axios.post(ip + ":" + port + "/uploadfile", formData, {timeout : 1000 * 100000000000000000000000000})
-        .then(response => {
-          // handle success
-          
-          this.setState({'sessionID': response.data['YourSessionID'], 'msgVariant':'warning', 'msgText':"Selected file: '" + filename + ", processing...", 'extraMsg':"Status: Server responded, processing..."});
-  
-          startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'])
-        })
+    filename = filename.replace(".pdf", "")
+    if (this.state.useCustomPageRange){
+      axios.post(ip + ":" + port + "/getpdfpages?name=" + filename + "&isExisting=no", formData, {timeout : 1000 * 100000000000000000000000000})
+      .then(pageResponse => {
+        this.setState({
+            'msgVariant':'warning', 'msgText':"Selected file: '" + filename + ".pdf, processing...",
+            'extraMsg':"Status: Server responded, processing...",
+            'minPage' : 1,
+            'maxPage' : pageResponse.data["noOfPages"],
+            'currentStartPage' : 1,
+            'currentEndPage' : pageResponse.data["noOfPages"],
+            'showPopup' : true,
+            'filename': filename,
+            'isOwnFile': true,
+            'formData' : formData,
+          });
+      })
+    }
+    else {
+      console.log(filename)
+      this.setState({
+        'msgVariant':'warning', 'msgText':"Uploaded file: '" + filename + ".pdf, processing...",
+        'extraMsg':"Status: Server responded, processing...",
+        'isOwnFile': true,
+        'formData' : formData,
+        'filename': filename,
+      })
+      this.sendFileToServer(true);
+    }
   }
-
   handlePaginationChange = (e, { activePage }) => {
     this.setState({
       'currentPageNumber': activePage,
@@ -237,30 +273,87 @@ class home extends Component {
     axios.post(ip + ":" + port + "/killsession?sessionID=" + this.state.sessionID, {timeout : 1000 * 100000000000000000000000000})
     .then(response => {
       this.setState({'canSendRequest' : true});
-      axios.post(ip + ":" + port + "/openpdf?name=" + name, {timeout : 1000 * 100000000000000000000000000})
-      .then(response => {
-        // handle success
-        this.setState({'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Server responded, processing..."});
-
-        fileData = response.data['fileData'];
-        this.state.file = fileData;
-        axios.post(ip + ":" + port + "/pushfile?name=" + name, {timeout : 1000 * 100000000000000000000000000})
-        .then(response => {
-          // handle success
-          this.setState({'sessionID': response.data['YourSessionID']})
-          startStream(response.data["YourIP"], response.data["YourTime"], response.data['YourSessionID'])
+      if (this.state.useCustomPageRange){
+        axios.post(ip + ":" + port + "/getpdfpages?name=" + name + "&isExisting=yes", {timeout : 1000 * 100000000000000000000000000})
+        .then(pageResponse => {
+          this.setState({
+              'msgVariant':'warning',
+              'msgText':"Selected file: '" + name + ".pdf', processing...",
+              'extraMsg':"Status: Server responded, processing...",
+              'minPage' : 1,
+              'maxPage' : pageResponse.data["noOfPages"],
+              'currentStartPage' : 1,
+              'currentEndPage' : pageResponse.data["noOfPages"],
+              'showPopup' : true,
+              'filename': name,
+              'isOwnFile': false,
+            });
         })
-      }) 
+      }
+      else {
+        this.setState({
+          'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...",
+          'extraMsg':"Status: Server responded, processing...",
+          'isOwnFile': false,
+          'filename': name,
+        })
+        this.sendFileToServer(true);
+      }
     });
+  }
+  sendFileToServer(ignoreCustomPageRange){
+    console.log(ignoreCustomPageRange)
+    var currentStartPage = 0
+    var currentEndPage = this.state.maxPage
+    if (!ignoreCustomPageRange){
+      currentEndPage = this.state.currentEndPage
+      currentStartPage = this.state.currentStartPage
+    }
+    
+    if(!this.state.isOwnFile){
+      axios.post(ip + ":" + port + "/pushfile?name=" + this.state.filename + "&currentStartPage=" + currentStartPage
+      + "&currentEndPage=" + currentEndPage + "&ignoreCustomPageRange=" + ignoreCustomPageRange
+      , {timeout : 1000 * 100000000000000000000000000})
+      .then(pushResponse => {
+        // handle success
+        fileData = pushResponse.data["pdf_base64"]
+        this.setState({
+          'yourIP' : pushResponse.data["YourIP"],
+          'yourTime' : pushResponse.data["YourTime"],
+          'sessionID': pushResponse.data['YourSessionID'],
+          'showPopup' : false,
+        });
+        startStream(this.state.yourIP, this.state.yourTime, this.state.sessionID);
+        
+      })
+    } else {
+      console.log(this.state.filename)
+      axios.post(ip + ":" + port + "/uploadfile?name=" + this.state.filename + "&currentStartPage=" + currentStartPage
+      + "&currentEndPage=" + currentEndPage + "&ignoreCustomPageRange=" + ignoreCustomPageRange
+      , this.state.formData, {timeout : 1000 * 100000000000000000000000000})
+      .then(uploadResponse => {
+        // handle success
+        console.log(uploadResponse)
+        fileData = uploadResponse.data["pdf_base64"]
+        this.setState({
+          'yourIP' : uploadResponse.data["YourIP"],
+          'yourTime' : uploadResponse.data["YourTime"],
+          'sessionID': uploadResponse.data['YourSessionID'],
+          'showPopup' : false,
+        });
+        startStream(this.state.yourIP, this.state.yourTime, this.state.sessionID);
+        
+      })
+    }
   }
 
   downloadPDF(name) {
     axios.post(ip + ":" + port + "/openpdf?name=" + name, {timeout : 1000 * 100000000000000000000000000})
     .then(response => {
       // handle success
-      const fileData = response.data['fileData'];
+      const localFileData = response.data['fileData'];
 
-      const linkSource = fileData;
+      const linkSource = localFileData;
       const downloadLink = document.createElement("a");
       const fileName = name + ".pdf";
       downloadLink.href = linkSource;
@@ -310,14 +403,22 @@ class home extends Component {
 
     this.setState({'currentProgress': 0});
     reader.onload = (event) => {
-      fileData = event.target.result;
+      //fileData = event.target.result;
     };
     reader.readAsDataURL(firstFile);
 
 
     const filename = firstFile.name;
     curRequestNo = this.state.requestNo;
-    this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1, 'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Received file: '" + filename + "', processing...", 'extraMsg':"Status: Waiting for server response..."});
+
+    this.setState({
+      'canSendRequest' : false,
+      'lastClick' : curTime,
+      'requestNo' : curRequestNo + 1,
+      'currentProgress': 0,
+      'msgVariant':'warning', 'msgText':"Received file: '" + filename + "', processing...",
+      'extraMsg':"Status: Waiting for server response...",
+    });
 
     // Create an object of formData 
       const formData = new FormData(); 
@@ -338,11 +439,135 @@ class home extends Component {
 
     }
   
+  handleClosePopup = (event, newValue) => {
+  };
 
+  handleChangeSlider = (event, newValue) => {
+    this.setState({
+      'currentStartPage' : newValue[0],
+      'currentEndPage' : newValue[1]
+    })
+  };
+
+  handleSliderStartInputChange = (event) => {
+    this.setState({
+      'currentStartPage': (event.target.value === '' ? '' : Number(event.target.value))
+    })
+  };
+
+  handleSliderEndInputChange = (event) => {
+    this.setState({
+      'currentEndPage': (event.target.value === '' ? '' : Number(event.target.value))
+    })
+  };
+
+  handleSliderStartBlur = () => {
+    if (this.state.currentStartPage < 0) {
+      this.setState({
+        'currentStartPage': 0
+      })
+    } else if (this.state.currentStartPage > 100) {
+      this.setState({
+        'currentStartPage': 100
+      })
+    }
+  };
+
+  handleSliderEndBlur = () => {
+    if (this.state.currentEndPage < 0) {
+      this.setState({
+        'currentEndPage': 0
+      })
+    } else if (this.state.currentEndPage > 100) {
+      this.setState({
+        'currentEndPage': 100
+      })
+    }
+  };
+
+  handleChangeCheckbox = (e) => {
+    this.setState({
+      'useCustomPageRange' : e.target.checked})
+  };
+    
 
   render() {
     const body = 
     <div>
+      <Modal
+        show={this.state.showPopup}
+        backdrop="static"
+        keyboard={false}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        onHide={this.handleClosePopup}
+      >
+        <Modal.Header>
+          <Modal.Title>Custom Page Range</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Grid style = {{"paddingBottom" : "15px"}} container spacing={2} alignItems="center">
+        
+            <Grid item>
+              <Typography id="input-slider" gutterBottom>
+                Page Range
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              <Input
+                value={this.state.currentStartPage}
+                onChange={this.handleSliderStartInputChange}
+                onBlur={this.handleSliderStartBlur}
+                margin="dense"
+                inputProps={{
+                  step: 1,
+                  min: this.state.minPage,
+                  max: this.state.maxPage,
+                  defaultValue: 1,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+            </Grid>
+            
+            <Grid item xs>
+              <Slider
+              value={[this.state.currentStartPage, this.state.currentEndPage]}
+              valueLabelDisplay="auto"
+              step={1}
+              marks
+              onChange={this.handleChangeSlider}
+              min={this.state.minPage}
+              max={this.state.maxPage}
+              aria-labelledby="range-slider"
+              />
+            </Grid>
+
+            <Grid item>
+              <Input
+                margin="dense"
+                value={this.state.currentEndPage}
+                onChange={this.handleSliderEndInputChange}
+                onBlur={this.handleSliderEndBlur}
+                inputProps={{
+                  step: 1,
+                  min: this.state.minPage,
+                  max: this.state.maxPage,
+                  defaultValue: this.state.maxPage,
+                  type: 'number',
+                  'aria-labelledby': 'input-slider',
+                }}
+              />
+            </Grid>
+
+          </Grid>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => this.sendFileToServer(false)} variant="primary">Confirm</Button>
+        </Modal.Footer>
+      </Modal>
+
       <Alert style={{"width" : "100%", "height" : "90%"}} variant={"success"}>
         <p>
           A simple React website which allows you to Digitise Singapore Primary/Secondary school exam papers from PDF, and receive the output as a CSV file containing the text of the questions.
@@ -358,6 +583,17 @@ class home extends Component {
         </p>
       </Alert>
       <ProgressBar style={{"marginTop" :"10px", "marginBottom" :"10px"}} animated now={this.state.currentProgress} />
+
+      <Form.Group style = {{"paddingTop" : "10px"}} controlId="formBasicCheckbox">
+        <div style = {{flexGrow : "10", display: 'flex', flexDirection: 'row', alignItems:'left'}}>
+          <Form.Check onChange = {this.handleChangeCheckbox} type="checkbox"/>
+          <div style = {{"paddingTop" : "3px"}}>
+            <h6>
+              Choose custom PDF page range
+            </h6>
+          </div>
+        </div>
+      </Form.Group>
 
       <Dropzone style={{"width" : "100%", "height" : "50%", "paddingBottom" : "10px"}} name={"hey"} onClick={this.setMsg} onDrop={this.onDrop}>
         <div style = {{flexGrow : "10", display: 'flex', flexDirection: 'column', alignItems:'center', outline: "5px dotted black"}}>
