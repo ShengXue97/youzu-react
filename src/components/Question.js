@@ -268,7 +268,7 @@ class question extends React.Component {
                   </InputGroup.Prepend>
                   <FormControl
                     value={this.state.answer}
-                    placeholder={"e.g. if the answer is option 1, simply key in '1'"}
+                    title={"e.g. if the answer is option 1, simply key in '1'"}
                     aria-describedby="basic-addon1"
                     onChange={(e) => {
                       this.setState({'answer' : e.target.value});

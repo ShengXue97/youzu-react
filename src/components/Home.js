@@ -667,7 +667,7 @@ class home extends Component {
                 onClick={(event) => this.downloadPDF(props.data.name)}
                   style={{ color: blue[500], textTransform: 'none' }}
                   aria-label="delete"
-                  title={"Process PDF"}
+                  title={"Download PDF"}
                 >  
                   <GetAppIcon />
                 </IconButton>
