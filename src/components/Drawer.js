@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SettingsIcon from '@material-ui/icons/Settings';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import StorageIcon from '@material-ui/icons/Storage';
 import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -80,9 +81,9 @@ function ResponsiveDrawer(props) {
       </List>
       <Divider />
       <List>
-          {['Home', 'Library', 'Changelog'].map((text, index) => (
+          {['Home', 'Library', 'Database', 'Changelog'].map((text, index) => (
             <ListItem component={Link} to={text}  button key={text}>
-              <ListItemIcon>{index === 0 ? <HomeIcon /> : index === 1 ? <LibraryBooksIcon /> : <FormatShapesIcon />}</ListItemIcon>
+              <ListItemIcon>{index === 0 ? <HomeIcon /> : index === 1 ? <LibraryBooksIcon /> : index === 2 ? <StorageIcon /> : <FormatShapesIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}

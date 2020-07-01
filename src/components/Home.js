@@ -176,10 +176,12 @@ class home extends Component {
      super(props);
      this.listPdfs()
      loadProgressBar()
+     this.getDatabase()
      const columns = [
       { title: 'Name', field: 'name' },
       { title: 'Last Modified', field: 'lastModified', editable: 'never' }
     ]
+
 
 
      this.state = {'columns' : columns,
@@ -210,6 +212,12 @@ class home extends Component {
     }
      //is this visible
      window.homeComponent = this;
+  }
+
+  getDatabase = () => {
+    axios.post(ip + ":" + port + "/getdatabase", {timeout : 1000 * 100000000000000000000000000})
+    .then(response => {
+    });
   }
 
   pollServer = (formData, filename) => {
