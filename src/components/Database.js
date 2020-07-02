@@ -47,7 +47,6 @@ export default class database extends Component {
         { title: 'D', field: 'D', editable: 'never'  },
         { title: 'Answer', field: 'Answer', editable: 'never'  },
         { title: 'Page', field: 'Page', editable: 'never'  },
-        { title: 'Image File', field: 'Image File', editable: 'never'  },
         { title: 'Number', field: 'Number', editable: 'never'  },
         { title: 'Question_type', field: 'Question_type', editable: 'never'  },
         { title: 'Level', field: 'Level', editable: 'never'  },
@@ -104,7 +103,7 @@ export default class database extends Component {
         You are in the Database Page.
       </Alert>
       <MaterialTable
-          title="Your Workspaces"
+          title="Your Database"
           columns={this.state.columns}
           data={Array.from(this.state.data)}
           options={{
