@@ -1,3 +1,3 @@
-const serverInfo= "http://localhost,5000";
+const serverInfo= "http://localhost,3001";
 
 export default serverInfo;
