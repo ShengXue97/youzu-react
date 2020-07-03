@@ -99,7 +99,7 @@ export default class database extends Component {
     var list = [];
     var smallest = 149;
     var displayLength = false;
-    if (this.state.data.length <= smallest){
+    if (this.state.data.length < smallest){
       smallest = this.state.data.length
     } else {
       displayLength = true;
