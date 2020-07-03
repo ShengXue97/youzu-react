@@ -494,12 +494,19 @@ class home extends Component {
 
   render() {
     var list = [];
-    var smallest = 150;
+    var smallest = 149;
+    var displayLength = false;
     if (this.state.data.length <= smallest){
       smallest = this.state.data.length
+    } else {
+      displayLength = true;
     }
+    
     for (var i = 10; i <= smallest + 10; i = i + 10) {
         list.push(i);
+    }
+    if (displayLength){
+      list.push(this.state.data.length)
     }
 
     const body = 
