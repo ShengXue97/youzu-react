@@ -146,7 +146,7 @@ export default class library extends Component {
             search: true,
             exportButton: true,
             pageSize:10,
-            exportAllData: true
+            exportAllData: true,
             pageSizeOptions: list
           }}
           

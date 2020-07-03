@@ -127,7 +127,7 @@ export default class database extends Component {
             exportButton: true,
             pageSize: 10,
             emptyRowsWhenPaging: false,
-            exportAllData: true
+            exportAllData: true,
             pageSizeOptions: list
           }}
           actions={[

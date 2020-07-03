@@ -664,7 +664,7 @@ class home extends Component {
             search: true,
             exportButton: true,
             pageSize:10,
-            exportAllData: true
+            exportAllData: true,
             pageSizeOptions: list
           }}
           actions={[
