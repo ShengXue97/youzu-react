@@ -111,6 +111,7 @@ export default class database extends Component {
     if (displayLength){
       list.push(this.state.data.length)
     }
+    list = Array.from(new Set(list));
   
     const body = 
     <div>
