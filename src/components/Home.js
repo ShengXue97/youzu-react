@@ -181,8 +181,10 @@ class home extends Component {
       { title: 'Last Modified', field: 'lastModified', editable: 'never' }
     ]
 
-
-
+    var useCustomPageRange = false;
+    if (window.useCustomPageRange == true){
+      useCustomPageRange = true;
+    }
      this.state = {'columns' : columns,
                   'data' : [],
                   'msgVariant':'primary',
@@ -201,7 +203,7 @@ class home extends Component {
                   'maxPage' : 100,
                   'currentStartPage' : 0,
                   'currentEndPage' : 0,
-                  'useCustomPageRange' : false,
+                  'useCustomPageRange' : useCustomPageRange,
                   'showPopup' : false,
                   'yourIP' : "",
                   'yourTime' : "",
@@ -211,6 +213,14 @@ class home extends Component {
     }
      //is this visible
      window.homeComponent = this;
+     if(window.immediatelyProcessFile == "yes"){
+      this.processFile(window.file);
+    }
+
+    if(window.immediatelyOpenSinglePdf == "yes"){
+      this.openSinglePdf(window.file);
+    }
+
   }
 
   pollServer = (formData, filename) => {
@@ -259,7 +269,7 @@ class home extends Component {
       })  
   }
 
-  openPdf = (name) => {
+  openMultiplePdf = (names) => {
     const curTime = new Date()
     if (this.state.lastClick != null){
       if (curTime.getTime() - this.state.lastClick.getTime() < 5000 || this.state.canSendRequest == false){
@@ -267,9 +277,37 @@ class home extends Component {
         return;
       }
     }
-    
+    this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1})
+
+    if (names.length >= 6){
+      alert("Please do not process too many files at a time as it will overload our servers. Only the first 5 files that you selected will be processed")
+    }
+
+    if (names.length == 1){
+      this.openSinglePdf(names[0])
+    } else {
+      names.map((name, index) =>
+        {
+          if (index <= 4){
+            if (index == names.length - 1){
+              this.openSinglePdf(name)
+            } else {
+              var newWindow = window.open('#/home');
+              // Access it using its variable
+              newWindow.immediatelyOpenSinglePdf = "yes";
+              newWindow.file = name;
+              newWindow.useCustomPageRange = this.state.useCustomPageRange;
+            }
+          }
+        }
+      );
+    }
+  };
+
+
+  openSinglePdf = (name) => {
     curRequestNo = this.state.requestNo;
-    this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1, 'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Waiting for server response..."});
+    this.setState({'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Waiting for server response..."});
     
     axios.post(ip + ":" + port + "/killsession?sessionID=" + this.state.sessionID, {timeout : 1000 * 100000000000000000000000000})
     .then(response => {
@@ -348,19 +386,24 @@ class home extends Component {
     }
   }
 
-  downloadPDF(name) {
-    axios.post(ip + ":" + port + "/openpdf?name=" + name, {timeout : 1000 * 100000000000000000000000000})
-    .then(response => {
-      // handle success
-      const localFileData = response.data['fileData'];
+  downloadPDFs(files) {
+    files.map((file, index) =>
+      {
+        const name = file.name
+        axios.post(ip + ":" + port + "/openpdf?name=" + name, {timeout : 1000 * 100000000000000000000000000})
+        .then(response => {
+          // handle success
+          const localFileData = response.data['fileData'];
 
-      const linkSource = localFileData;
-      const downloadLink = document.createElement("a");
-      const fileName = name + ".pdf";
-      downloadLink.href = linkSource;
-      downloadLink.download = fileName;
-      downloadLink.click();
-    }) 
+          const linkSource = localFileData;
+          const downloadLink = document.createElement("a");
+          const fileName = name + ".pdf";
+          downloadLink.href = linkSource;
+          downloadLink.download = fileName;
+          downloadLink.click();
+        }) 
+      }
+    );
   }
     
 
@@ -398,23 +441,49 @@ class home extends Component {
         return;
       }
     }
+    this.setState({'lastClick' : curTime})
+    if (files.length >= 6){
+      alert("Please do not process too many files at a time as it will overload our servers. Only the first 5 files that you selected will be processed")
+    }
 
-    var firstFile = files[0]
+    if (files.length == 1){
+      this.processFile(files[0])
+    } else {
+      files.map((file, index) =>
+        {
+          if (index <= 4){
+            if (index == files.length - 1){
+              this.processFile(file)
+            } else {
+              var newWindow = window.open('#/home');
+
+            // Access it using its variable
+            newWindow.immediatelyProcessFile = "yes";
+            newWindow.file = file;
+            newWindow.useCustomPageRange = this.state.useCustomPageRange;
+            }
+          }
+        }
+      );
+    }
+  };
+
+  
+processFile = (file) => {
     const reader = new FileReader();
 
     this.setState({'currentProgress': 0});
     reader.onload = (event) => {
       //fileData = event.target.result;
     };
-    reader.readAsDataURL(firstFile);
+    reader.readAsDataURL(file);
 
 
-    const filename = firstFile.name;
+    const filename = file.name;
     curRequestNo = this.state.requestNo;
 
     this.setState({
       'canSendRequest' : false,
-      'lastClick' : curTime,
       'requestNo' : curRequestNo + 1,
       'currentProgress': 0,
       'msgVariant':'warning', 'msgText':"Received file: '" + filename + "', processing...",
@@ -427,7 +496,7 @@ class home extends Component {
       // Update the formData object 
       formData.append( 
         "myFile", 
-        firstFile
+        file
       ); 
 
       // Request made to the backend api 
@@ -604,7 +673,7 @@ class home extends Component {
 
       <Form.Group style = {{"paddingTop" : "10px"}} controlId="formBasicCheckbox">
         <div style = {{flexGrow : "10", display: 'flex', flexDirection: 'row', alignItems:'left'}}>
-          <Form.Check onChange = {this.handleChangeCheckbox} type="checkbox"/>
+          <Form.Check defaultChecked = {this.state.useCustomPageRange} onChange = {this.handleChangeCheckbox} type="checkbox"/>
           <div style = {{"paddingTop" : "3px"}}>
             <h6>
               Choose custom PDF page range
@@ -624,7 +693,7 @@ class home extends Component {
               </Button>{' '}
           <div style = {{height : "20px"}}/>
           <h4>
-            ... Or Drag and Drop that Document.
+            ... Or Drag and Drop that Document.(Multiple files supported, maximum 5)
           </h4>
           <p>
             We'll do the rest for you
@@ -665,12 +734,21 @@ class home extends Component {
             exportButton: true,
             pageSize:10,
             exportAllData: true,
-            pageSizeOptions: list
+            pageSizeOptions: list,
+            selection: true
           }}
           actions={[
             {
               icon: 'process',
-              onClick: (event, rowData) => this.openPdf(rowData.name)
+              onClick: (event, data) => {
+                var names = []
+                data.map((rowData) =>
+                {
+                  names.push(rowData.name);
+                }
+                );
+                this.openMultiplePdf(names);
+              }
             }
           ]}
           components={{
@@ -685,7 +763,7 @@ class home extends Component {
                   <OpenInNewIcon />
                 </IconButton>
                 <IconButton
-                onClick={(event) => this.downloadPDF(props.data.name)}
+                onClick={(event) => this.downloadPDFs(props.data)}
                   style={{ color: blue[500], textTransform: 'none' }}
                   aria-label="download"
                   title={"Download PDF"}
