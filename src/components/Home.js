@@ -493,6 +493,15 @@ class home extends Component {
     
 
   render() {
+    var list = [];
+    var smallest = 150;
+    if (this.state.data.length <= smallest){
+      smallest = this.state.data.length
+    }
+    for (var i = 10; i <= smallest + 10; i = i + 10) {
+        list.push(i);
+    }
+
     const body = 
     <div>
       <Modal
@@ -642,10 +651,12 @@ class home extends Component {
           title="Available PDFs"
           columns={this.state.columns}
           data={Array.from(this.state.data)}
+          key={ Array.from(this.state.data).length }
           options={{
             search: true,
             exportButton: true,
-            pageSize:10
+            pageSize:10,
+            pageSizeOptions: list
           }}
           actions={[
             {

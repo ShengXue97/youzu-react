@@ -116,7 +116,15 @@ export default class library extends Component {
       <ImageSearchIcon />
     </IconButton>
   </div>
-  
+    var list = [];
+    var smallest = 150;
+    if (this.state.data.length <= smallest){
+      smallest = this.state.data.length
+    }
+    for (var i = 10; i <= smallest + 10; i = i + 10) {
+        list.push(i);
+    }
+
     const body = 
     <div>
       <Alert style={{"width" : "100%", "height" : "90%"}} variant= "success">
@@ -129,8 +137,10 @@ export default class library extends Component {
           options={{
             search: true,
             exportButton: true,
-            pageSize:10
+            pageSize:10,
+            pageSizeOptions: list
           }}
+          
           actions={[
             {
               icon: 'launch',
