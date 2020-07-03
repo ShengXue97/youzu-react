@@ -96,6 +96,22 @@ export default class database extends Component {
       <ImageSearchIcon />
     </IconButton>
   </div>
+    var list = [];
+    var smallest = 149;
+    var displayLength = false;
+    if (this.state.data.length < smallest){
+      smallest = this.state.data.length
+    } else {
+      displayLength = true;
+    }
+    
+    for (var i = 10; i <= smallest + 10; i = i + 10) {
+        list.push(i);
+    }
+    if (displayLength){
+      list.push(this.state.data.length)
+    }
+    list = Array.from(new Set(list));
   
     const body = 
     <div>
@@ -112,6 +128,7 @@ export default class database extends Component {
             pageSize: 10,
             emptyRowsWhenPaging: false,
             exportAllData: true
+            pageSizeOptions: list
           }}
           actions={[
             {
