@@ -129,7 +129,8 @@ export default class library extends Component {
           options={{
             search: true,
             exportButton: true,
-            pageSize:10
+            pageSize:10,
+            exportAllData: true
           }}
           actions={[
             {

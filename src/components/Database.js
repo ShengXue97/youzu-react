@@ -109,7 +109,9 @@ export default class database extends Component {
           options={{
             search: true,
             exportButton: true,
-            pageSize:10
+            pageSize: 10,
+            emptyRowsWhenPaging: false,
+            exportAllData: true
           }}
           actions={[
             {

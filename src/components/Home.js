@@ -645,7 +645,8 @@ class home extends Component {
           options={{
             search: true,
             exportButton: true,
-            pageSize:10
+            pageSize:10,
+            exportAllData: true
           }}
           actions={[
             {
@@ -659,7 +660,7 @@ class home extends Component {
                 <IconButton
                 onClick={(event) => props.action.onClick(event, props.data)}
                   style={{ color: blue[500], textTransform: 'none' }}
-                  aria-label="delete"
+                  aria-label="process"
                   title={"Process PDF"}
                 >  
                   <OpenInNewIcon />
@@ -667,7 +668,7 @@ class home extends Component {
                 <IconButton
                 onClick={(event) => this.downloadPDF(props.data.name)}
                   style={{ color: blue[500], textTransform: 'none' }}
-                  aria-label="delete"
+                  aria-label="download"
                   title={"Download PDF"}
                 >  
                   <GetAppIcon />
