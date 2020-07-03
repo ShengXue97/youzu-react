@@ -192,8 +192,6 @@ export default class database extends Component {
               }),
           }}
         />
-      );
-      
     </div>
 
     return (
