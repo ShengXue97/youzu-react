@@ -217,8 +217,6 @@ export default class library extends Component {
               }),
           }}
         />
-      );
-      
     </div>
 
     return (
