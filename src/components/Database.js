@@ -1,34 +1,14 @@
 import React, { Component } from 'react';
-
-import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel from 'react-bootstrap/Carousel'
-import Card from 'react-bootstrap/Card';
-import CardColumns from 'react-bootstrap/CardColumns';
-import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react'
 import Drawer from './Drawer';
 import Alert from 'react-bootstrap/Alert'
-import FileCard from './FileCard'
-
-import yoozooImg from './images/yoozoo.jpg';
-import codeImg from './images/code.png';
-import lightbulbImg from './images/lightbulb.png';
-import userImg from './images/user.png';
-import plusImg from './images/plus.png';
-import page1 from './images/page1.jpg'; /*Placeholder for preview images in each csv entry*/
 import axios from 'axios'; 
 import serverInfo from './serverInfo.js'; // Relative path to your File
 import MaterialTable, { MTableToolbar } from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import { green } from '@material-ui/core/colors';
+
 
 const ip = serverInfo.split(",")[0]
 const port = serverInfo.split(",")[1]
@@ -56,15 +36,11 @@ export default class database extends Component {
         { title: 'Exam', field: 'Exam', editable: 'never'  },
       ]
 
-
-
       this.state = {
         'columns' : columns,
         'data' : []
       }
-      
     };
-  
 
   deleteWorkspace = (oldName) => {
     console.log("Deleting workspace...")
@@ -159,12 +135,12 @@ export default class database extends Component {
                       this.state.data.map((row) =>
                       {
                         var curName = row["name"]
-                        if (curName == newName){
+                        if (curName === newName){
                           foundExisting = true
                         }
                       });
                       
-                      if (oldName == newName){
+                      if (oldName === newName){
                         return;
                       } else if (foundExisting){
                         alert("A workspace with name: '" + newName + "' already exists. No update was made.")

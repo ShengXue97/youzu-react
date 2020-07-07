@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import React, { PureComponent } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -14,7 +13,7 @@ class Cropper extends PureComponent {
   };
   
   componentDidUpdate(prevProps) {
-    if(this.props != prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    if(this.props !== prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       this.setState({
         'src': this.props.src,

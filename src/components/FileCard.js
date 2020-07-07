@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import CardGroup from 'react-bootstrap/CardGroup';
 import page1 from './images/page1.jpg'; /*Placeholder for preview images in each csv entry*/
 
 
