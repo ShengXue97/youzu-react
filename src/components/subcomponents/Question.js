@@ -1,5 +1,5 @@
-//Question subcomponent used in Edit tab, which is displayed in the Edit tab, storing the
-// title and four options  a question
+// question sub-component used in Edit tab, which is displayed in the Edit tab
+// a single qn will store one title and four options
 import React from 'react';
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,8 +37,10 @@ class question extends React.Component {
       };
   }
 
+  // essential for any change in Edit.js to be reflected in the Question component (UI render update)
   componentDidUpdate(prevProps) {
-    if(this.props !== prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    // check for new user, you can also use some unique property, like ID (this.props.user.id !== prevProps.user.id)
+    if(this.props !== prevProps)
     {
       this.setState({
         'pgNum': this.props.pgNum,
@@ -56,20 +58,7 @@ class question extends React.Component {
     }
   }
 
-  async getBase(file) {
-    return new Promise((resolve, reject) => {
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        var fileBase64 = reader.result;
-        resolve(fileBase64)
-      };
-      reader.onerror = function (error) {
-        reject(error);
-      };
-    });
- }
-
+  // asynchronous fn that adds the new image to the qn (handleOnAddImage()) using a Promise
   async onDrop(files) {
     var firstFile = files[0]
     const reader = new FileReader();

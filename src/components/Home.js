@@ -1,4 +1,4 @@
-//Home tab, which is the homepage allowing users to upload or select files to process
+// home tab, which is the homepage allowing users to upload or select files to process
 /*
 This Component makes up the Home page of the React Web-page UI
 Some important functions here are:
