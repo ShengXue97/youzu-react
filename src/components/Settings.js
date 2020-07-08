@@ -1,6 +1,7 @@
+// Settings tab, which is not implment yet =(
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Drawer from './Drawer';
+import Drawer from './subcomponents/Drawer';
 import Alert from 'react-bootstrap/Alert'
 
  

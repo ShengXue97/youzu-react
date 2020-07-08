@@ -1,6 +1,0 @@
-stuff needed:
-
-1) npm install react-dropzone
-2) npm install react-bootstrap
-3) npm install react-papaparse
-4) npm install react-router-dom

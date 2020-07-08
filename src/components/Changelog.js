@@ -1,6 +1,7 @@
+// Changelog tab, which explains the changes for the different versions
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Drawer from './Drawer';
+import Drawer from './subcomponents/Drawer';
 import Alert from 'react-bootstrap/Alert'
 import ListGroup from 'react-bootstrap/ListGroup'
 

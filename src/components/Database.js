@@ -1,17 +1,18 @@
+// Database tab, which displays the various columns of the mysql database through flask
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Drawer from './Drawer';
+import Drawer from './subcomponents/Drawer';
 import Alert from 'react-bootstrap/Alert'
 import axios from 'axios'; 
-import serverInfo from './serverInfo.js'; // Relative path to your File
+import ServerInfo from './subcomponents/ServerInfo.js'; // Relative path to your File
 import MaterialTable, { MTableToolbar } from 'material-table';
 import IconButton from '@material-ui/core/IconButton';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import { green } from '@material-ui/core/colors';
 
 
-const ip = serverInfo.split(",")[0]
-const port = serverInfo.split(",")[1]
+const ip = ServerInfo.split(",")[0]
+const port = ServerInfo.split(",")[1]
 
 export default class database extends Component {
   constructor(props) {
