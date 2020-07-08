@@ -1,23 +1,12 @@
-import React, { Component } from 'react';
-
+import React from 'react';
 import Dropzone from 'react-dropzone'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel from 'react-bootstrap/Carousel'
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import CardGroup from 'react-bootstrap/CardGroup';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
-import Image from 'react-bootstrap/Image'
 import ListGroup from 'react-bootstrap/ListGroup'
 import InputGroup from 'react-bootstrap/InputGroup'
-import CheckBox from 'react-bootstrap';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -25,23 +14,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import { green, blue } from '@material-ui/core/colors';
 import Popup from "reactjs-popup";
 import '../diagram.css';
-import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import PublishIcon from '@material-ui/icons/Publish';
-import { Picture } from 'react-responsive-picture';
-
-
-/* checker to see if given question's image_file column contains authentic base64 text */
-// function isDataURL(s) {
-//     return !!s.match(isDataURL.regex);
-// }
-//
-// isDataURL.regex = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
-
-// for encoding utf-8 base64 strings back into base64 urls, for rendering into images
-var Buffer = require('buffer/').Buffer;
-
-
-
 
 
 class question extends React.Component {
@@ -63,7 +36,7 @@ class question extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props != prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    if(this.props !== prevProps) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
     {
       this.setState({
         'pgNum': this.props.pgNum,
@@ -80,30 +53,6 @@ class question extends React.Component {
       });
     }
   }
-
-  // handleImgClick = (clickedImg) => {
-  //       return (
-  //       <Modal
-  //         {...clickedImg}
-  //         size="lg"
-  //         aria-labelledby="contained-modal-title-vcenter"
-  //         centered
-  //       >
-  //         <Modal.Header closeButton>
-  //           <Modal.Title id="contained-modal-title-vcenter">
-  //             Image
-  //           </Modal.Title>
-  //         </Modal.Header>
-  //         <Modal.Body>
-  //           <img src={clickedImg} alt='Image'/>
-  //         </Modal.Body>
-  //         <Modal.Footer>
-  //           <Button onClick={props.onHide}>Close</Button>
-  //         </Modal.Footer>
-  //       </Modal>
-  //     );
-  //   }
-
 
   async getBase(file) {
     return new Promise((resolve, reject) => {
@@ -123,7 +72,6 @@ class question extends React.Component {
     var firstFile = files[0]
     const reader = new FileReader();
     reader.onload = (event) => {
-      // console.log(event.target.result);
       window.fileData = event.target.result;
     };
     reader.readAsDataURL(firstFile);
@@ -146,16 +94,15 @@ class question extends React.Component {
   render() {
     const Diagram = (image) => {
         var imageList = image.split(" ");
-        var encodedImg = null;
         var imgsJSX = imageList.map((img, imgidx) => {
             if (img !== "" && img !== "-") {
                 var fullImgURL = "data:image/png[jpg];base64," + img;
                 return <div className={"diagram-wrap"}>
                     <Popup modal
                            trigger={<img className="img-thumbnail" style={{"width": "40%", "cursor": "pointer"}}
-                                         title="Expand image" src={fullImgURL} />}
+                                         title="Expand image" src={fullImgURL} alt={"Diagram"}/>}
                            style={{"maxWidth": "50vw", "maxHeight": "50vh"}}>
-                    <img style={{"width": "inherit"}} src={fullImgURL} />
+                    <img style={{"width": "inherit"}} src={fullImgURL} alt={"Diagram"}/>
                     </Popup>
                     <span className={"delete-btn"} title={"Delete image"}
                           onClick = {(e) => {this.props.handleOnDeleteImage(this.state.pgNum,
@@ -164,14 +111,6 @@ class question extends React.Component {
                     </span>
                 </div>
             }
-            // if (isDataURL(eachImg)) {
-            // if (typeof(Buffer.from === "function")) {
-            //     encodedImg = Buffer.from(img, 'base64');
-            // } else {
-            //     encodedImg = new Buffer.from(img, 'base64');
-            // }
-
-            // }
         })
         return imgsJSX;
     }
