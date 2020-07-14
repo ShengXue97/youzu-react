@@ -21,20 +21,20 @@ export default class database extends Component {
     
      /*state still uninitialized: saved database file count and time uploaded (check back with Edit.js)*/
      const columns = [
-        { title: 'Question', field: 'Question', editable: 'never'  },
-        { title: 'A', field: 'A', editable: 'never'  },
-        { title: 'B', field: 'B', editable: 'never'  },
-        { title: 'C', field: 'C', editable: 'never'  },
-        { title: 'D', field: 'D', editable: 'never'  },
-        { title: 'Answer', field: 'Answer', editable: 'never'  },
-        { title: 'Page', field: 'Page', editable: 'never'  },
-        { title: 'Number', field: 'Number', editable: 'never'  },
-        { title: 'Question_type', field: 'Question_type', editable: 'never'  },
-        { title: 'Level', field: 'Level', editable: 'never'  },
-        { title: 'Subject', field: 'Subject', editable: 'never'  },
-        { title: 'Year', field: 'Year', editable: 'never'  },
-        { title: 'School', field: 'School', editable: 'never'  },
-        { title: 'Exam', field: 'Exam', editable: 'never'  },
+        { title: 'question', field: 'question', editable: 'never'  },
+        { title: '1', field: '1', editable: 'never'  },
+        { title: '2', field: '2', editable: 'never'  },
+        { title: '3', field: '3', editable: 'never'  },
+        { title: '4', field: '4', editable: 'never'  },
+        { title: 'answer', field: 'answer', editable: 'never'  },
+        { title: 'page', field: 'page', editable: 'never'  },
+        { title: 'number', field: 'number', editable: 'never'  },
+        { title: 'question_type', field: 'question_type', editable: 'never'  },
+        { title: 'level', field: 'level', editable: 'never'  },
+        { title: 'subject', field: 'subject', editable: 'never'  },
+        { title: 'year', field: 'year', editable: 'never'  },
+        { title: 'school', field: 'school', editable: 'never'  },
+        { title: 'exam', field: 'exam', editable: 'never'  },
       ]
 
       this.state = {
