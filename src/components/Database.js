@@ -1,4 +1,4 @@
-// Database tab, which displays the various columns of the mysql database through flask
+// database tab, which displays the various columns of the mysql database through flask
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Drawer from './subcomponents/Drawer';

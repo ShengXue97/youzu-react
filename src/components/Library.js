@@ -1,4 +1,4 @@
-//Library tab, which stores the workspaces that the user has saved
+// library tab, which stores the workspaces that the user has saved
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Drawer from './subcomponents/Drawer';
