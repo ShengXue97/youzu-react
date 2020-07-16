@@ -20,7 +20,8 @@ export default class library extends Component {
      this.listWorkspace();
      const columns = [
         { title: 'Name', field: 'name' },
-        { title: 'Last Modified', field: 'lastModified', editable: 'never' }
+        { title: 'Last Modified', field: 'lastModified', editable: 'never' },
+        { title: 'Status', field: 'status', editable: 'never' }
      ];
      this.state = {
         'columns' : columns,

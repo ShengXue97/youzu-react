@@ -157,7 +157,8 @@ class home extends Component {
      loadProgressBar()
      const columns = [
       { title: 'Name', field: 'name' },
-      { title: 'Last Modified', field: 'lastModified', editable: 'never' }
+      { title: 'Last Modified', field: 'lastModified', editable: 'never' },
+      { title: 'Status', field: 'status', editable: 'never' }
     ]
 
     let useCustomPageRange = false;
@@ -244,6 +245,7 @@ class home extends Component {
         // handle success
         const pdfsData = response.data['Pdfs'];
         this.setState({'data' : pdfsData});
+        console.log(pdfsData)
       })  
   }
 
@@ -692,7 +694,8 @@ class home extends Component {
                 );
                 this.openMultiplePdf(names);
               }
-            }
+            },
+            
           ]}
           components={{
             Action: props => (
