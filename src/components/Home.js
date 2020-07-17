@@ -62,6 +62,7 @@ var curRequestNo = ""
 var fileData = ""
 
 function startStream(currentIP, currentTime, sessionID){
+  console.log("hu")
   alreadyOpenedEditPage = false;
   if (!!window.EventSource) {
     var source = new EventSource(ip + ":" + port + '/stream?currentIP=' + currentIP
@@ -75,11 +76,13 @@ function startStream(currentIP, currentTime, sessionID){
       if (dictStatus === undefined){
         return;
       }
+      console.log("a")
       if (dictStatus["curRequestNo"] !== curRequestNo){
         //IF this stream request belongs to an old request cancelled by the user
         source.close();
         return;
       }
+      console.log("b")
 
       if (window.homeComponent !== undefined &&
           dictStatus["ipExists"] === "yes" && dictStatus["timeStampExists"] === "yes") {
@@ -251,13 +254,14 @@ class home extends Component {
 
   openMultiplePdf = (names) => {
     const curTime = new Date()
+    curRequestNo = curRequestNo + 1;
     if (this.state.lastClick != null){
       if (curTime.getTime() - this.state.lastClick.getTime() < 5000 || this.state.canSendRequest === false){
         alert("Too many requests made, please wait a while before trying again.")
         return;
       }
     }
-    this.setState({'canSendRequest' : false, 'lastClick' : curTime, 'requestNo' : curRequestNo + 1})
+    this.setState({'canSendRequest' : false, 'lastClick' : curTime})
 
     if (names.length >= 6){
       alert("Please do not process too many files at a time as it will overload our servers. Only the first 5 files that you selected will be processed")
@@ -285,7 +289,7 @@ class home extends Component {
   };
 
   openSinglePdf = (name) => {
-    curRequestNo = this.state.requestNo;
+    curRequestNo = curRequestNo + 1;
     this.setState({'currentProgress': 0, 'msgVariant':'warning', 'msgText':"Selected file: '" + name + ".pdf', processing...", 'extraMsg':"Status: Waiting for server response..."});
     
     axios.post(ip + ":" + port + "/killsession?sessionID=" + this.state.sessionID, {timeout : 1000 * 100000000000000000000000000})
@@ -450,10 +454,9 @@ class home extends Component {
 
     reader.readAsDataURL(file);
     const filename = file.name;
-    curRequestNo = this.state.requestNo;
+    curRequestNo = curRequestNo + 1;
     this.setState({
       'canSendRequest' : false,
-      'requestNo' : curRequestNo + 1,
       'currentProgress': 0,
       'msgVariant':'warning', 'msgText':"Received file: '" + filename + "', processing...",
       'extraMsg':"Status: Waiting for server response...",
