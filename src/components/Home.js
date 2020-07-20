@@ -240,13 +240,15 @@ class home extends Component {
   }
 
   listPdfs = () => {
-    axios.post(ip + ":" + port + "/listpdf?options=all", {timeout : 1000 * 100000000000000000000000000})
-      .then(response => {
-        // handle success
-        const pdfsData = response.data['Pdfs'];
-        this.setState({'data' : pdfsData});
-        console.log(pdfsData)
-      })  
+    for (var i = 0; i <= 10; i++){
+      axios.post(ip + ":" + port + "/listpdf?batch=" + i, {timeout : 1000 * 100000000000000000000000000})
+        .then(response => {
+          // handle success
+          const pdfsData = response.data['Pdfs'];
+          const newData = this.state.data.concat(pdfsData)
+          this.setState({'data' : newData});
+        })  
+    }
   }
 
   openMultiplePdf = (names) => {
