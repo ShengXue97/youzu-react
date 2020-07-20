@@ -62,7 +62,6 @@ var curRequestNo = ""
 var fileData = ""
 
 function startStream(currentIP, currentTime, sessionID){
-  console.log("hu")
   alreadyOpenedEditPage = false;
   if (!!window.EventSource) {
     var source = new EventSource(ip + ":" + port + '/stream?currentIP=' + currentIP
@@ -76,13 +75,11 @@ function startStream(currentIP, currentTime, sessionID){
       if (dictStatus === undefined){
         return;
       }
-      console.log("a")
       if (dictStatus["curRequestNo"] !== curRequestNo){
         //IF this stream request belongs to an old request cancelled by the user
         source.close();
         return;
       }
-      console.log("b")
 
       if (window.homeComponent !== undefined &&
           dictStatus["ipExists"] === "yes" && dictStatus["timeStampExists"] === "yes") {
@@ -254,7 +251,6 @@ class home extends Component {
 
   openMultiplePdf = (names) => {
     const curTime = new Date()
-    curRequestNo = curRequestNo + 1;
     if (this.state.lastClick != null){
       if (curTime.getTime() - this.state.lastClick.getTime() < 5000 || this.state.canSendRequest === false){
         alert("Too many requests made, please wait a while before trying again.")
