@@ -115,7 +115,7 @@ export default class database extends Component {
             emptyDataSourceMessage: 'Loading data..please wait'
             }
           }}
-          
+
           actions={[
             {
               icon: 'refresh',
@@ -130,53 +130,9 @@ export default class database extends Component {
                 <MTableToolbar {...props } />
               </div>
             ),
-          }}
-          editable={{
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  if (oldData) {
-                    this.setState((prevState) => {
-                      const data = [...prevState.data];
-                      const oldName = oldData["name"]
-                      const newName = newData["name"]
-                      var foundExisting = false
-                      this.state.data.map((row) =>
-                      {
-                        var curName = row["name"]
-                        if (curName === newName){
-                          foundExisting = true
-                        }
-                      });
-                      
-                      if (oldName === newName){
-                        return;
-                      } else if (foundExisting){
-                        alert("A workspace with name: '" + newName + "' already exists. No update was made.")
-                        return;
-                      } else {
-                        data[data.indexOf(oldData)] = newData;
-                        this.renameWorkspace(oldData["name"], newData["name"])
-                        return { ...prevState, data };
-                      }
-                    });
-                  }
-                }, 600);
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data.splice(data.indexOf(oldData), 1);
-                    this.deleteWorkspace(oldData["name"])
-                    return { ...prevState, data };
-                  });
-                }, 600);
-              }),
-          }}
+          }
+        }
+        
         />
     </div>
 
