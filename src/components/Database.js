@@ -107,6 +107,15 @@ export default class database extends Component {
             exportAllData: true,
             pageSizeOptions: list
           }}
+          localization={{
+            toolbar: {
+            nRowsSelected: '{0} item(s) selected',
+            },
+            body: {
+            emptyDataSourceMessage: 'Loading data..please wait'
+            }
+          }}
+          
           actions={[
             {
               icon: 'refresh',

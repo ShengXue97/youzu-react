@@ -240,7 +240,7 @@ class home extends Component {
   }
 
   listPdfs = () => {
-    for (var i = 0; i <= 10; i++){
+    for (var i = 0; i <= 10 + 1; i++){
       axios.post(ip + ":" + port + "/listpdf?batch=" + i, {timeout : 1000 * 100000000000000000000000000})
         .then(response => {
           // handle success
@@ -683,6 +683,15 @@ class home extends Component {
             pageSizeOptions: list,
             selection: true
           }}
+          localization={{
+            toolbar: {
+            nRowsSelected: '{0} item(s) selected',
+            },
+            body: {
+            emptyDataSourceMessage: 'Loading data..please wait'
+            }
+          }}
+
           actions={[
             {
               icon: 'process',
