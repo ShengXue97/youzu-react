@@ -2,7 +2,7 @@
 # Developer Guide
 
 DEVELOPER GUIDE FOR YOUZU SINGAPORE
-This repository is the Flask Repository(youzu-flask).
+This repository is the React Repository(youzu-react).
 
 **Group members :** 
 Sim Sheng Xue
