@@ -2,10 +2,7 @@
 # Developer Guide
 
 DEVELOPER GUIDE FOR YOUZU SINGAPORE
-This repository is the Digitization Repository(youzu-digitization).
-It contains two sub-repositories. 
-Flask Repository: youzu-flask(Back-End) and 
-React Repository: youzu-react(Front-End)
+This repository is the Flask Repository(youzu-flask).
 
 **Group members :** 
 Sim Sheng Xue
